@@ -56,6 +56,8 @@ class LoginCubit extends Cubit<LoginStates> {
               ),
             })
         .catchError((error) {
+      print(error.toString());
+
       emit(LoginIsNotAuth(error));
     });
   }

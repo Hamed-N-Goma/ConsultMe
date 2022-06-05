@@ -38,9 +38,14 @@ class LoginScreen extends StatelessWidget {
                     ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
                 state: ToastStates.WARNING);
             LoginCubit.get(context).loginbutton.stop();
+          } else if (state is LoginIsNotAuth) {
+            showToast(
+                message: ' الرجاء التأكد من البريد الالكتروني والرقم السري ',
+                state: ToastStates.ERROR);
+            LoginCubit.get(context).loginbutton.stop();
           }
         },
-        builder: (BuildContext context, Object? state) {
+        builder: (BuildContext context, state) {
           var cubit = LoginCubit.get(context);
           return Directionality(
             textDirection: TextDirection.rtl,
