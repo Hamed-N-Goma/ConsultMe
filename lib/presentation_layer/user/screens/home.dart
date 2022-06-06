@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/presentation_layer/user/screens/view_all_impo_artcle.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';
 import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
@@ -18,51 +19,48 @@ class Home extends StatelessWidget {
   }
 
   Widget buildLayout(context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 40,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: buildCustomText(
-                text: "التخصصات",
-                color: ColorManager.myBlack,
-                fontFamily: FontConst.fontFamily,
-                fontWight: FontWeightManager.bold,
-                size: 18),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          buildCategoryList(),
-          const SizedBox(
-            height: 15,
-          ),
-          buildRowMostImportantText(context),
-          const SizedBox(
-            height: 15,
-          ),
-          buildMostImportantList(),
-          const SizedBox(
-            height: 25,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: buildCustomText(
-                text: "الأعلى تقييمآ :",
-                color: ColorManager.myBlack,
-                fontFamily: FontConst.fontFamily,
-                fontWight: FontWeightManager.bold,
-                size: 18),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          buildTopRatedConsultant(),
-        ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: buildCustomText(
+                  text: "التخصصات",
+                  style: Theme.of(context).textTheme.bodyText1),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            buildCategoryList(),
+            const SizedBox(
+              height: 15,
+            ),
+            buildRowMostImportantText(context),
+            const SizedBox(
+              height: 15,
+            ),
+            buildMostImportantList(),
+            const SizedBox(
+              height: 25,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: buildCustomText(
+                  text: "الأعلى تقييمآ :",
+                  style: Theme.of(context).textTheme.bodyText1),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            buildTopRatedConsultant(),
+          ],
+        ),
       ),
     );
   }
@@ -76,7 +74,7 @@ class Home extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => category(),
+              itemBuilder: (context, index) => category(context),
               separatorBuilder: (context, index) => const SizedBox(width: 5),
               itemCount: 30,
             ),
@@ -92,7 +90,8 @@ class Home extends StatelessWidget {
         width: double.infinity,
         child: CarouselSlider.builder(
             itemCount: 10,
-            itemBuilder: (context, index, pageindex) => buildMostImportant(),
+            itemBuilder: (context, index, pageindex) =>
+                buildMostImportant(context),
             options: CarouselOptions(
                 height: 140,
                 autoPlay: true,
@@ -125,22 +124,16 @@ class Home extends StatelessWidget {
           padding: const EdgeInsets.only(right: 10.0),
           child: buildCustomText(
             text: "مواضيع رآئجه :",
-            color: ColorManager.myBlack,
-            fontWight: FontWeightManager.bold,
-            fontFamily: FontConst.fontFamily,
-            size: 18,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, viewAllImportantArtcle);
+            navigateTo(context, ViewAll());
           },
           child: buildCustomText(
             text: 'عرض الكل',
-            color: ColorManager.myBlack,
-            fontWight: FontWeightManager.regular,
-            fontFamily: FontConst.fontFamily,
-            size: 14,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
       ],

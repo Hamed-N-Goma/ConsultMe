@@ -2,9 +2,10 @@ import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 
-Widget buildMostImportant() {
+Widget buildMostImportant(context) {
   return InkWell(
     borderRadius: BorderRadius.circular(20),
     radius: 20,
@@ -19,12 +20,14 @@ Widget buildMostImportant() {
             width: 260,
             height: 140,
             decoration: BoxDecoration(
-                color: ColorManager.myWhite,
+                color: ThemeCubit.get(context).darkTheme
+                    ? mainColors
+                    : Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
                     color: Color.fromRGBO(0, 0, 0, 0.2),
-                    offset: Offset(2, 2),
+                    offset: Offset(2, 3),
                     blurRadius: 4,
                     spreadRadius: 0.5,
                   )
@@ -68,7 +71,7 @@ Widget buildimg() {
 }
 
 Widget buildarticle() {
-  return Container(
+  return SizedBox(
     width: 130,
     child: Padding(
       padding: EdgeInsets.all(1),

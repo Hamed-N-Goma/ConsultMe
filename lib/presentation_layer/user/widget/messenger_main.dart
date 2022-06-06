@@ -1,9 +1,13 @@
+import 'package:consultme/components/components.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
+import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../const.dart';
+import '../../../shard/style/theme/cubit/cubit.dart';
+import '../../presentation_layer_manager/color_manager/color_manager.dart';
 
 class Chatitem extends StatelessWidget {
   Chatitem({Key? key}) : super(key: key);
@@ -16,7 +20,7 @@ class Chatitem extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, chatDetails);
+        navigateTo(context, ChatDetails());
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -29,7 +33,9 @@ class Chatitem extends StatelessWidget {
           height: height * 0.14,
           width: width,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -37,7 +43,7 @@ class Chatitem extends StatelessWidget {
             children: [
               consultantImage(),
               SizedBox(width: width * 0.03),
-              consultantDetales(height),
+              consultantDetales(height, context),
             ],
           ),
         ),
@@ -58,7 +64,7 @@ class Chatitem extends StatelessWidget {
     );
   }
 
-  Widget consultantDetales(double height) {
+  Widget consultantDetales(double height, context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,10 +73,7 @@ class Chatitem extends StatelessWidget {
         ),
         Text(
           'عبدالله سالم عبدالله',
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: FontConst.fontFamily,
-              fontWeight: FontWeightManager.bold),
+          style: Theme.of(context).textTheme.bodyText1,
         ),
         const SizedBox(
           height: 12,

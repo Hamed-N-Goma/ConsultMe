@@ -10,21 +10,24 @@ class ChatDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorManager.myBlue.withOpacity(0.5),
-        titleSpacing: 0,
-        title: buildAppbarTitle(),
-        actions: actionsAppBar(),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorManager.myBlue.withOpacity(0.5),
+          titleSpacing: 0,
+          title: buildAppbarTitle(context),
+          actions: actionsAppBar(),
+        ),
+        body: buildMessageStructure(),
       ),
-      body: buildMessageStructure(),
     );
   }
   //you must send user Model with Navigation
 
-  Widget buildAppbarTitle() {
+  Widget buildAppbarTitle(context) {
     return Row(
-      children: const [
+      children: [
         CircleAvatar(
           radius: 20.0,
           backgroundImage: NetworkImage(profileImageUri),
@@ -34,7 +37,7 @@ class ChatDetails extends StatelessWidget {
         ),
         Text(
           'عبدالله منصور',
-          style: TextStyle(fontFamily: FontConst.fontFamily, fontSize: 14),
+          style: Theme.of(context).textTheme.bodyText1,
         )
       ],
     );

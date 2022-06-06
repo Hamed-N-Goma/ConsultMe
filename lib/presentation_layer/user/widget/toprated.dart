@@ -1,5 +1,6 @@
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -19,9 +20,11 @@ class Toprated extends StatelessWidget {
       ),
       child: Container(
         padding: EdgeInsets.all(16),
-        height: 110,
+        height: 125,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -34,7 +37,7 @@ class Toprated extends StatelessWidget {
           children: [
             consultantImage(),
             const SizedBox(width: 16),
-            consultantDetales(),
+            consultantDetales(context),
           ],
         ),
       ),
@@ -46,7 +49,7 @@ class Toprated extends StatelessWidget {
 
   Widget consultantImage() {
     return Container(
-      height: 77,
+      height: 97,
       width: 90,
       decoration: BoxDecoration(
           color: ColorManager.myBlue,
@@ -59,7 +62,7 @@ class Toprated extends StatelessWidget {
     );
   }
 
-  Widget consultantDetales() {
+  Widget consultantDetales(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,12 +70,7 @@ class Toprated extends StatelessWidget {
           children: [
             Text(
               '4.8',
-              style: TextStyle(
-                color: HexColor('#929BB0'),
-                fontSize: 16,
-                fontFamily: FontConst.fontFamily,
-                fontWeight: FontWeightManager.bold,
-              ),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             const SizedBox(
               width: 6,
@@ -87,9 +85,9 @@ class Toprated extends StatelessWidget {
             ),
             InkWell(
               onTap: () {},
-              child: const FaIcon(
+              child: FaIcon(
                 FontAwesomeIcons.commentDots,
-                color: ColorManager.myGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
             const SizedBox(
@@ -97,9 +95,9 @@ class Toprated extends StatelessWidget {
             ),
             InkWell(
               onTap: () {},
-              child: const FaIcon(
+              child: FaIcon(
                 FontAwesomeIcons.calendarPlus,
-                color: ColorManager.myGrey,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ],
@@ -109,20 +107,14 @@ class Toprated extends StatelessWidget {
         ),
         Text(
           'علي محمد علي',
-          style: TextStyle(
-              color: HexColor('#929BB0'),
-              fontFamily: FontConst.fontFamily,
-              fontWeight: FontWeightManager.bold),
+          style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(
-          height: 12,
+          height: 10,
         ),
         Text(
           'دكتور أسنان',
-          style: TextStyle(
-              color: HexColor('#929BB0'),
-              fontFamily: FontConst.fontFamily,
-              fontWeight: FontWeightManager.light),
+          style: Theme.of(context).textTheme.bodySmall,
         )
       ],
     );

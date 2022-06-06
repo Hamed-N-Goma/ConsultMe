@@ -12,25 +12,28 @@ class ViewAll extends StatelessWidget {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: const Text('مواضيع رآئجه',
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: FontConst.fontFamily,
-              fontWeight: FontWeightManager.bold,
-            )),
-      ),
-      body: Center(
-        child: ListView.separated(
-            itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.only(left: 10, right: 10, top: 15),
-                child: mostImportantItem(width: width - 20)),
-            separatorBuilder: (context, index) => const SizedBox(),
-            itemCount: 20),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: const Text('مواضيع رآئجه',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: FontConst.fontFamily,
+                fontWeight: FontWeightManager.bold,
+              )),
+        ),
+        body: Center(
+          child: ListView.separated(
+              itemBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 15),
+                  child: mostImportantItem(width: width - 20)),
+              separatorBuilder: (context, index) => const SizedBox(),
+              itemCount: 20),
+        ),
       ),
     );
   }

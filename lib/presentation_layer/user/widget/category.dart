@@ -5,7 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 
-Widget category() {
+Widget category(context) {
   return Column(children: [
     InkWell(
       radius: 30,
@@ -14,7 +14,7 @@ Widget category() {
         print('tapped');
       },
       child: Card(
-        color: HexColor('#929BB0'),
+        color: Theme.of(context).cardColor,
         child: Container(
           padding: const EdgeInsets.all(5),
           child: const FaIcon(
@@ -24,15 +24,15 @@ Widget category() {
           ),
         ),
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(50))),
+            borderRadius: BorderRadius.all(Radius.circular(80))),
       ),
     ),
     const SizedBox(
       height: 10,
     ),
-    const Text(
+    Text(
       'data',
-      style: TextStyle(fontFamily: FontConst.fontFamily),
+      style: Theme.of(context).textTheme.bodyText1,
     )
   ]);
 }

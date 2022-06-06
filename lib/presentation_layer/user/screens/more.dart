@@ -5,8 +5,11 @@ class More extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('more'),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Center(
+        child: Text('more'),
+      ),
     );
   }
 }

@@ -69,7 +69,7 @@ class SignUpScreen extends StatelessWidget {
                     timeBackPressed = DateTime.now();
                     if (isExitWarning) {
                       showToast(
-                          message: 'اضغط مرة أخرى للخروج من البرنامج',
+                          message: 'أعد مرة أخرى للرجوع لـصفحة تسجيل الدخول',
                           state: ToastStates.WARNING);
                       return false;
                     } else {

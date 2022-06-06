@@ -7,6 +7,7 @@ import 'package:consultme/presentation_layer/user/screens/search.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';
 import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -28,80 +29,80 @@ class _UserLayoutState extends State<UserLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.myWhite,
-      appBar: AppBar(
-        backgroundColor: ColorManager.myWhite,
-        elevation: 0,
-        foregroundColor: ColorManager.myWhite,
-        title: leadingTitle(),
-        actions: appBarItems(),
-      ),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: Theme.of(context).appBarTheme.elevation,
+          foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+          title: leadingTitle(),
+          actions: appBarItems(),
+        ),
 
-      //bottom navebar controller
-      body: screens[_selectedIndex],
+        //bottom navebar controller
+        body: screens[_selectedIndex],
 
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.5),
-                offset: Offset(3, 2),
-                blurRadius: 4,
-                spreadRadius: 0.5,
-              )
-            ]),
-        child: GNav(
-          curve: Curves.easeOutCubic,
-          textStyle: const TextStyle(
-              fontFamily: FontConst.fontFamily,
-              fontWeight: FontWeightManager.regular),
-          backgroundColor: ColorManager.myWhite,
-          color: ColorManager.myBlue.withOpacity(0.5),
-          activeColor: ColorManager.myBlack.withOpacity(0.5),
-          tabBackgroundColor: ColorManager.myBlue.withOpacity(0.5),
-          padding: const EdgeInsets.all(16),
-          gap: 8,
-          selectedIndex: _selectedIndex,
-          onTabChange: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          tabs: const [
-            GButton(
-              icon: FontAwesomeIcons.houseUser,
-              text: 'الرئيسية',
-              gap: 8,
-            ), //home
-            GButton(
-              icon: FontAwesomeIcons.magnifyingGlass,
-              text: 'بحث',
-            ), //search
-            GButton(
-              icon: FontAwesomeIcons.comments,
-              text: 'الرسائل',
-            ), //chat
-            GButton(
-              icon: FontAwesomeIcons.listUl,
-              text: 'أخري',
-            ) //more
-          ],
+        bottomNavigationBar: Container(
+          height: 70,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                  offset: Offset(3, 2),
+                  blurRadius: 4,
+                  spreadRadius: 0.5,
+                )
+              ]),
+          child: GNav(
+            curve: Curves.easeOutCubic,
+            textStyle: Theme.of(context).textTheme.bodyText2,
+            backgroundColor: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+            activeColor:
+                Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+            tabBackgroundColor: ColorManager.myBlue.withOpacity(0.5),
+            padding: const EdgeInsets.all(16),
+            gap: 8,
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            tabs: const [
+              GButton(
+                icon: FontAwesomeIcons.houseUser,
+                text: 'الرئيسية',
+                gap: 8,
+              ), //home
+              GButton(
+                icon: FontAwesomeIcons.magnifyingGlass,
+                text: 'بحث',
+              ), //search
+              GButton(
+                icon: FontAwesomeIcons.comments,
+                text: 'الرسائل',
+              ), //chat
+              GButton(
+                icon: FontAwesomeIcons.listUl,
+                text: 'أخري',
+              ) //more
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget leadingTitle() {
-    return const Text(
+    return Text(
       'إستشرني',
-      style: TextStyle(
-          color: ColorManager.myBlue,
-          fontWeight: FontWeightManager.bold,
-          fontFamily: FontConst.fontFamily,
-          fontSize: 22),
+      style: Theme.of(context).textTheme.bodyText1,
     );
   }
 
@@ -116,7 +117,10 @@ class _UserLayoutState extends State<UserLayout> {
       ),
       IconButton(
         onPressed: () {},
-        icon: const FaIcon(FontAwesomeIcons.image, color: ColorManager.myBlack),
+        icon: const FaIcon(
+          FontAwesomeIcons.image,
+          color: ColorManager.myGrey,
+        ),
       ),
     ];
   }

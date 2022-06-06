@@ -14,15 +14,9 @@ Widget buildCustomText(
         Color? color,
         double? size,
         String? fontFamily,
-        FontWeight? fontWight}) =>
-    Text(
-      text,
-      style: TextStyle(
-          color: color,
-          fontSize: size,
-          fontFamily: fontFamily,
-          fontWeight: fontWight),
-    );
+        FontWeight? fontWight,
+        TextStyle? style}) =>
+    Text(text, style: style);
 
 Widget mostImportantItem({
   Function()? ontap,

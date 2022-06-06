@@ -56,7 +56,6 @@ ThemeData darkTheme = ThemeData(
       statusBarIconBrightness: Brightness.light,
     ),
     backgroundColor: backGroundDark,
-
     elevation: 0.0,
   ),
   textTheme: TextTheme(
