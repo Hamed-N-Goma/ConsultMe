@@ -183,7 +183,8 @@ class SignUpCubit extends Cubit<SignUpStates> {
         phone: phone,
         uid: uid,
         userType: "user",
-        image: "image");
+        image:
+            "https://t4.ftcdn.net/jpg/02/14/34/09/360_F_214340987_iYuLVLrP61oepILx6yiUTOO7xsdvmX9K.jpg");
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)

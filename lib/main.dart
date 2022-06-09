@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Bloc/login/cubit.dart';
+import 'Bloc/user/cubit/userlayoutcubit_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
                 ThemeCubit()..changeTheme(fromShared: isDark),
           ),
           BlocProvider(create: (BuildContext context) => LoginCubit()),
+          BlocProvider(
+              create: (BuildContext context) =>
+                  UserLayoutCubit()..GetUserInfo())
         ],
         child: BlocListener<LoginCubit, LoginStates>(
           listener: (context, state) {},
