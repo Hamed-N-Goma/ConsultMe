@@ -134,9 +134,10 @@ class _UserLayoutState extends State<UserLayout> {
         },
         child: CircleAvatar(
           backgroundImage: image == null
-              ? const AssetImage("assets/images/user.png") as ImageProvider
+              ? const AssetImage("assets/images/user.png",) as ImageProvider
               : NetworkImage(image),
           radius: 15,
+          
         ),
       )
     ];
