@@ -83,6 +83,11 @@ class LoginCubit extends Cubit<LoginStates> {
             checkIsConsultantVirefied(uid: uid);
           }
           break;
+        case 'admin':
+          {
+            emit(AdminAuthFoundedSuccess(uid));
+          }
+          break;
         default:
       }
     }).catchError((error) {
@@ -99,7 +104,7 @@ class LoginCubit extends Cubit<LoginStates> {
       switch (documentSnapshot.get('accept')) {
         case true:
           {
-            emit(ConsultantVeryfied());
+            emit(ConsultantVeryfied(uid));
           }
           break;
         case false:
@@ -116,27 +121,4 @@ class LoginCubit extends Cubit<LoginStates> {
 
   // late LoginModel loginModel;
 
-  void userLogin({
-    required int id,
-    required String password,
-  }) {
-    emit(LoginLoadingStates());
-
-    /* DioHelper.postData(
-      url: USERS_LOGIN,
-      data: {
-        'id': id,
-        'password': password,
-      },
-    ).then((value) {
-      // print(value!.data);
-      //loginModel = LoginModel.fromJson(value!.data);
-      //emit(LoginSuccessStates(loginModel));
-    },
-    ).catchError((error) {
-      print(error.toString());
-      emit(LoginErrorStates(error.toString()));
-    });
-  }*/
-  }
 }

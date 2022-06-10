@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../Bloc/adminBloc/cubit/admin_cubit.dart';
+import '../Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import '../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import '../presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import '../shard/style/iconly_broken.dart';
@@ -424,5 +426,408 @@ Widget defaultButton2({
           bottomRight: Radius.circular(8.0),
         ),
         color: btnColor,
+      ),
+    );
+
+Widget defaultButton({
+  double? width,
+  double? height,
+  double? radius = 8.0,
+  double? fontSize,
+  EdgeInsets? marginSize,
+  required VoidCallback function,
+  required String text,
+  required Color btnColor,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      margin: marginSize,
+      child: MaterialButton(
+        onPressed: function,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: fontSize,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          radius!,
+        ),
+        color: btnColor,
+      ),
+    );
+
+Widget waitingDialog({required context}) => AlertDialog(
+      backgroundColor:
+          ThemeCubit.get(context).darkTheme ? mainColors : Colors.white,
+      contentPadding: EdgeInsets.zero,
+      content: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color:
+                  ThemeCubit.get(context).darkTheme ? mainColors : Colors.white,
+            ),
+            height: 120.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                Text(
+                  'برجاء الأنتظار ...',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ],
+            )),
+      ),
+    );
+Widget dashTextFormField({
+  required TextEditingController controller,
+  required TextInputType type,
+  required String hint,
+  required context,
+}) =>
+    Container(
+      width: double.infinity,
+      height: 45.0,
+      decoration: BoxDecoration(
+        color:
+            ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
+        borderRadius: BorderRadius.circular(
+          8.0,
+        ),
+        border: Border.all(color: Colors.grey, width: 1),
+      ),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: type,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hint,
+          hintStyle: Theme.of(context).textTheme.bodyText1,
+          contentPadding: const EdgeInsetsDirectional.all(5.0),
+        ),
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+    );
+
+Widget whiteBoard(
+  context, {
+  double? height = 250.0,
+  int? maxLine = 10,
+  String? hint = '',
+  TextEditingController? controller,
+}) =>
+    Container(
+      width: double.infinity,
+      height: height,
+      decoration: BoxDecoration(
+        color:
+            ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: ThemeCubit.get(context).darkTheme
+                ? Colors.black.withOpacity(0.5)
+                : Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: TextFormField(
+          controller: controller,
+          scrollPhysics: const BouncingScrollPhysics(),
+          cursorColor:
+              ThemeCubit.get(context).darkTheme ? mainTextColor : mainColors,
+          maxLines: maxLine,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: hint,
+            hintStyle: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+      ),
+    );
+Widget defaultTitleBox({
+  required String img,
+  required String title,
+}) =>
+    Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: boxColor,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      height: 88.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: SvgPicture.asset(
+              img,
+              width: 68.0,
+              height: 68.0,
+            ),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              color: finesColor,
+              fontSize: 20.0,
+            ),
+          ),
+        ],
+      ),
+    );
+AppBar defaultAppBar({
+  required BuildContext context,
+  double? titleSpacing = 12.0,
+  bool? showBus = false,
+  bool? pop = true,
+  bool? bookingDone = false,
+  Widget? popToScreen,
+  Object? state,
+}) =>
+    AppBar(
+        titleSpacing: titleSpacing,
+        automaticallyImplyLeading: false,
+        actions: [
+          if (showBus == true)
+            Container(
+              padding: const EdgeInsets.all(0.0),
+              width: 30.0,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: SvgPicture.asset(
+                  'assets/icon/bus.svg',
+                  width: 18.0,
+                  height: 18.0,
+                ),
+                onPressed: () {
+                  // navigateTo(context, const BusScreen());
+                },
+              ),
+            ),
+          Container(
+            padding: const EdgeInsets.all(0.0),
+            width: 30.0,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.person_outline,
+                color: ThemeCubit.get(context).darkTheme
+                    ? mainTextColor
+                    : mainColors,
+              ),
+              onPressed: () {
+                //AppCubit.get(context).getReviews();
+                // if(AppCubit.get(context).profileModel!.isresident){
+                //  navigateTo(context, const ProfileScreen());
+                //  }else{
+                // navigateTo(context,  EditProfileScreen());
+                //   }
+              },
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(0.0),
+            width: 30.0,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Icon(
+                    IconBroken.Notification,
+                    color: ThemeCubit.get(context).darkTheme
+                        ? mainTextColor
+                        : mainColors,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0, left: 4.0),
+                    child: SvgPicture.asset('assets/icon/dot.svg'),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                // navigateTo(context, const NotificationsScreen());
+              },
+            ),
+          ),
+          if (pop == true)
+            Container(
+              padding: const EdgeInsets.all(0.0),
+              width: 30.0,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  IconBroken.Arrow___Left_2,
+                  color: ThemeCubit.get(context).darkTheme
+                      ? mainTextColor
+                      : mainColors,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          if (bookingDone == true)
+            InkWell(
+              onTap: () {
+                //navigateTo(context, HomeScreen());
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: SvgPicture.asset(
+                  'assets/images/back_arrow.svg',
+                  color: ThemeCubit.get(context).darkTheme
+                      ? mainTextColor
+                      : mainColors,
+                ),
+              ),
+            ),
+          const SizedBox(
+            width: 6.0,
+          ),
+        ],
+        title: Text(
+          'أهلا , ${ConsultantCubit.get(context).consultantModel != null ? ConsultantCubit.get(context).consultantModel!.uid : 'xxxxxxxx'}',
+          style: Theme.of(context).textTheme.headline6,
+        ));
+
+Widget switchedTextFormField({
+  required context,
+  required AdminCubit cubit,
+  required controller,
+  bool center = true,
+  TextInputType type = TextInputType.text,
+  int flex = 1,
+}) =>
+    Expanded(
+      flex: flex,
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+          hintStyle: Theme.of(context).textTheme.bodyText1,
+        ),
+        readOnly: cubit.showEdit == true ||
+                cubit.showStudentEdit == true ||
+                cubit.showWaitingStudentEdit == true
+            ? false
+            : true,
+        enableInteractiveSelection: cubit.showEdit == true ||
+                cubit.showStudentEdit == true ||
+                cubit.showWaitingStudentEdit == true
+            ? true
+            : false,
+        style: Theme.of(context).textTheme.bodyText1,
+        textAlign: center ? TextAlign.center : TextAlign.start,
+        keyboardType: type,
+      ),
+    );
+
+Widget smallDashBoardTitleBox({
+  String? img,
+  required String title,
+  bool? svg = false,
+  String? svgImage,
+}) =>
+    Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: mainColors,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      height: 50.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: svg == false
+                ? Image.asset(
+                    img!,
+                    width: 30.0,
+                    height: 30.0,
+                  )
+                : SvgPicture.asset(
+                    svgImage!,
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+          ),
+          const SizedBox(
+            width: 16.0,
+          ),
+          Text(title,
+              style: TextStyle(
+                color: finesColor,
+                fontSize: 18.0,
+              ),
+              textAlign: TextAlign.center),
+        ],
+      ),
+    );
+
+Widget dashWhiteBoard(
+  context, {
+  double? height = 200.0,
+  int? maxLine = 8,
+  required String text,
+}) =>
+    Container(
+      width: double.infinity,
+      height: height,
+      decoration: BoxDecoration(
+        color:
+            ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: ThemeCubit.get(context).darkTheme
+                ? Colors.black.withOpacity(0.5)
+                : Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(5, 5), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Text(
+            text,
+            maxLines: maxLine,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
       ),
     );

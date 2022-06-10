@@ -1,4 +1,3 @@
-import 'package:consultme/presentation_layer/consultant/consultantScreen.dart';
 import 'package:consultme/presentation_layer/signup/signup.dart';
 import 'package:consultme/presentation_layer/user/user_layout/home_user_layout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +11,8 @@ import '../../components/components.dart';
 import '../../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import '../../Bloc/login/cubit.dart';
 import '../../Bloc/login/states.dart';
+import '../admin/admin_home_screen.dart';
+import '../consultant/consultant_home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   // late LoginModel loginModel;
@@ -31,7 +32,26 @@ class LoginScreen extends StatelessWidget {
           if (state is UserAuthFoundedSuccess) {
             navigateAndFinish(context, UserLayout());
           } else if (state is ConsultantVeryfied) {
-            navigateAndFinish(context, ConsultantScreen());
+            CacheHelper.saveData(
+              key: 'uId',
+              value: state.uId,
+            ).then((value) {
+              print(state.uId.toString());
+              navigateAndFinish(
+                context,
+                ConsultantHomeScreen(),
+              );
+            });
+          } else if (state is AdminAuthFoundedSuccess) {
+            CacheHelper.saveData(
+              key: 'uId',
+              value: state.uId,
+            ).then((value) {
+              navigateAndFinish(
+                context,
+                AdminHomeScreen(),
+              );
+            });
           } else if (state is ConsultantNotVeryfied) {
             showToast(
                 message:

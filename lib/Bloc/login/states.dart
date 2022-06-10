@@ -16,6 +16,12 @@ class LoginIsNotAuth extends LoginStates {
 
 class UserAuthFoundedSuccess extends LoginStates {}
 
+class AdminAuthFoundedSuccess extends LoginStates {
+  final String uId;
+
+  AdminAuthFoundedSuccess(this.uId);
+}
+
 class ConsultantAuthFoundedSuccess extends LoginStates {}
 
 class ErrorWithCheck extends LoginStates {
@@ -24,7 +30,11 @@ class ErrorWithCheck extends LoginStates {
   ErrorWithCheck(this.errorWithCheck);
 }
 
-class ConsultantVeryfied extends LoginStates {}
+class ConsultantVeryfied extends LoginStates {
+  final String uId;
+
+  ConsultantVeryfied(this.uId);
+}
 
 class ConsultantNotVeryfied extends LoginStates {}
 

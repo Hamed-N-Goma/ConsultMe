@@ -25,6 +25,7 @@ class ConsultantModel {
   });
 
   ConsultantModel.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
