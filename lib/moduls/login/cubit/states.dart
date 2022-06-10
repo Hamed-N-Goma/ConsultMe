@@ -1,3 +1,4 @@
+
 abstract class LoginStates {}
 
 class LoginInitialStates extends LoginStates {}
@@ -14,15 +15,21 @@ class LoginIsNotAuth extends LoginStates {
   LoginIsNotAuth(this.error);
 }
 
-class UserAuthFoundedSuccess extends LoginStates {}
+class UserAuthFoundedSuccess extends LoginStates {
+
+  UserAuthFoundedSuccess();
+}
+
+class ConsultantAuthFoundedSuccess extends LoginStates {
+
+  ConsultantAuthFoundedSuccess();
+}
 
 class AdminAuthFoundedSuccess extends LoginStates {
   final String uId;
 
   AdminAuthFoundedSuccess(this.uId);
 }
-
-class ConsultantAuthFoundedSuccess extends LoginStates {}
 
 class ErrorWithCheck extends LoginStates {
   final errorWithCheck;
@@ -31,6 +38,7 @@ class ErrorWithCheck extends LoginStates {
 }
 
 class ConsultantVeryfied extends LoginStates {
+
   final String uId;
 
   ConsultantVeryfied(this.uId);
@@ -44,11 +52,10 @@ class ErrorWithCheckVreifcation extends LoginStates {
   ErrorWithCheckVreifcation(this.errorWithCheckVreifcation);
 }
 
+
 class LoginLoadingStates extends LoginStates {}
 
 class LoginRotationPeriodState extends LoginStates {}
-
-class LoginFieldsEmpty extends LoginStates {}
 
 class ChangePasswordVisibilityState extends LoginStates {}
 
@@ -63,3 +70,4 @@ class LoginErrorStates extends LoginStates {
 
   LoginErrorStates(this.error);
 }
+

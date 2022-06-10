@@ -1,10 +1,10 @@
 class ConsultantModel {
-  late String uid;
-  late String name;
-  late String email;
-  late String phone;
-  late String userType;
-  late bool accept;
+   String? uid;
+   String? name;
+   String? email;
+   String? phone;
+   String? userType;
+   bool? accept;
   String? department;
   String? speachalist;
   String? yearsofExperience;
@@ -24,17 +24,18 @@ class ConsultantModel {
     this.imageOfCertificate,
   });
 
-  ConsultantModel.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    userType = json['userType'];
-    department = json['department'];
-    speachalist = json['speachalist'];
-    yearsofExperience = json['yearsofExperience'];
-    image = json['image'];
-    imageOfCertificate = json['imageOfCertificate'];
+  ConsultantModel.fromJson(Map<String, dynamic>? json) {
+    uid = json?['uid'];
+    name = json?['name'];
+    email = json?['email'];
+    phone = json?['phone'];
+    userType = json?['userType'];
+    department = json?['department'];
+    speachalist = json?['speachalist'];
+    yearsofExperience = json?['yearsofExperience'];
+    image = json?['image'];
+    imageOfCertificate = json?['imageOfCertificate'];
+    accept = json?["accept"];
   }
 
   Map<String, dynamic> toMap() {
@@ -49,7 +50,7 @@ class ConsultantModel {
       "yearsofExperience": yearsofExperience,
       "image": image,
       "imageOfCertificate": imageOfCertificate,
-      'accept': accept
+      "accept" : accept ,
     };
   }
 }

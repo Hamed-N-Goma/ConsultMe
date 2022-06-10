@@ -1,22 +1,14 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:consultme/Bloc/user/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
-import 'package:consultme/presentation_layer/user/widget/category.dart';
-import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
-import 'package:consultme/presentation_layer/user/widget/toprated.dart';
-import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 import '../screens/profile.dart';

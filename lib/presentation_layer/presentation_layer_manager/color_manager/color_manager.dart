@@ -9,6 +9,8 @@ class ColorManager {
   static const Color myWhite = Color(0xffFFFFFF);
 }
 
+// Light theme
+
 Color backGround = HexColor('#F1F5F9');
 
 Color mainColors = HexColor('#00264D');
@@ -25,7 +27,7 @@ Color evaluation = HexColor('#BFC5CC');
 
 Color warning = HexColor('#FD003A');
 
-var baseColor = Colors.black45;
+var baseColor =  Colors.black45;
 
 var highlightColor = Colors.grey;
 
@@ -36,3 +38,5 @@ Color backGroundDark = HexColor('#010816');
 Color mainTextColor = HexColor('#F1F5F9');
 
 Color finesColorDark = HexColor('#041636');
+
+

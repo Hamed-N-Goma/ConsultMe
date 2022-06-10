@@ -50,8 +50,5 @@ class signUpSuccessStates extends SignUpStates {
   // signUpSuccessStates(this.loginModel);
 }
 
-class signUpErrorStates extends SignUpStates {
-  final String error;
-
-  signUpErrorStates(this.error);
-}
+class signUpErrorStates extends SignUpStates {}
+class CreatePostErrorState extends SignUpStates {}

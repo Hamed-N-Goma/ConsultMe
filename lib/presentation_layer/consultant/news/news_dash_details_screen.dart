@@ -6,16 +6,18 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class NewsDashDetailsScreen extends StatelessWidget {
-  PostModel model;
-  NewsDashDetailsScreen({Key? key, required this.model}) : super(key: key);
+
+   PostModel model;
+   NewsDashDetailsScreen({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
-      listener: (context, state) {},
+      listener: (context,state){},
       builder: (BuildContext context, Object? state) {
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -26,27 +28,25 @@ class NewsDashDetailsScreen extends StatelessWidget {
                 children: [
                   Stack(
                     alignment: Alignment.bottomCenter,
-                    children: [
+                    children:  [
                       Stack(
                         alignment: Alignment.topLeft,
-                        children: [
+                        children:  [
+
                           CachedNetworkImage(
                             imageUrl: '${model.postImage}',
-                            placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) => Container(
-                              alignment: Alignment.center,
-                              height: 200.0,
-                              child: Icon(
-                                Icons.error,
-                                color: ThemeCubit.get(context).darkTheme
-                                    ? mainTextColor
-                                    : mainColors,
-                              ),
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>  Container(
+                                alignment: Alignment.center,
+                                height: 200.0,
+                                child: Icon(Icons.error,
+                                  color: ThemeCubit.get(context).darkTheme
+                                      ? mainTextColor
+                                      : mainColors,),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 42, left: 18),
+                            padding: const EdgeInsets.only(top: 42,left: 18),
                             child: InkWell(
                               child: Stack(
                                 alignment: Alignment.center,
@@ -55,8 +55,7 @@ class NewsDashDetailsScreen extends StatelessWidget {
                                     radius: 14.0,
                                     backgroundColor: backGround,
                                   ),
-                                  SvgPicture.asset(
-                                      'assets/images/back_arrow.svg'),
+                                  SvgPicture.asset('assets/images/back_arrow.svg'),
                                 ],
                               ),
                               onTap: () {
@@ -73,19 +72,15 @@ class NewsDashDetailsScreen extends StatelessWidget {
                             height: 20.0,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(32.0),
+                                topLeft:  Radius.circular(32.0),
                                 topRight: Radius.circular(32.0),
                               ),
-                              color: ThemeCubit.get(context).darkTheme
-                                  ? backGroundDark
-                                  : backGround,
+                              color: ThemeCubit.get(context).darkTheme? backGroundDark : backGround,
                             ),
                           ),
                           Container(
                             height: 5.0,
-                            color: ThemeCubit.get(context).darkTheme
-                                ? backGroundDark
-                                : backGround,
+                            color: ThemeCubit.get(context).darkTheme? backGroundDark : backGround,
                           ),
                         ],
                       ),
@@ -95,22 +90,19 @@ class NewsDashDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       '${model.name}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 18.0,
-                  ),
+                  const SizedBox(height: 18.0,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       '${model.text}',
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontSize: 14.0,
-                          ),
+                        fontSize: 14.0,
+                      ),
                     ),
                   ),
                 ],
@@ -122,3 +114,5 @@ class NewsDashDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+

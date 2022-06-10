@@ -1,6 +1,5 @@
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -109,7 +108,7 @@ class Toprated extends StatelessWidget {
           height: 8,
         ),
         Text(
-          consultant.name,
+          '${consultant.name}',
           style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(

@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultme/Bloc/login/states.dart';
+import 'package:consultme/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:consultme/shard/network/end_point.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:consultme/moduls/login/cubit/states.dart';
+import 'package:consultme/shard/network/end_point.dart';
+import 'package:consultme/shard/network/remote/dio_helper.dart';
 
-class LoginCubit extends Cubit<LoginStates> {
+class LoginCubit extends Cubit<LoginStates>{
+
   LoginCubit() : super(LoginInitialStates());
 
   static LoginCubit get(context) => BlocProvider.of(context);
@@ -17,8 +20,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   void changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix =
-        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    suffix = isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(ChangePasswordVisibilityState());
   }
@@ -29,38 +31,33 @@ class LoginCubit extends Cubit<LoginStates> {
   void rotationPeriod() async {
     Timer(const Duration(milliseconds: 2000), () {
       buttonController.stop();
-      print("fields empty");
       emit(LoginRotationPeriodState());
     });
   }
 
-  void fieldsisEmpty() {
-    buttonController.stop();
-    emit(LoginFieldsEmpty());
-  }
 
 /////
   ///Login auth creation
   void login({required email, required password}) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
+      email: email,
+      password: password,
+    )
         .then((reuslt) => {
-              emit(
-                LoginIsAuth(reuslt),
-              ),
-              checkIsUser(
-                uid: reuslt.user!.uid,
-              ),
-            })
+      emit(
+        LoginIsAuth(reuslt),
+      ),
+      checkIsUser(
+        uid: reuslt.user!.uid,
+      ),
+    })
         .catchError((error) {
-      print(error.toString());
-
       emit(LoginIsNotAuth(error));
     });
   }
+
+
 
   ////
   ///check if user of consultent
@@ -118,7 +115,29 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(ErrorWithCheckVreifcation(virifvaionError));
     });
   }
+ // late LoginModel loginModel;
 
-  // late LoginModel loginModel;
+  void userLogin({
+    required int id,
+    required String password,
+  }) {
+    emit(LoginLoadingStates());
+
+    DioHelper.postData(
+      url: USERS_LOGIN,
+      data: {
+        'id': id,
+        'password': password,
+      },
+    ).then((value) {
+      // print(value!.data);
+      //loginModel = LoginModel.fromJson(value!.data);
+      //emit(LoginSuccessStates(loginModel));
+    },
+    ).catchError((error) {
+      print(error.toString());
+      emit(LoginErrorStates(error.toString()));
+    });
+  }
 
 }

@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 class FontConst {
   static const String fontFamily = "Almarai";
-  static const String cairosemibold = 'cairo_semiBold';
-  static const String iconlybroken = 'Iconly-Broken';
 }
 
 class FontWeightManager {

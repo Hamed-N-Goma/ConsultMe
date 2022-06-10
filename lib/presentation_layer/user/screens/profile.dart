@@ -1,11 +1,11 @@
-import 'package:consultme/Bloc/user/cubit/userlayoutcubit_cubit.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/usermodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/edit_profile.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Profile extends StatelessWidget {
@@ -13,14 +13,13 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? usermodel;
 
     BlocListener<UserLayoutCubit, UserLayoutState>(
         listener: (context, state) {});
 
     return BlocBuilder<UserLayoutCubit, UserLayoutState>(
       builder: (context, state) {
-        usermodel = UserLayoutCubit.get(context).userModel;
+        var cubit = UserLayoutCubit.get(context);
 
         return Directionality(
           textDirection: TextDirection.rtl,
@@ -32,7 +31,7 @@ class Profile extends StatelessWidget {
                 elevation: 5,
               ),
               body: ConditionalBuilder(
-                builder: (context) => profileWidget(context, usermodel),
+                builder: (context) => profileWidget(context, cubit.userModel),
                 condition: state != ErrorWithGetUserData,
                 fallback: (context) => const Center(
                   child: CircularProgressIndicator(),
@@ -82,19 +81,14 @@ class Profile extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          OutlineButton(
-            onPressed: () {
+          defaultButton(
+            function: () {
               navigateTo(context, EditProfile());
             },
-            child: Text(
-              'تعديل الملف الشخصي',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            borderSide: BorderSide(
-              color:
-                  ThemeCubit.get(context).darkTheme ? Colors.white : mainColors,
-            ),
-          )
+            text: 'تعديل الملف الشخصي',
+            btnColor: mainColors,
+            width: double.infinity,
+          ),
         ],
       ),
     );

@@ -52,5 +52,3 @@ const POST_STUDENT = 'users/createUsers';
 
 const VOUCHERS = 'orders/voucher';
 
-
-

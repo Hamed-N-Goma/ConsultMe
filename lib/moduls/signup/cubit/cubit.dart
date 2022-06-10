@@ -2,17 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultme/Bloc/signup/signupstates.dart';
-import 'package:consultme/models/consultantmodel.dart';
-import 'package:consultme/models/usermodel.dart';
+import 'package:consultme/models/ConsultantModel.dart';
+import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/moduls/signup/cubit/states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:consultme/shard/network/end_point.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-import '../../presentation_layer/signup/signup.dart';
 
 class SignUpCubit extends Cubit<SignUpStates> {
   SignUpCubit() : super(signUpInitialStates());
@@ -25,7 +24,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
   void changePasswordVisibility() {
     isPassword = !isPassword;
     suffix =
-        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(ChangePasswordVisibilityStates());
   }
@@ -74,7 +73,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
   var picker = ImagePicker();
 
   // building image
-  File? buildingImage;
+  File? certificateImage;
 
   Future<void> pikeBuildingImage() async {
     final pickedFile = await picker
@@ -82,13 +81,13 @@ class SignUpCubit extends Cubit<SignUpStates> {
       source: ImageSource.gallery,
     )
         .then((value) {
-      buildingImage = File(value!.path);
+      certificateImage = File(value!.path);
       emit(imagePickedSuccessState());
     });
   }
 
   Future<void> removePikeImage() async {
-    buildingImage = null;
+    certificateImage = null;
     emit(imageRemoveSuccessState());
   }
 
@@ -113,27 +112,27 @@ class SignUpCubit extends Cubit<SignUpStates> {
   ///authantication
   void auth(
       {required email,
-      required password,
-      required phone,
-      required name,
-      department,
-      speachalist,
-      yearsofExperience}) {
+        required password,
+        required phone,
+        required name,
+        department,
+        speachalist,
+        yearsofExperience}) {
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((userData) => {
-              emit(
-                SignupSucsses(userData),
-              ),
-              emailCreation(
-                  email: email,
-                  uid: userData.user!.uid,
-                  phone: phone,
-                  name: name,
-                  department: department,
-                  speachalist: speachalist,
-                  yearsofExperience: yearsofExperience)
-            })
+      emit(
+        SignupSucsses(userData),
+      ),
+      emailCreation(
+          email: email,
+          uid: userData.user!.uid,
+          phone: phone,
+          name: name,
+          department: department,
+          speachalist: speachalist,
+          yearsofExperience: yearsofExperience)
+    })
         .catchError((error) {
       emit(ErrorWithSignup(error));
       print(onError.toString());
@@ -145,25 +144,41 @@ class SignUpCubit extends Cubit<SignUpStates> {
 
   void emailCreation(
       {required email,
-      required uid,
-      required phone,
-      required name,
-      department,
-      speachalist,
-      yearsofExperience}) {
+        required uid,
+        required phone,
+        required name,
+        department,
+        speachalist,
+        yearsofExperience}) {
     switch (isConsultant) {
       case true:
         createUser(uid: uid, email: email, phone: phone, name: name);
         break;
       case false:
-        createConsultant(
-            uid: uid,
-            name: name,
-            phone: phone,
-            email: email,
-            deapartment: department,
-            spechalist: speachalist,
-            yearsOfExperiance: yearsofExperience);
+        {
+
+          firebase_storage.FirebaseStorage.instance
+              .ref()
+              .child('users/${Uri.file(certificateImage!.path).pathSegments.last}')
+              .putFile(certificateImage!)
+              .then((value) {
+            value.ref.getDownloadURL().then((value) {
+              print(value);
+              createConsultant(
+                uid: uid,
+                name: name,
+                phone: phone,
+                email: email,
+                deapartment: department,
+                spechalist: speachalist,
+                yearsOfExperiance: yearsofExperience,
+                imageOfCertificate : value,
+              );
+            }).catchError((error) {
+            });
+          }).catchError((error) {
+          });
+        }
         break;
       default:
     }
@@ -183,17 +198,16 @@ class SignUpCubit extends Cubit<SignUpStates> {
         phone: phone,
         uid: uid,
         userType: "user",
-        image:
-            "https://t4.ftcdn.net/jpg/02/14/34/09/360_F_214340987_iYuLVLrP61oepILx6yiUTOO7xsdvmX9K.jpg");
+        image: "image");
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .set(usermodel.toMap())
         .then((result) => {
-              emit(
-                UserCreatedSucsess(),
-              ),
-            })
+      emit(
+        UserCreatedSucsess(),
+      ),
+    })
         .catchError((error) {
       print("error is here");
 
@@ -207,12 +221,13 @@ class SignUpCubit extends Cubit<SignUpStates> {
 
   void createConsultant(
       {required uid,
-      required name,
-      required email,
-      required phone,
-      required deapartment,
-      required spechalist,
-      required yearsOfExperiance}) {
+        required name,
+        required email,
+        required phone,
+        required deapartment,
+        required spechalist,
+        required yearsOfExperiance,
+        required imageOfCertificate}) {
     ConsultantModel consultantModel = ConsultantModel(
       name: name,
       email: email,
@@ -223,17 +238,18 @@ class SignUpCubit extends Cubit<SignUpStates> {
       department: deapartment,
       speachalist: spechalist,
       yearsofExperience: yearsOfExperiance,
+      imageOfCertificate : imageOfCertificate,
     );
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .set(consultantModel.toMap())
         .then((value) => {
-              print('consultant created '),
-              emit(
-                ConsultentCreatedSucsess(),
-              ),
-            })
+      print('consultant created '),
+      emit(
+        ConsultentCreatedSucsess(),
+      ),
+    })
         .catchError((error) {
       emit(
         ConsultantCreatedError(error),
@@ -241,6 +257,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
     });
   }
 }
+
 
 class SelectDept {
   late String name;

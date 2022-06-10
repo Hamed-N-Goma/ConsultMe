@@ -1,6 +1,8 @@
-import 'package:consultme/presentation_layer/signup/signup.dart';
+import 'package:consultme/const.dart';
+import 'package:consultme/moduls/signup/signup.dart';
+import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
+import 'package:consultme/presentation_layer/consultant/consultant_home_screen.dart';
 import 'package:consultme/presentation_layer/user/user_layout/home_user_layout.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,10 +11,8 @@ import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import '../../components/components.dart';
 import '../../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import '../../Bloc/login/cubit.dart';
-import '../../Bloc/login/states.dart';
-import '../admin/admin_home_screen.dart';
-import '../consultant/consultant_home_screen.dart';
+import 'cubit/cubit.dart';
+import 'cubit/states.dart';
 
 class LoginScreen extends StatelessWidget {
   // late LoginModel loginModel;
@@ -31,41 +31,41 @@ class LoginScreen extends StatelessWidget {
         listener: (BuildContext context, state) async {
           if (state is UserAuthFoundedSuccess) {
             navigateAndFinish(context, UserLayout());
-          } else if (state is ConsultantVeryfied) {
-            CacheHelper.saveData(
-              key: 'uId',
-              value: state.uId,
-            ).then((value) {
-              print(state.uId.toString());
-              navigateAndFinish(
-                context,
-                ConsultantHomeScreen(),
-              );
-            });
           } else if (state is AdminAuthFoundedSuccess) {
+
             CacheHelper.saveData(
               key: 'uId',
               value: state.uId,
-            ).then((value) {
+            ).then((value)
+            {
               navigateAndFinish(
                 context,
                 AdminHomeScreen(),
               );
             });
+
+          }else if (state is ConsultantVeryfied) {
+
+              CacheHelper.saveData(
+                key: 'uId',
+                value: state.uId,
+              ).then((value)
+              {
+                navigateAndFinish(
+                  context,
+                  ConsultantHomeScreen(),
+                );
+              });
+
           } else if (state is ConsultantNotVeryfied) {
             showToast(
                 message:
-                    ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
+                ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
                 state: ToastStates.WARNING);
-            LoginCubit.get(context).loginbutton.stop();
-          } else if (state is LoginIsNotAuth) {
-            showToast(
-                message: ' الرجاء التأكد من البريد الالكتروني والرقم السري ',
-                state: ToastStates.ERROR);
             LoginCubit.get(context).loginbutton.stop();
           }
         },
-        builder: (BuildContext context, state) {
+        builder: (BuildContext context, Object? state) {
           var cubit = LoginCubit.get(context);
           return Directionality(
             textDirection: TextDirection.rtl,
@@ -74,13 +74,13 @@ class LoginScreen extends StatelessWidget {
                 body: WillPopScope(
                   onWillPop: () async {
                     final difference =
-                        DateTime.now().difference(timeBackPressed);
+                    DateTime.now().difference(timeBackPressed);
                     final isExitWarning =
                         difference >= const Duration(seconds: 2);
                     timeBackPressed = DateTime.now();
                     if (isExitWarning) {
                       showToast(
-                          message: 'أعد مرة أخرى للخروج من البرنامج',
+                          message: 'اضغط مرة أخرى للخروج من البرنامج',
                           state: ToastStates.WARNING);
                       return false;
                     } else {
@@ -95,25 +95,25 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 14.0),
+                            const EdgeInsets.symmetric(horizontal: 14.0),
                             child: Align(
                               alignment: AlignmentDirectional.topStart,
                               child: ThemeCubit.get(context).darkTheme
                                   ? Image.asset(
-                                      'assets/images/logo_dark.png',
-                                      width: 71.0,
-                                      height: 71.0,
-                                    )
+                                'assets/images/logo_dark.png',
+                                width: 71.0,
+                                height: 71.0,
+                              )
                                   : Image.asset(
-                                      'assets/images/logo.png',
-                                      width: 71.0,
-                                      height: 71.0,
-                                    ),
+                                'assets/images/logo.png',
+                                width: 71.0,
+                                height: 71.0,
+                              ),
                             ),
                           ),
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 28.0),
+                            const EdgeInsets.symmetric(horizontal: 28.0),
                             child: Column(
                               children: [
                                 Align(
