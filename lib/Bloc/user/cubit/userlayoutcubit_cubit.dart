@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
@@ -17,6 +18,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   static UserLayoutCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
+  List<ConsultantModel> conslutants = [];
 
   void GetUserInfo() {
     emit(GetDataLoading());
@@ -119,5 +121,23 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         emit(ErrorWithUpdateUser());
       });
     }
+  }
+
+  void getConsultants() async {
+    CollectionReference consultant =
+        FirebaseFirestore.instance.collection('users');
+    await consultant.where('userType', isEqualTo: 'Consultant').get().then(
+          (consultant) => {
+            conslutants = consultant.docs
+                .map((e) =>
+                    ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
+                .toList(),
+            emit(GitConsultantsDataSucsess(conslutants)),
+            consultant.docs.forEach((element) {
+              print(element.data());
+              print("++++============================");
+            })
+          },
+        );
   }
 }

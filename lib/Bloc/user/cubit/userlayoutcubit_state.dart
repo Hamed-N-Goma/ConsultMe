@@ -24,3 +24,9 @@ class LoadingUpdateUseInfo extends UserLayoutState {}
 class ErrorWithUpdateUser extends UserLayoutState {}
 
 class UpdateUserInfoScusses extends UserLayoutState {}
+
+class GitConsultantsDataSucsess extends UserLayoutState {
+  final List<ConsultantModel> consultants;
+
+  GitConsultantsDataSucsess(this.consultants);
+}

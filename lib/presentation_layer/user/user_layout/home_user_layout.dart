@@ -29,8 +29,14 @@ class UserLayout extends StatefulWidget {
 }
 
 class _UserLayoutState extends State<UserLayout> {
-  List<Widget> screens = [const Home(), const Search(), Chat(), More()];
+  List<Widget> screens = [Home(), const Search(), Chat(), More()];
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<UserLayoutCubit>(context).getConsultants();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +140,11 @@ class _UserLayoutState extends State<UserLayout> {
         },
         child: CircleAvatar(
           backgroundImage: image == null
-              ? const AssetImage("assets/images/user.png",) as ImageProvider
+              ? const AssetImage(
+                  "assets/images/user.png",
+                ) as ImageProvider
               : NetworkImage(image),
           radius: 15,
-          
         ),
       )
     ];

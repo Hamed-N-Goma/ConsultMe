@@ -1,21 +1,36 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:consultme/Bloc/user/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/user/screens/view_all_impo_artcle.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';
 import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 import '../../presentation_layer_manager/font_manager/fontmanager.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
+  late List<ConsultantModel> allConsultants;
 
   @override
   Widget build(BuildContext context) {
-    return buildLayout(context);
+    return BlocBuilder<UserLayoutCubit, UserLayoutState>(
+      builder: (context, state) {
+        if (state is GitConsultantsDataSucsess) {
+          allConsultants = state.consultants;
+          return buildLayout(context);
+        } else {
+          return CircularProgressIndicator(
+            color: Theme.of(context).indicatorColor,
+          );
+        }
+      },
+    );
   }
 
   Widget buildLayout(context) {
@@ -108,12 +123,14 @@ class Home extends StatelessWidget {
         scrollDirection: Axis.vertical,
         primary: false,
         shrinkWrap: true,
-        itemBuilder: (context, index) => Toprated(),
+        itemBuilder: (context, index) => Toprated(
+              consultant: allConsultants[index],
+            ),
         separatorBuilder: (context, index) => const Divider(
               thickness: 16,
               color: Colors.transparent,
             ),
-        itemCount: 20);
+        itemCount: allConsultants.length);
   }
 
   Widget buildRowMostImportantText(context) {

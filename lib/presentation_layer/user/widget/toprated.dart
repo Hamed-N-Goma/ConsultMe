@@ -1,3 +1,4 @@
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
@@ -8,7 +9,9 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../const.dart';
 
 class Toprated extends StatelessWidget {
-  const Toprated({Key? key}) : super(key: key);
+  final ConsultantModel consultant;
+
+  Toprated({Key? key, required this.consultant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class Toprated extends StatelessWidget {
           children: [
             consultantImage(),
             const SizedBox(width: 16),
-            consultantDetales(context),
+            consultantDetales(context, consultant),
           ],
         ),
       ),
@@ -62,7 +65,7 @@ class Toprated extends StatelessWidget {
     );
   }
 
-  Widget consultantDetales(context) {
+  Widget consultantDetales(context, allConsultants) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,15 +109,15 @@ class Toprated extends StatelessWidget {
           height: 8,
         ),
         Text(
-          'علي محمد علي',
+          consultant.name,
           style: Theme.of(context).textTheme.bodyText2,
         ),
         const SizedBox(
           height: 10,
         ),
         Text(
-          'دكتور أسنان',
-          style: Theme.of(context).textTheme.bodySmall,
+          consultant.speachalist as String,
+          style: Theme.of(context).textTheme.bodyText2,
         )
       ],
     );
