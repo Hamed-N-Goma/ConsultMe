@@ -358,7 +358,8 @@ Widget defaultFormField(
         String? label,
         String? hint,
         required IconData prefix,
-        Function? suffixPressed,
+        IconData? suffixIcon,
+        void Function()? onPressedsufix,
         bool isClickable = true,
         required context}) =>
     TextFormField(
@@ -382,6 +383,10 @@ Widget defaultFormField(
       cursorColor: mainColors,
       decoration: InputDecoration(
         hintText: hint,
+        suffixIcon: IconButton(
+          icon: Icon(suffixIcon),
+          onPressed: onPressedsufix,
+        ),
         hintStyle: Theme.of(context).textTheme.bodyText1,
         labelText: label,
         labelStyle:

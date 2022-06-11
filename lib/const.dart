@@ -4,5 +4,5 @@ const userLayoutScreen = '/';
 const viewAllImportantArtcle = 'ViewAll';
 const chatDetails = 'ChatDetails';
 
-const profileImageUri = 'https://aawafi.com/uploads/download/doc.jpg';
-
+const profileImageUri =
+    'https://www.phoenixmag.com/wp-content/uploads/2022/03/PHM0422TD07-scaled.jpg';

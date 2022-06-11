@@ -24,9 +24,13 @@ class Home extends StatelessWidget {
         if (state is GitConsultantsDataSucsess) {
           allConsultants = state.consultants;
           return buildLayout(context);
+        } else if (state is ChangeThemeSuccessState) {
+          return buildLayout(context);
         } else {
-          return CircularProgressIndicator(
-            color: Theme.of(context).indicatorColor,
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).indicatorColor,
+            ),
           );
         }
       },

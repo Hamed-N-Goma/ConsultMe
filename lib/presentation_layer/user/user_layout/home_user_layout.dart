@@ -4,6 +4,7 @@ import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
+import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,7 @@ class UserLayout extends StatefulWidget {
 }
 
 class _UserLayoutState extends State<UserLayout> {
-  List<Widget> screens = [Home(), const Search(), Chat(), More()];
+  List<Widget> screens = [Home(), Search(), Chat(), More()];
   int _selectedIndex = 0;
 
   @override
@@ -85,20 +86,20 @@ class _UserLayoutState extends State<UserLayout> {
                 },
                 tabs: const [
                   GButton(
-                    icon: FontAwesomeIcons.houseUser,
+                    icon: IconBroken.Home,
                     text: 'الرئيسية',
                     gap: 8,
                   ), //home
                   GButton(
-                    icon: FontAwesomeIcons.magnifyingGlass,
+                    icon: IconBroken.Search,
                     text: 'بحث',
                   ), //search
                   GButton(
-                    icon: FontAwesomeIcons.comments,
+                    icon: IconBroken.Chat,
                     text: 'الرسائل',
                   ), //chat
                   GButton(
-                    icon: FontAwesomeIcons.listUl,
+                    icon: IconBroken.More_Square,
                     text: 'أخري',
                   ) //more
                 ],

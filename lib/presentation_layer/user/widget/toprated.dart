@@ -67,66 +67,72 @@ class Toprated extends StatelessWidget {
   }
 
   Widget consultantDetales(context, allConsultants) {
-    return Builder(
-      builder: (context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  '4.8',
-                  style: Theme.of(context).textTheme.bodyText1,
+    return Builder(builder: (context) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                '4.8',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const SizedBox(
+                width: 6,
+              ),
+              FaIcon(
+                FontAwesomeIcons.solidStar,
+                color: ColorManager.myYallow,
+                size: 16,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              InkWell(
+                onTap: () {},
+                child: FaIcon(
+                  FontAwesomeIcons.commentDots,
+                  color: ThemeCubit.get(context).darkTheme
+                      ? Theme.of(context).primaryIconTheme.color
+                      : Theme.of(context).iconTheme.color,
                 ),
-                const SizedBox(
-                  width: 6,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  navigateTo(
+                      context,
+                      consultantDetails(
+                        cm: consultant,
+                      ));
+                },
+                child: FaIcon(
+                  FontAwesomeIcons.calendarPlus,
+                  color: ThemeCubit.get(context).darkTheme
+                      ? Theme.of(context).primaryIconTheme.color
+                      : Theme.of(context).iconTheme.color,
                 ),
-                FaIcon(
-                  FontAwesomeIcons.solidStar,
-                  color: ColorManager.myYallow,
-                  size: 16,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: FaIcon(
-                    FontAwesomeIcons.commentDots,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    navigateTo(context, consultantDetails(cm: consultant,));
-                  },
-                  child: FaIcon(
-                    FontAwesomeIcons.calendarPlus,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              '${consultant.name}',
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              consultant.speachalist as String,
-              style: Theme.of(context).textTheme.bodyText2,
-            )
-          ],
-        );
-      }
-    );
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            '${consultant.name}',
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            consultant.speachalist as String,
+            style: Theme.of(context).textTheme.bodyText2,
+          )
+        ],
+      );
+    });
   }
 }
