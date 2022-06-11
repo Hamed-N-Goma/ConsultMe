@@ -17,7 +17,7 @@ import 'shard/style/theme/cubit/states.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  bool? isDark = true;
+  bool? isDark = false;
   await Firebase.initializeApp();
 
   DioHelper.init();

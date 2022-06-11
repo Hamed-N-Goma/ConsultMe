@@ -140,4 +140,12 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           },
         );
   }
+
+  // edit profile screen
+  bool isDark = false;
+
+  void toggleButton() {
+    isDark = !isDark;
+    emit(ChangeThemeSuccessState());
+  }
 }

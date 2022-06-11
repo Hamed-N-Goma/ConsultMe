@@ -30,3 +30,6 @@ class GitConsultantsDataSucsess extends UserLayoutState {
 
   GitConsultantsDataSucsess(this.consultants);
 }
+
+class ChangeThemeSuccessState extends UserLayoutState {}
+

@@ -1,5 +1,7 @@
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/presentation_layer/user/screens/consultantDetails.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,60 +67,66 @@ class Toprated extends StatelessWidget {
   }
 
   Widget consultantDetales(context, allConsultants) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return Builder(
+      builder: (context) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Text(
+                  '4.8',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(
+                  width: 6,
+                ),
+                FaIcon(
+                  FontAwesomeIcons.solidStar,
+                  color: ColorManager.myYallow,
+                  size: 16,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: FaIcon(
+                    FontAwesomeIcons.commentDots,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                InkWell(
+                  onTap: () {
+                    navigateTo(context, consultantDetails(cm: consultant,));
+                  },
+                  child: FaIcon(
+                    FontAwesomeIcons.calendarPlus,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
             Text(
-              '4.8',
-              style: Theme.of(context).textTheme.bodyText1,
+              '${consultant.name}',
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             const SizedBox(
-              width: 6,
+              height: 10,
             ),
-            FaIcon(
-              FontAwesomeIcons.solidStar,
-              color: ColorManager.myYallow,
-              size: 16,
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            InkWell(
-              onTap: () {},
-              child: FaIcon(
-                FontAwesomeIcons.commentDots,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            InkWell(
-              onTap: () {},
-              child: FaIcon(
-                FontAwesomeIcons.calendarPlus,
-                color: Theme.of(context).iconTheme.color,
-              ),
-            ),
+            Text(
+              consultant.speachalist as String,
+              style: Theme.of(context).textTheme.bodyText2,
+            )
           ],
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Text(
-          '${consultant.name}',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          consultant.speachalist as String,
-          style: Theme.of(context).textTheme.bodyText2,
-        )
-      ],
+        );
+      }
     );
   }
 }
