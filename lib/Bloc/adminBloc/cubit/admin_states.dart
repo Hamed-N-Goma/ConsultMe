@@ -1,4 +1,7 @@
 import 'package:consultme/models/AdminModel.dart';
+import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/models/consultantmodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AdminStates {}
 
@@ -55,6 +58,11 @@ class AcceptedConsultantErrorStates extends AdminStates {
   AcceptedConsultantErrorStates(this.error);
 }
 
+class GitUsersDataSucsess extends AdminStates {
+  final List<UserModel> users;
+
+  GitUsersDataSucsess(this.users);
+}
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}
 class PostAttendanceSuccessStates extends AdminStates {}

@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/const.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/user/screens/view_all_impo_artcle.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';

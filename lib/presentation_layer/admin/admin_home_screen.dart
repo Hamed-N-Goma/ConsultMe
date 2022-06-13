@@ -5,6 +5,7 @@ import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/accept/accept_screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/dash_complaints_screen.dart';
+import 'package:consultme/presentation_layer/admin/seach.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 
 class AdminHomeScreen extends StatelessWidget {
-  final searchController = TextEditingController();
 
   AdminHomeScreen({Key? key}) : super(key: key);
 
@@ -298,6 +298,21 @@ class AdminHomeScreen extends StatelessWidget {
                             const SizedBox(
                               height: 12.0,
                             ),
+                            InkWell(
+                              onTap: (){
+                                cubit.getUsers();
+
+                                navigateTo(context,
+                                      SearchUsers());
+                              },
+                              child: defaultDashBoardTitleBox(
+                                  title: 'المستخدمين',
+                                  img: 'assets/images/team.png'
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
                             Container(
                               width: double.infinity,
                               height: 1.0,
@@ -306,62 +321,7 @@ class AdminHomeScreen extends StatelessWidget {
                             const SizedBox(
                               height: 12.0,
                             ),
-                            Center(
-                              child: Text(
-                                "جميع المستخدمين",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ),
 
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50.0,
-                              child: defaultFormField(
-                                controller: searchController,
-                                type: TextInputType.text,
-                                onSubmit: (String text) {},
-                                hint: 'بحث ...',
-                                prefix: IconBroken.Search,
-                                context: context,
-                                validate: () {},
-                                onChange: (value) {
-                                  AdminCubit.get(context)
-                                      .getUserInSecurity(
-                                    username: value
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            Conditional.single(
-                              context: context,
-                              conditionBuilder: (context) => state is GetUserSecurityLoadingStates,
-                              widgetBuilder: (context) =>  Container(
-                                  margin:const EdgeInsets.all(40.0) ,
-                                  alignment: Alignment.center,
-                                  child: const CircularProgressIndicator()
-                              ),
-                              fallbackBuilder: (context) => ListView.separated(
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) => buildSecurityCard(
-                                    context,
-                                   AdminCubit.get(context)
-                                        .userModel![index]),
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 18.0,
-                                ),
-                                itemCount: AdminCubit.get(context).userModel!.length,
-                              ),
-                            ),
                           ],
                         ),
                       );

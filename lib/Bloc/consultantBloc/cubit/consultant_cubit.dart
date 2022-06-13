@@ -196,4 +196,90 @@ class ConsultantCubit extends Cubit<ConsultantStates>{
      });
    }
 
+
+
+   File? profileImage;
+
+   Future getProfileImage() async {
+     final PickedFile = await picker.pickImage(source: ImageSource.gallery);
+     if (PickedFile != null) {
+       profileImage = File(PickedFile.path);
+       print('pickedffile');
+       emit(PickedProfileImageSucsses());
+     } else {
+       print('no image selected');
+       emit(ErrorWithPickedProfileImage());
+     }
+   }
+
+   String? profileImageUrl;
+
+   Future<void> uploadProfile() async {
+     await firebase_storage.FirebaseStorage.instance
+         .ref()
+         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
+         .putFile(profileImage!)
+         .then((value) => {
+       value.ref
+           .getDownloadURL()
+           .then(
+             (value) => {
+           profileImageUrl = value.toString(),
+           print(profileImageUrl)
+         },
+       )
+           .catchError((error) {
+         emit(ErrorWithUploadProfileimagge());
+       })
+     })
+         .catchError((error) {
+       emit(ErrorWithUploadProfileimagge());
+
+       print(error.toString());
+     });
+   }
+
+   void upDateConsultant({required name, required phone, required email , required depatment}) {
+     emit(LoadingUpdateConsultantInfo());
+     if (profileImageUrl != null) {
+
+       FirebaseFirestore.instance
+           .collection('users')
+           .doc(consultantModel!.uid)
+           .update(
+           {
+             'email' : email ,
+              'name': name,
+             'phone': phone,
+             'department': depatment
+           })
+           .then((value) => {
+         emit(UpdateConsultantInfoScusses()),
+         getConsultantData(),
+       })
+           .catchError((onError) {
+         emit(ErrorWithUpdateConsultant());
+       });
+     } else {
+
+       FirebaseFirestore.instance
+           .collection('users')
+           .doc(consultantModel!.uid)
+           .update(
+           {
+             'email' : email ,
+             'name': name,
+             'phone': phone,
+             'department': depatment
+           })
+           .then((value) => {
+         emit(UpdateConsultantInfoScusses()),
+         getConsultantData(),
+       })
+           .catchError((onError) {
+         emit(ErrorWithUpdateConsultant());
+       });
+     }
+   }
+
 }

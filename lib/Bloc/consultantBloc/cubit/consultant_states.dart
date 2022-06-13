@@ -76,6 +76,21 @@ class DelNewsErrorStates extends ConsultantStates {
   DelNewsErrorStates(this.error);
 }
 
+class LoadingUpdateUseInfo extends ConsultantStates {}
+
+class PickedProfileImageSucsses extends ConsultantStates {}
+
+class ErrorWithPickedProfileImage extends ConsultantStates {}
+
+class UploadProfileimaggeSucsess extends ConsultantStates {}
+
+class ErrorWithUploadProfileimagge extends ConsultantStates {}
+
+class LoadingUpdateConsultantInfo extends ConsultantStates {}
+
+class ErrorWithUpdateConsultant extends ConsultantStates {}
+
+class UpdateConsultantInfoScusses extends ConsultantStates {}
 
 // Students
 class ChangeTerm extends ConsultantStates {}

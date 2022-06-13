@@ -22,6 +22,7 @@ class AdminCubit extends Cubit<AdminStates> {
   static AdminCubit get(context) => BlocProvider.of(context);
 
   AdminModel? adminModel;
+
   String uId = CacheHelper.getData(key: "uId") ;
 
   void getAdminData() {
@@ -289,6 +290,26 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+
+  List<UserModel> Users = [];
+
+  void getUsers() async {
+    CollectionReference user =
+    FirebaseFirestore.instance.collection('users');
+    await user.where('userType', isEqualTo: 'Consultant').get().then(
+          (user) => {
+        Users = user.docs
+            .map((e) =>
+            UserModel.fromJson(e.data() as Map<String, dynamic>))
+            .toList(),
+        emit(GitUsersDataSucsess(Users)),
+        user.docs.forEach((element) {
+          print(element.data());
+          print("++++============================");
+        })
+      },
+    );
+  }
 
 
 }

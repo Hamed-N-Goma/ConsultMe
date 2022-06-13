@@ -3,6 +3,7 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/consultant/complaints/complaints_screen.dart';
+import 'package:consultme/presentation_layer/consultant/edit_profile.dart';
 import 'package:consultme/presentation_layer/consultant/news/news_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
@@ -42,48 +43,71 @@ class ConsultantHomeScreen extends StatelessWidget {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              // navigateTo(context,  EditProfileScreen());
-                            },
-                            child:
-                            Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.white,
-                                  child: Image.asset(
-                                    'assets/images/logo.png',
-                                    width: 150.0,
-                                    height: 150.0,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 2.0,
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: InkWell(
+                              onTap: () {
+                                navigateTo(context,  EditProfileScreen());
+                              },
 
-                                    Text(
-                                      '${consultantModel?.name}',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                          fontWeight: FontWeight.bold),
+                              child: Row(
+                                children: [
+                                  if('${consultantModel?.image}'  != null)
+                                    CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: ThemeCubit.get(context).darkTheme
+                                          ? mainTextColor
+                                          : mainColors,
+                                      backgroundImage: NetworkImage(
+                                        '${consultantModel?.image}' ,
+                                      ),
                                     ),
-                                    Text(
-                                      '${consultantModel?.email}',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                          fontWeight: FontWeight.bold),
+                                  if('${consultantModel?.image}' == null)
+                                    CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: ThemeCubit.get(context).darkTheme
+                                          ? mainTextColor
+                                          : mainColors,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 80.0,
+                                        child: Icon(Icons.error,
+                                          color: ThemeCubit.get(context).darkTheme
+                                              ? mainColors
+                                              : mainTextColor,
+                                        ),
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      height: 2.0,
-                                    ),
-                              ],
+
+
+                                  const SizedBox(
+                                    width: 12.0,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${consultantModel?.name}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 2.0,
+                                      ),
+                                      Text(
+                                        '${consultantModel?.email}',
+                                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(
