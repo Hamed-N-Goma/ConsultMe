@@ -105,7 +105,7 @@ class Toprated extends StatelessWidget {
                   navigateTo(
                       context,
                       consultantDetails(
-                        cm: consultant,
+                        consultant: consultant,
                       ));
                 },
                 child: FaIcon(
