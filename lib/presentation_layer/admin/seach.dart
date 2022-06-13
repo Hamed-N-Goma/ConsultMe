@@ -6,6 +6,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import '../../../components/components.dart';
@@ -76,7 +77,8 @@ class _SearchState extends State<SearchUsers> {
                               itemBuilder: ((context, index) => buildUserCard(
                                   context,
                                   model: searchedUsers[index])),
-                              separatorBuilder: (context, index) => SizedBox(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
                                     height: 10,
                                   ),
                               itemCount: searchedUsers.length),
@@ -95,14 +97,14 @@ class _SearchState extends State<SearchUsers> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              IconBroken.Search,
-              color: Colors.grey[400],
-              size: 150,
-            ),
-            Text(
-              'إبحث عن مستخدم',
-              style: Theme.of(context).textTheme.bodyLarge,
+            Expanded(
+              child: ListView.separated(
+                  itemBuilder: (context, index) =>
+                      buildUserCard(context, model: allUsers[index]),
+                  separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
+                  itemCount: allUsers.length),
             )
           ],
         ),
@@ -121,6 +123,7 @@ class _SearchState extends State<SearchUsers> {
         hint: 'بحث ...',
         prefix: IconBroken.Search,
         context: context,
+        suffixIcon: FontAwesomeIcons.xmark,
         validate: () {},
         onPressedsufix: () {
           clearSearching();
