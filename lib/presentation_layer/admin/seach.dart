@@ -19,8 +19,7 @@ class SearchUsers extends StatefulWidget {
 }
 
 class _SearchState extends State<SearchUsers> {
-
-    late List<UserModel> allUsers;
+  late List<UserModel> allUsers;
 
   late List<UserModel> searchedUsers;
 
@@ -42,8 +41,8 @@ class _SearchState extends State<SearchUsers> {
         } else {
           return Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).progressIndicatorTheme.color,
-              ));
+            color: Theme.of(context).progressIndicatorTheme.color,
+          ));
         }
       },
     );
@@ -51,60 +50,65 @@ class _SearchState extends State<SearchUsers> {
 
   Widget buildSearchScreen() {
     return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          appBar: AppBar(
+            title: buildCustomText(
+                text: "إبحث عن مستخدم",
+                style: Theme.of(context).textTheme.bodyLarge),
+            centerTitle: true,
+            iconTheme: Theme.of(context).iconTheme,
           ),
-          buildSearchField(context),
-          const SizedBox(
-            height: 10,
-          ),
-          ConditionalBuilder(
-              condition: _isSearching && searchedUsers.isNotEmpty,
-              builder: (context) => Expanded(
-                child: SizedBox(
-                  child: ListView.separated(
-                      itemBuilder: ((context, index) =>
-                          buildUserCard(
-                              context,
-                              model: searchedUsers[index])),
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 10,
-                      ),
-                      itemCount: searchedUsers.length),
-                ),
+          body: Column(
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-              fallback: (context) => buildSearchfallback())
-        ],
-      ),
-    );
+              buildSearchField(context),
+              const SizedBox(
+                height: 10,
+              ),
+              ConditionalBuilder(
+                  condition: _isSearching && searchedUsers.isNotEmpty,
+                  builder: (context) => Expanded(
+                        child: SizedBox(
+                          child: ListView.separated(
+                              itemBuilder: ((context, index) => buildUserCard(
+                                  context,
+                                  model: searchedUsers[index])),
+                              separatorBuilder: (context, index) => SizedBox(
+                                    height: 10,
+                                  ),
+                              itemCount: searchedUsers.length),
+                        ),
+                      ),
+                  fallback: (context) => buildSearchfallback())
+            ],
+          ),
+        ));
   }
 
   Widget buildSearchfallback() {
     return Expanded(
       child: SizedBox(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  IconBroken.Search,
-                  color: Colors.grey[400],
-                  size: 150,
-                ),
-                Text(
-                  'إبحث عن مستخدم',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                )
-              ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              IconBroken.Search,
+              color: Colors.grey[400],
+              size: 150,
             ),
-          )),
+            Text(
+              'إبحث عن مستخدم',
+              style: Theme.of(context).textTheme.bodyLarge,
+            )
+          ],
+        ),
+      )),
     );
   }
-
-
 
   Widget buildSearchField(context) {
     return SizedBox(
@@ -130,9 +134,8 @@ class _SearchState extends State<SearchUsers> {
 
   void addSearchedItemToSearchedList(String searchedUser) {
     if (searchedUser.isNotEmpty) {
-      searchedUsers = allUsers
-          .where((user) => user.name.startsWith(searchedUser))
-          .toList();
+      searchedUsers =
+          allUsers.where((user) => user.name.startsWith(searchedUser)).toList();
       setState(() {
         _isSearching = true;
         searchedUsers.forEach((element) {
@@ -157,86 +160,81 @@ class _SearchState extends State<SearchUsers> {
   }
 }
 
-
-Widget buildUserCard(context,  {required UserModel model}) => Column(
-  children: [
-    Container(
-      width: double.infinity,
-      height: 115,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          8.0,
-        ),
-        color: ThemeCubit.get(context).darkTheme
-            ? mainColors
-            : containerFollowStudent,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                if(model.image != null)
-                  CircleAvatar(
-                    radius: 25.0,
-                    backgroundColor: ThemeCubit.get(context).darkTheme
-                        ? mainTextColor
-                        : mainColors,
-                    backgroundImage: NetworkImage(
-                        model.image!
-                    ),
-                  ),
-                if(model.image == null)
-                  CircleAvatar(
-                    radius: 25.0,
-                    backgroundColor: ThemeCubit.get(context).darkTheme
-                        ? mainTextColor
-                        : mainColors,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 80.0,
-                      child: Icon(Icons.error,
-                        color: ThemeCubit.get(context).darkTheme
-                            ? mainColors
-                            : mainTextColor,
-                      ),
-                    ),
-                  ),
-
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+Widget buildUserCard(context, {required UserModel model}) => Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 115,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              8.0,
+            ),
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : containerFollowStudent,
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
                   children: [
-                    Text(model.name,
-                        style: Theme.of(context).textTheme.bodyText2),
-                    Text('${model.email}',
-                        style: Theme.of(context).textTheme.bodyText2),
+                    if (model.image != null)
+                      CircleAvatar(
+                        radius: 25.0,
+                        backgroundColor: ThemeCubit.get(context).darkTheme
+                            ? mainTextColor
+                            : mainColors,
+                        backgroundImage: NetworkImage(model.image!),
+                      ),
+                    if (model.image == null)
+                      CircleAvatar(
+                        radius: 25.0,
+                        backgroundColor: ThemeCubit.get(context).darkTheme
+                            ? mainTextColor
+                            : mainColors,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 80.0,
+                          child: Icon(
+                            Icons.error,
+                            color: ThemeCubit.get(context).darkTheme
+                                ? mainColors
+                                : mainTextColor,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(model.name,
+                            style: Theme.of(context).textTheme.bodyText2),
+                        Text('${model.email}',
+                            style: Theme.of(context).textTheme.bodyText2),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              defaultButton2(
+                function: () {
+                  // navigateTo(context, EnterStudentDetailsScreen(item: model,));
+                },
+                text: 'حذف المستخدم ',
+                width: double.infinity,
+                height: 32.0,
+                btnColor: Colors.red,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(color: Colors.white),
+              ),
+            ],
           ),
-          const Spacer(),
-          defaultButton2(
-            function: () {
-             // navigateTo(context, EnterStudentDetailsScreen(item: model,));
-            },
-            text: 'حذف المستخدم ',
-            width: double.infinity,
-            height: 32.0,
-            btnColor: Colors.red,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(color: Colors.white),
-          ),
-        ],
-      ),
-    )
-  ],
-);
-
-
+        )
+      ],
+    );

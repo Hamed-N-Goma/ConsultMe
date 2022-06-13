@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,30 +7,19 @@ import 'package:consultme/models/ConsultantModel.dart';
 import 'package:consultme/models/complaintsModel.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
-import 'package:consultme/shard/network/remote/dio_helper.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
-
-
-
-
-class ConsultantCubit extends Cubit<ConsultantStates>{
-
-   ConsultantCubit() : super(ConsultantInitialState());
+class ConsultantCubit extends Cubit<ConsultantStates> {
+  ConsultantCubit() : super(ConsultantInitialState());
 
   static ConsultantCubit get(context) => BlocProvider.of(context);
 
-
-
   ConsultantModel? consultantModel;
-  String uId = CacheHelper.getData(key: "uId") ;
+  String uId = CacheHelper.getData(key: "uId");
 
   void getConsultantData() {
-
     print('----------get Consultant Data----------');
     emit(GetProfileConsultantLoadingStates());
 
@@ -45,241 +33,234 @@ class ConsultantCubit extends Cubit<ConsultantStates>{
     });
   }
 
+  void postComplaints({
+    required String complaints,
+    required String email,
+    required String name,
+    required userType,
+  }) {
+    emit(PostComplaintsLoadingStates());
 
-   void postComplaints({
-     required String complaints,
-     required String email,
-     required String name,
-     required userType,
-   }) {
-     emit(PostComplaintsLoadingStates());
+    ComplaintModel complaintModel = ComplaintModel(
+      name: name,
+      email: email,
+      complaint: complaints,
+      userType: userType,
+    );
 
-     ComplaintModel complaintModel = ComplaintModel(
-         name: name,
-         email: email,
-         complaint: complaints,
-         userType : userType,
+    FirebaseFirestore.instance
+        .collection('complaints')
+        .doc(uId)
+        .set(complaintModel.toMap())
+        .then((value) => {
+              print('Complaint sended '),
+            })
+        .then(
+      (value) {
+        emit(PostComplaintsSuccessStates());
+      },
+    ).catchError((error) {
+      print(error.toString());
+      emit(PostComplaintsErrorStates(error));
+    });
+  }
 
-     );
+  var picker = ImagePicker();
+  File? postImage;
 
-     FirebaseFirestore.instance
-         .collection('complaints')
-         .doc(uId)
-         .set(complaintModel.toMap())
-         .then((value) =>
-     {
-       print('Complaint sended '),
-     }
-     ).then(
-           (value) {
-         emit(PostComplaintsSuccessStates());
-       },
-     ).catchError((error) {
-       print(error.toString());
-       emit(PostComplaintsErrorStates(error));
-     });
-   }
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
 
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(PostImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(PostImagePickedErrorState());
+    }
+  }
 
-   var picker = ImagePicker();
-   File? postImage;
+  void removePostImage() {
+    postImage = null;
+    emit(ImageRemoveSuccessState());
+  }
 
-   Future<void> getPostImage() async {
-     final pickedFile = await picker.pickImage(
-       source: ImageSource.gallery,
-     );
+  void uploadPostImage({
+    required String dateTime,
+    required String text,
+    required String title,
+  }) {
+    emit(CreatePostLoadingState());
 
-     if (pickedFile != null) {
-       postImage = File(pickedFile.path);
-       emit(PostImagePickedSuccessState());
-     } else {
-       print('No image selected.');
-       emit(PostImagePickedErrorState());
-     }
-   }
-   void removePostImage() {
-     postImage = null;
-     emit(ImageRemoveSuccessState());
-   }
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        createPost(
+          text: text,
+          title: title,
+          dateTime: dateTime,
+          postImage: value,
+        );
+      }).catchError((error) {
+        emit(CreatePostErrorState(error));
+      });
+    }).catchError((error) {
+      emit(CreatePostErrorState(error));
+    });
+  }
 
+  PostModel? postModel;
 
-   void uploadPostImage({
-     required String dateTime,
-     required String text,
-     required String title,
-   }) {
-     emit(CreatePostLoadingState());
+  void createPost({
+    required String dateTime,
+    required String text,
+    required String title,
+    String? postImage,
+  }) {
+    emit(CreatePostLoadingState());
 
-     firebase_storage.FirebaseStorage.instance
-         .ref()
-         .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
-         .putFile(postImage!)
-         .then((value) {
-       value.ref.getDownloadURL().then((value) {
-         print(value);
-         createPost(
-           text: text,
-           title: title,
-           dateTime: dateTime,
-           postImage: value,
-         );
-       }).catchError((error) {
-         emit(CreatePostErrorState(error));
-       });
-     }).catchError((error) {
-       emit(CreatePostErrorState(error));
-     });
-   }
+    PostModel model = PostModel(
+      name: consultantModel?.name,
+      image: consultantModel?.image,
+      uid: consultantModel?.uid,
+      dateTime: dateTime,
+      title: title,
+      text: text,
+      postImage: postImage,
+    );
 
-   PostModel? postModel;
+    FirebaseFirestore.instance
+        .collection('posts')
+        .add(model.toMap())
+        .then((value) {
+      emit(CreatePostSuccessState());
+    }).catchError((error) {
+      emit(CreatePostErrorState(error.toString()));
+    });
+  }
 
-   void createPost({
-     required String dateTime,
-     required String text,
-     required String title,
-     String? postImage,
-   }) {
-     emit(CreatePostLoadingState());
+  List<PostModel> posts = [];
+  List<String> postsId = [];
 
-     PostModel model = PostModel(
-       name: consultantModel?.name,
-       image: consultantModel?.image,
-       uid: consultantModel?.uid,
-       dateTime: dateTime,
-       title : title ,
-       text: text,
-       postImage: postImage,
-     );
+  void getPosts() {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      posts = [];
+      value.docs.forEach((element) {
+        if (element.data()['uid'] == consultantModel!.uid) {
+          postsId.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
+        }
+      });
 
-     FirebaseFirestore.instance
-         .collection('posts')
-         .add(model.toMap())
-         .then((value) {
-       emit(CreatePostSuccessState());
-     }).catchError((error) {
-       emit(CreatePostErrorState(error.toString()));
-     });
-   }
+      emit(GetPostsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetPostsErrorState(error.toString()));
+    });
+  }
 
+  void DeletePost(id) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(id)
+        .delete()
+        .then((value) {
+      emit(DeletePostSuccessState());
+      showToast(message: 'تم حذف المنشور بنجاح', state: ToastStates.SUCCESS);
+      getPosts();
+    }).catchError((error) {
+      print(error.toString());
+      emit(DeletePostErrorState());
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
+          state: ToastStates.ERROR);
+    });
+  }
 
-   List<PostModel> posts = [];
-   List<String> postsId = [];
+  File? profileImage;
 
+  Future getProfileImage() async {
+    final PickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (PickedFile != null) {
+      profileImage = File(PickedFile.path);
+      print('pickedffile');
+      emit(PickedProfileImageSucsses());
+    } else {
+      print('no image selected');
+      emit(ErrorWithPickedProfileImage());
+    }
+  }
 
-   void getPosts() {
-     FirebaseFirestore.instance.collection('posts').get().then((value) {
-       posts = [];
-       value.docs.forEach((element) {
-         if (element.data()['uid']  == consultantModel!.uid)
-         {
-           postsId.add(element.id);
-           posts.add(PostModel.fromJson(element.data()));
-         }
-       });
+  String? profileImageUrl;
 
-       emit(GetPostsSuccessState());
-     }).catchError((error) {
-       print(error.toString());
-       emit(GetPostsErrorState(error.toString()));
-     });
-   }
+  Future<void> uploadProfile() async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
+        .putFile(profileImage!)
+        .then((value) => {
+              value.ref
+                  .getDownloadURL()
+                  .then(
+                    (value) => {
+                      profileImageUrl = value.toString(),
+                      print(profileImageUrl)
+                    },
+                  )
+                  .catchError((error) {
+                emit(ErrorWithUploadProfileimagge());
+              })
+            })
+        .catchError((error) {
+      emit(ErrorWithUploadProfileimagge());
 
-   void DeletePost(id) {
-     FirebaseFirestore.instance.collection('posts').doc(id).delete().then((value) {
-       emit(DeletePostSuccessState());
-       showToast(message: 'تم حذف المنشور بنجاح', state: ToastStates.SUCCESS);
-       getPosts();
-     }).catchError((error) {
-       print(error.toString());
-       emit(DeletePostErrorState());
-       showToast(message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق', state: ToastStates.ERROR);
-     });
-   }
+      print(error.toString());
+    });
+  }
 
-
-
-   File? profileImage;
-
-   Future getProfileImage() async {
-     final PickedFile = await picker.pickImage(source: ImageSource.gallery);
-     if (PickedFile != null) {
-       profileImage = File(PickedFile.path);
-       print('pickedffile');
-       emit(PickedProfileImageSucsses());
-     } else {
-       print('no image selected');
-       emit(ErrorWithPickedProfileImage());
-     }
-   }
-
-   String? profileImageUrl;
-
-   Future<void> uploadProfile() async {
-     await firebase_storage.FirebaseStorage.instance
-         .ref()
-         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
-         .putFile(profileImage!)
-         .then((value) => {
-       value.ref
-           .getDownloadURL()
-           .then(
-             (value) => {
-           profileImageUrl = value.toString(),
-           print(profileImageUrl)
-         },
-       )
-           .catchError((error) {
-         emit(ErrorWithUploadProfileimagge());
-       })
-     })
-         .catchError((error) {
-       emit(ErrorWithUploadProfileimagge());
-
-       print(error.toString());
-     });
-   }
-
-   void upDateConsultant({required name, required phone, required email , required depatment}) {
-     emit(LoadingUpdateConsultantInfo());
-     if (profileImageUrl != null) {
-
-       FirebaseFirestore.instance
-           .collection('users')
-           .doc(consultantModel!.uid)
-           .update(
-           {
-             'email' : email ,
-              'name': name,
-             'phone': phone,
-             'department': depatment
-           })
-           .then((value) => {
-         emit(UpdateConsultantInfoScusses()),
-         getConsultantData(),
-       })
-           .catchError((onError) {
-         emit(ErrorWithUpdateConsultant());
-       });
-     } else {
-
-       FirebaseFirestore.instance
-           .collection('users')
-           .doc(consultantModel!.uid)
-           .update(
-           {
-             'email' : email ,
-             'name': name,
-             'phone': phone,
-             'department': depatment
-           })
-           .then((value) => {
-         emit(UpdateConsultantInfoScusses()),
-         getConsultantData(),
-       })
-           .catchError((onError) {
-         emit(ErrorWithUpdateConsultant());
-       });
-     }
-   }
-
+  void upDateConsultant(
+      {required name, required phone, required email, required depatment}) {
+    emit(LoadingUpdateConsultantInfo());
+    if (profileImageUrl != null) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(consultantModel!.uid)
+          .update({
+            'email': email,
+            'name': name,
+            'phone': phone,
+            'department': depatment
+          })
+          .then((value) => {
+                emit(UpdateConsultantInfoScusses()),
+                getConsultantData(),
+              })
+          .catchError((onError) {
+            emit(ErrorWithUpdateConsultant());
+          });
+    } else {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(consultantModel!.uid)
+          .update({
+            'email': email,
+            'name': name,
+            'phone': phone,
+            'department': depatment
+          })
+          .then((value) => {
+                emit(UpdateConsultantInfoScusses()),
+                getConsultantData(),
+              })
+          .catchError((onError) {
+            emit(ErrorWithUpdateConsultant());
+          });
+    }
+  }
 }
