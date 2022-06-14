@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
@@ -18,17 +20,14 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   static UserLayoutCubit get(context) => BlocProvider.of(context);
 
+  String uId = CacheHelper.getData(key: "uId");
+
   UserModel? userModel;
   List<ConsultantModel> conslutants = [];
 
   void GetUserInfo() {
     emit(GetDataLoading());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(
-        'dl6Xzul3AjV9xkzjN8iDYZqEfjc2') //REPLACE THE DOC ID WITH SEAREDPREFRENCE UID
-        .get()
-        .then((value) =>
+    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) =>
     {
       userModel = UserModel.fromJson(value.data()!),
       emit(GetUserDataSucsses()),
@@ -160,7 +159,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   }
 
 
-  AppoinmentModel? appoinmentModel;
+  AppointmentModel? appoinmentModel;
 
   void createAppoinment({
     required String consultId,
@@ -169,22 +168,49 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   }) {
     emit(CreateAppoinmentLoadingState());
 
-    AppoinmentModel model = AppoinmentModel(
+    AppointmentModel model = AppointmentModel(
       consultId: consultId ,
       resson: resson ,
       userID : userModel!.uid,
       description: description,
       time: DateTime.now().toString(),
+      userEmail: userModel!.email,
+      userPhone: userModel!.phone,
+      userName: userModel!.name,
+      MeetTime: '',
+      accept: null,
 
     );
 
     FirebaseFirestore.instance
-        .collection('appoinments')
+        .collection('appointments')
         .add(model.toMap())
-        .then((value) {
-      emit(CreateAppoinmentSuccessState());
-    }).catchError((error) {
+        .then((value)=> {
+    print("appointment ceateted"),
+    emit(CreateAppoinmentSuccessState()),
+    showToast(message: 'تم ارسال الطلب بنجاح', state: ToastStates.SUCCESS)
+  }).catchError((error) {
       emit(CreateAppoinmentErrorState(error.toString()));
+      showToast(message: 'حدث خطأ , يرجى إعادة المحاولة ', state: ToastStates.ERROR);
+
     });
   }
+
+
+  List<AppointmentModel>? appointments = [];
+
+  void getAppoinments() {
+    FirebaseFirestore.instance.collection('appointments').get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['userID'] == userModel!.uid) {
+          appointments!.add(AppointmentModel.fromJson(element.data()));
+        }
+      });
+      emit(GetAppointmentsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAppointmentsErrorState(error.toString()));
+    });
+  }
+
 }

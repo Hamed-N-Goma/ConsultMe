@@ -836,3 +836,58 @@ Widget dashWhiteBoard(
         ),
       ),
     );
+
+Widget buildEnquiry(
+    context, {
+      required double height,
+      required StatusStates state,
+      required Widget body,
+    }) =>
+    Container(
+      height: height,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color:
+        ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Container(
+              height: double.infinity,
+              width: 10.0,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(22.0),
+                  bottomLeft: Radius.circular(22.0),
+                ),
+                color: chooseStatusColor(state),
+              ),
+            ),
+          ),
+          body,
+        ],
+      ),
+    );
+
+enum StatusStates { ACCEPT, REJECT, WAITING }
+
+Color chooseStatusColor(StatusStates state) {
+  Color color;
+
+  switch (state) {
+    case StatusStates.ACCEPT:
+      color = Colors.green;
+      break;
+    case StatusStates.REJECT:
+      color = Colors.red;
+      break;
+    case StatusStates.WAITING:
+      color = Colors.amber;
+      break;
+  }
+
+  return color;
+}

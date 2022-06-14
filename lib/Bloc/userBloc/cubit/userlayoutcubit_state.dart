@@ -41,3 +41,13 @@ class CreateAppoinmentErrorState extends UserLayoutState
 
   CreateAppoinmentErrorState(this.error);
 }
+
+
+class GetAppointmentsLodingState extends UserLayoutState {}
+class  GetAppointmentsSuccessState extends UserLayoutState {}
+class  GetAppointmentsErrorState extends UserLayoutState
+{
+  final String error;
+
+  GetAppointmentsErrorState(this.error);
+}

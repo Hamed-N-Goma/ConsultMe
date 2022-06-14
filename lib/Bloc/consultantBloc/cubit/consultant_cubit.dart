@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/ConsultantModel.dart';
+import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/complaintsModel.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
@@ -263,4 +265,52 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           });
     }
   }
+
+  List<AppointmentModel>? appointments = [];
+  List<UserModel>? users;
+
+  void getAppoinments() {
+    FirebaseFirestore.instance.collection('appointments').get().then((value) {
+      appointments = [];
+      value.docs.forEach((element) {
+        if (element.data()['consultId'] == consultantModel!.uid) {
+          appointments!.add(AppointmentModel.fromJson(element.data()));
+        }
+      });
+
+      emit(GetAppointmentsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAppointmentsErrorState(error.toString()));
+    });
+  }
+
+  double animatedWaitingStudentHeight = 0.0;
+  bool showWaitingStudent_details = false;
+  int currentWaitingStudentIndex = -1;
+  void showWaitingStudentDetails(bool show, int index) {
+    if (currentWaitingStudentIndex == index) {
+      showWaitingStudent_details = show;
+      animatedWaitingStudentHeight == 0.0
+          ? animatedWaitingStudentHeight = 1000.0
+          : animatedWaitingStudentHeight = 0.0;
+
+      emit(ShowAppointmentDetails());
+    }
+  }
+
+  bool showWarning = false;
+  void showStudentWarning ({
+    required bool isLate,
+  }){
+    showWarning = isLate;
+    emit(SecurityShowWarningState());
+  }
+
+  void acceptAppointment({required String MeetTime}) {
+
+  }
+
+
+
 }

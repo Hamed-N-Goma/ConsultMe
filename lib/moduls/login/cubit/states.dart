@@ -16,8 +16,8 @@ class LoginIsNotAuth extends LoginStates {
 }
 
 class UserAuthFoundedSuccess extends LoginStates {
-
-  UserAuthFoundedSuccess();
+  final String uId;
+  UserAuthFoundedSuccess(this.uId);
 }
 
 class ConsultantAuthFoundedSuccess extends LoginStates {

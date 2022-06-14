@@ -76,6 +76,17 @@ class DelNewsErrorStates extends ConsultantStates {
   DelNewsErrorStates(this.error);
 }
 
+class GetAppointmentsLodingState extends ConsultantStates {}
+class  GetAppointmentsSuccessState extends ConsultantStates {}
+class  GetAppointmentsErrorState extends ConsultantStates
+{
+  final String error;
+
+  GetAppointmentsErrorState(this.error);
+}
+
+class ShowAppointmentDetails extends ConsultantStates {}
+
 class LoadingUpdateUseInfo extends ConsultantStates {}
 
 class PickedProfileImageSucsses extends ConsultantStates {}
@@ -91,6 +102,8 @@ class LoadingUpdateConsultantInfo extends ConsultantStates {}
 class ErrorWithUpdateConsultant extends ConsultantStates {}
 
 class UpdateConsultantInfoScusses extends ConsultantStates {}
+
+class SecurityShowWarningState extends ConsultantStates {}
 
 // Students
 class ChangeTerm extends ConsultantStates {}

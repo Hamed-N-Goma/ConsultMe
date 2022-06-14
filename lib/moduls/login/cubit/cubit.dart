@@ -71,7 +71,7 @@ class LoginCubit extends Cubit<LoginStates>{
       switch (documentSnapshot.get('userType')) {
         case 'user':
           {
-            emit(UserAuthFoundedSuccess());
+            emit(UserAuthFoundedSuccess(uid));
           }
           break;
         case 'Consultant':

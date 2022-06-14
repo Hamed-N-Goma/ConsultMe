@@ -5,6 +5,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TechnicalSupportScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScreen.dart';
+import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/profile.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
@@ -44,11 +45,11 @@ class More extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        //AppCubit.get(context).getOrderData();
-                        //    navigateTo(
-                        //    context,
-                        //    const FollowRequestsScreen(),
-                        //  );
+                        UserLayoutCubit.get(context).getAppoinments();
+                            navigateTo(
+                            context,
+                            const FollowRequestsScreen(),
+                          );
                       },
                       child: Row(
                         children: [

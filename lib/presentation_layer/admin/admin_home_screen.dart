@@ -143,12 +143,6 @@ class AdminHomeScreen extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          CacheHelper.removeData(key: 'token');
-                                          CacheHelper.removeData(key: 'isStudent');
-                                          CacheHelper.removeData(key: 'isSecurity');
-                                          CacheHelper.removeData(key: 'isHousingManager');
-                                          CacheHelper.removeData(key: 'isStudentAffairs');
-                                          CacheHelper.removeData(key: 'isresident');
                                           navigateAndFinish(context, LoginScreen());
                                         } ,
                                         child: Text(

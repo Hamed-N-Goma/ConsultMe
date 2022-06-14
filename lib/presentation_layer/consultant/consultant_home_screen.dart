@@ -5,6 +5,7 @@ import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/consultant/complaints/complaints_screen.dart';
 import 'package:consultme/presentation_layer/consultant/edit_profile.dart';
 import 'package:consultme/presentation_layer/consultant/news/news_screen.dart';
+import 'package:consultme/presentation_layer/consultant/request_appoinment_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
@@ -235,8 +236,8 @@ class ConsultantHomeScreen extends StatelessWidget {
 
                           InkWell(
                             onTap: () {
-                              // cubit.getAllOrders();
-                              // navigateTo(context, const DashHostsScreen());
+                               ConsultantCubit.get(context).getAppoinments();
+                               navigateTo(context,  RequestAppoinmentScreen());
                             },
                             child: defaultDashBoardTitleBox(
                                 img: 'assets/images/checklist.png',
