@@ -4,6 +4,7 @@ import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/presentation_layer/user/screens/appoinment.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
@@ -158,7 +159,9 @@ class consultantDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: defaultButton(
-                            function: () {},
+                            function: () {
+                              navigateTo(context, appoinment(cm: consultant));
+                            },
                             text: ' طلب إستشارة',
                             fontSize: 20,
                             radius: 10.0,

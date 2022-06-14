@@ -33,3 +33,11 @@ class GitConsultantsDataSucsess extends UserLayoutState {
 
 class ChangeThemeSuccessState extends UserLayoutState {}
 
+class CreateAppoinmentLoadingState extends UserLayoutState{}
+class CreateAppoinmentSuccessState extends UserLayoutState {}
+class CreateAppoinmentErrorState extends UserLayoutState
+{
+  final String error;
+
+  CreateAppoinmentErrorState(this.error);
+}

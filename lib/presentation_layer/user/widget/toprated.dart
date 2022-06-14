@@ -1,6 +1,7 @@
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/presentation_layer/user/screens/appoinment.dart';
 import 'package:consultme/presentation_layer/user/screens/consultantDetails.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,27 +23,36 @@ class Toprated extends StatelessWidget {
         right: 16,
         top: 5,
       ),
-      child: Container(
-        padding: EdgeInsets.all(16),
-        height: 125,
-        decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(0, 3),
-                  color: HexColor('#404863').withOpacity(0.2),
-                  blurRadius: 10)
-            ]),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            consultantImage(),
-            const SizedBox(width: 16),
-            consultantDetales(context, consultant),
-          ],
+      child: InkWell(
+        onTap: () {
+          navigateTo(
+              context,
+              consultantDetails(
+                consultant : consultant,
+              ));
+        },
+        child: Container(
+          padding: EdgeInsets.all(16),
+          height: 125,
+          decoration: BoxDecoration(
+              color: ThemeCubit.get(context).darkTheme
+                  ? mainColors
+                  : Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    offset: Offset(0, 3),
+                    color: HexColor('#404863').withOpacity(0.2),
+                    blurRadius: 10)
+              ]),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              consultantImage(),
+              const SizedBox(width: 16),
+              consultantDetales(context, consultant),
+            ],
+          ),
         ),
       ),
     );
@@ -104,8 +114,8 @@ class Toprated extends StatelessWidget {
                 onTap: () {
                   navigateTo(
                       context,
-                      consultantDetails(
-                        consultant: consultant,
+                      appoinment(
+                        cm: consultant,
                       ));
                 },
                 child: FaIcon(

@@ -77,6 +77,9 @@ class Home extends StatelessWidget {
               height: 15,
             ),
             buildTopRatedConsultant(),
+            const SizedBox(
+              height: 15,
+            ),
           ],
         ),
       ),

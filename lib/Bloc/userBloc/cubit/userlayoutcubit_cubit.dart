@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,12 +26,13 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     FirebaseFirestore.instance
         .collection('users')
         .doc(
-            'dl6Xzul3AjV9xkzjN8iDYZqEfjc2') //REPLACE THE DOC ID WITH SEAREDPREFRENCE UID
+        'dl6Xzul3AjV9xkzjN8iDYZqEfjc2') //REPLACE THE DOC ID WITH SEAREDPREFRENCE UID
         .get()
-        .then((value) => {
-              userModel = UserModel.fromJson(value.data()!),
-              emit(GetUserDataSucsses()),
-            })
+        .then((value) =>
+    {
+      userModel = UserModel.fromJson(value.data()!),
+      emit(GetUserDataSucsses()),
+    })
         .catchError((onError) {
       emit(ErrorWithGetUserData());
     });
@@ -56,21 +58,26 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   Future<void> uploadProfile() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
+        .child("users/${Uri
+        .file(profileImage!.path)
+        .pathSegments
+        .last}")
         .putFile(profileImage!)
-        .then((value) => {
-              value.ref
-                  .getDownloadURL()
-                  .then(
-                    (value) => {
-                      profileImageUrl = value.toString(),
-                      print(profileImageUrl)
-                    },
-                  )
-                  .catchError((error) {
-                emit(ErrorWithUploadProfileimagge());
-              })
-            })
+        .then((value) =>
+    {
+      value.ref
+          .getDownloadURL()
+          .then(
+            (value) =>
+        {
+          profileImageUrl = value.toString(),
+          print(profileImageUrl)
+        },
+      )
+          .catchError((error) {
+        emit(ErrorWithUploadProfileimagge());
+      })
+    })
         .catchError((error) {
       emit(ErrorWithUploadProfileimagge());
 
@@ -93,10 +100,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) => {
-                emit(UpdateUserInfoScusses()),
-                GetUserInfo(),
-              })
+          .then((value) =>
+      {
+        emit(UpdateUserInfoScusses()),
+        GetUserInfo(),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
@@ -113,10 +121,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) => {
-                emit(UpdateUserInfoScusses()),
-                GetUserInfo(),
-              })
+          .then((value) =>
+      {
+        emit(UpdateUserInfoScusses()),
+        GetUserInfo(),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
@@ -125,20 +134,21 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   void getConsultants() async {
     CollectionReference consultant =
-        FirebaseFirestore.instance.collection('users');
+    FirebaseFirestore.instance.collection('users');
     await consultant.where('userType', isEqualTo: 'Consultant').get().then(
-          (consultant) => {
-            conslutants = consultant.docs
-                .map((e) =>
-                    ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
-                .toList(),
-            emit(GitConsultantsDataSucsess(conslutants)),
-            consultant.docs.forEach((element) {
-              print(element.data());
-              print("++++============================");
-            })
-          },
-        );
+          (consultant) =>
+      {
+        conslutants = consultant.docs
+            .map((e) =>
+            ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
+            .toList(),
+        emit(GitConsultantsDataSucsess(conslutants)),
+        consultant.docs.forEach((element) {
+          print(element.data());
+          print("++++============================");
+        })
+      },
+    );
   }
 
   // edit profile screen
@@ -147,5 +157,34 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   void toggleButton() {
     isDark = !isDark;
     emit(ChangeThemeSuccessState());
+  }
+
+
+  AppoinmentModel? appoinmentModel;
+
+  void createAppoinment({
+    required String consultId,
+    required String resson,
+    required String description,
+  }) {
+    emit(CreateAppoinmentLoadingState());
+
+    AppoinmentModel model = AppoinmentModel(
+      consultId: consultId ,
+      resson: resson ,
+      userID : userModel!.uid,
+      description: description,
+      time: DateTime.now().toString(),
+
+    );
+
+    FirebaseFirestore.instance
+        .collection('appoinments')
+        .add(model.toMap())
+        .then((value) {
+      emit(CreateAppoinmentSuccessState());
+    }).catchError((error) {
+      emit(CreateAppoinmentErrorState(error.toString()));
+    });
   }
 }
