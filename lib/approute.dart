@@ -10,26 +10,21 @@ class AppRouter {
     switch (settings.name) {
       case userLayoutScreen:
         return MaterialPageRoute(
-          builder: (_) => Directionality(
-            textDirection: TextDirection.rtl,
-            child: LoginScreen(),
-          ),
+          builder: (_) =>
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: LoginScreen(),
+              ),
         );
 
       case viewAllImportantArtcle:
         return MaterialPageRoute(
-          builder: (_) => Directionality(
-            textDirection: TextDirection.rtl,
-            child: ViewAll(),
-          ),
+          builder: (_) =>
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: ViewAll(),
+              ),
         );
-
-      case chatDetails:
-        return MaterialPageRoute(
-            builder: (_) => Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: ChatDetails(),
-                ));
     }
   }
 }

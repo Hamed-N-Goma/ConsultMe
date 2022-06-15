@@ -51,3 +51,5 @@ class  GetAppointmentsErrorState extends UserLayoutState
 
   GetAppointmentsErrorState(this.error);
 }
+
+class GetMessagesSuccessState extends UserLayoutState {}

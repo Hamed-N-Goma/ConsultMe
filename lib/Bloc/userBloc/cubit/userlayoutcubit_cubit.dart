@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../../../models/MessageModel.dart';
+
 
 part 'userlayoutcubit_state.dart';
 
@@ -226,4 +228,31 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
+
+  List<MessageModel> messages = [];
+
+  void getMessages({
+    required String consultId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel?.uid)
+        .collection('chats')
+        .doc(consultId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+
+      emit(GetMessagesSuccessState());
+    });
+  }
 }
+
+
+

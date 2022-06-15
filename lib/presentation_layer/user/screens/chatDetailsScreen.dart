@@ -1,15 +1,29 @@
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ChatDetails extends StatelessWidget {
-  const ChatDetails({Key? key}) : super(key: key);
+   ChatDetails({Key? key, required ConsultantModel this.consultant}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+   ConsultantModel consultant ;
+   var messageController = TextEditingController();
+
+   @override
+   Widget build(BuildContext context) {
+     return Builder(
+         builder: (BuildContext context) {
+       UserLayoutCubit.get(context).getMessages(
+         consultId: consultant.uid!,
+       );
+       return BlocConsumer<UserLayoutCubit, UserLayoutState>(
+           listener: (context, state) {},
+           builder: (context, state) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -23,6 +37,10 @@ class ChatDetails extends StatelessWidget {
       ),
     );
   }
+       );
+         });
+   }
+
   //you must send user Model with Navigation
 
   Widget buildAppbarTitle(context) {
@@ -30,13 +48,13 @@ class ChatDetails extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 20.0,
-          backgroundImage: NetworkImage(profileImageUri),
+          backgroundImage: NetworkImage(consultant.image!),
         ),
         SizedBox(
           width: 15.0,
         ),
         Text(
-          'عبدالله منصور',
+          consultant.name!,
           style: Theme.of(context).textTheme.bodyText1,
         )
       ],

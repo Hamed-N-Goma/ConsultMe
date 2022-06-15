@@ -1,12 +1,9 @@
-import 'package:consultme/const.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/presentation_layer/user/widget/messenger_main.dart';
-import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../presentation_layer_manager/color_manager/color_manager.dart';
-import '../../presentation_layer_manager/font_manager/fontmanager.dart';
 
 class Chat extends StatelessWidget {
   Chat({Key? key}) : super(key: key);
@@ -14,17 +11,49 @@ class Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    height = size.height;
-    width = size.width;
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: ListView.separated(
-          itemBuilder: (context, index) => Chatitem(),
-          separatorBuilder: (context, index) => SizedBox(
-                height: height * 0.005,
-              ),
-          itemCount: 20),
+    return BlocConsumer<UserLayoutCubit, UserLayoutState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          size = MediaQuery
+              .of(context)
+              .size;
+          height = size.height;
+          width = size.width;
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: ConditionalBuilder(
+              condition: UserLayoutCubit
+                  .get(context)
+                  .conslutants
+                  .length > 0,
+              builder: (context) =>
+                  ListView.separated(
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) =>
+                          Chatitem(UserLayoutCubit
+                              .get(context)
+                              .conslutants[index], context),
+                      separatorBuilder: (context, index) => myDivider(),
+                      itemCount: UserLayoutCubit
+                          .get(context)
+                          .conslutants
+                          .length),
+              fallback: (context) => Center(child: CircularProgressIndicator()),
+
+            ),
+          );
+        },
     );
   }
 }
+
+Widget myDivider() => Padding(
+  padding: const EdgeInsetsDirectional.only(
+    start: 20.0,
+  ),
+  child: Container(
+    width: double.infinity,
+    height: 1.0,
+    color: Colors.grey[300],
+  ),
+);

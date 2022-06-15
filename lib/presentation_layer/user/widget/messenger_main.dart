@@ -1,18 +1,17 @@
 import 'package:consultme/components/components.dart';
-import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import '../../../const.dart';
+import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 
 class Chatitem extends StatelessWidget {
-  Chatitem({Key? key}) : super(key: key);
+  Chatitem(ConsultantModel this.conslutant, BuildContext context, {Key? key}) : super(key: key);
   var size, width, height;
 
+  ConsultantModel conslutant;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -20,7 +19,9 @@ class Chatitem extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        navigateTo(context, ChatDetails());
+        navigateTo(context, ChatDetails(
+            consultant : conslutant,
+         ));
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -59,7 +60,7 @@ class Chatitem extends StatelessWidget {
       backgroundColor: Colors.black,
       radius: 40,
       backgroundImage: NetworkImage(
-        profileImageUri,
+        '${conslutant.image!}',
       ),
     );
   }
@@ -69,14 +70,19 @@ class Chatitem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: height * 0.04,
+          height: 8,
         ),
         Text(
-          'عبدالله سالم عبدالله',
+          '${conslutant.name!}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
+
+        Text(
+          '${conslutant.speachalist!}',
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
         const SizedBox(
-          height: 12,
+          height: 8,
         ),
       ],
     );
