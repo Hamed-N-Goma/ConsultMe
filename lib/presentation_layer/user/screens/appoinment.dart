@@ -271,6 +271,8 @@ class appoinment extends StatelessWidget {
                               function: () {
                                 cubit.createAppoinment(
                                     consultId: cm.uid!,
+                                    consultName : cm.name!,
+                                    consultSp : cm.speachalist!,
                                     resson: reassonController.text,
                                     description: descController.text,
                                 );

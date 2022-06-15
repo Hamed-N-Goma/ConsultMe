@@ -307,10 +307,32 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     emit(SecurityShowWarningState());
   }
 
-  void acceptAppointment({required String MeetTime}) {
+  void acceptAppointment({required String MeetTime, required AppointmentModel appoItem}) {
+    FirebaseFirestore.instance
+        .collection('appointments')
+        .doc(appoItem.appoId)
+        .update(
+        {
+          'accept': true,
+          'MeetTime' : MeetTime,
+        })
+        .then((value) => {
+      print('Appointment accepted '),
+    })
+        .then((value) {
+      getAppoinments();
+      emit(AcceptedAppointmentSuccessStates());
+      showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
+    })
+        .catchError((error) {
+      print(error);
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+          state: ToastStates.ERROR);
+      emit(AcceptedAppointmentErrorStates(error.toString()));
+    });
 
-  }
 
 
-
+}
 }

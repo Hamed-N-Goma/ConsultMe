@@ -105,6 +105,12 @@ class UpdateConsultantInfoScusses extends ConsultantStates {}
 
 class SecurityShowWarningState extends ConsultantStates {}
 
+class AcceptedAppointmentSuccessStates extends ConsultantStates {}
+class AcceptedAppointmentErrorStates extends ConsultantStates {
+  final String error;
+  AcceptedAppointmentErrorStates(this.error);
+}
+
 // Students
 class ChangeTerm extends ConsultantStates {}
 class ChangePeopleType extends ConsultantStates {}

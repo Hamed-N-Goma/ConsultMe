@@ -165,11 +165,15 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     required String consultId,
     required String resson,
     required String description,
+    required String consultName,
+    required String consultSp,
   }) {
     emit(CreateAppoinmentLoadingState());
 
     AppointmentModel model = AppointmentModel(
       consultId: consultId ,
+      consultName: consultName ,
+      consultSp: consultSp ,
       resson: resson ,
       userID : userModel!.uid,
       description: description,
@@ -177,23 +181,30 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
       userEmail: userModel!.email,
       userPhone: userModel!.phone,
       userName: userModel!.name,
-      MeetTime: '',
+      MeetTime: null,
       accept: null,
+      appoId : null,
 
     );
 
     FirebaseFirestore.instance
         .collection('appointments')
         .add(model.toMap())
-        .then((value)=> {
+        .then((value) =>{
     print("appointment ceateted"),
+      FirebaseFirestore.instance
+          .collection('appointments')
+          .doc(value.id)
+          .update({'appoId': value.id})
+          .then((value)=> {
     emit(CreateAppoinmentSuccessState()),
     showToast(message: 'تم ارسال الطلب بنجاح', state: ToastStates.SUCCESS)
   }).catchError((error) {
       emit(CreateAppoinmentErrorState(error.toString()));
       showToast(message: 'حدث خطأ , يرجى إعادة المحاولة ', state: ToastStates.ERROR);
 
-    });
+      })
+  });
   }
 
 
@@ -201,12 +212,14 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   void getAppoinments() {
     FirebaseFirestore.instance.collection('appointments').get().then((value) {
+      appointments = [];
       value.docs.forEach((element) {
         if (element.data()['userID'] == userModel!.uid) {
           appointments!.add(AppointmentModel.fromJson(element.data()));
         }
       });
       emit(GetAppointmentsSuccessState());
+
     }).catchError((error) {
       print(error.toString());
       emit(GetAppointmentsErrorState(error.toString()));

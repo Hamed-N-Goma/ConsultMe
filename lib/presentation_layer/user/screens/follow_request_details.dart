@@ -103,31 +103,7 @@ class FollowAppointmentScreen extends StatelessWidget {
                       height: 30.0,
                     ),
                     buildBoxCheckColor(),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            'رقم الطلب : ',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(
-                            model.userID!,
-                            textAlign: TextAlign.center,
-                            // maxLines: 1,
-                            // overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ),
-                      ],
-                    ),
+
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -144,8 +120,33 @@ class FollowAppointmentScreen extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: Text(
-                            model.userName!,
+                            model.consultName!,
                             textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            'التخصص : ',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            model.consultSp!,
+                            textAlign: TextAlign.center,
+                            // maxLines: 1,
+                            // overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
@@ -177,36 +178,6 @@ class FollowAppointmentScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-
-                    if(model.userID !=null)
-                      if(model.userID!.isNotEmpty)
-                        Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'رقم المستشير : ',
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    model.userPhone!,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                          ],
-                        ),
 
                     Column(
                       children: [
@@ -250,7 +221,7 @@ class FollowAppointmentScreen extends StatelessWidget {
   }
 
   Widget buildBoxCheckColor() => Builder(builder: (context) {
-    if (model.MeetTime != " ") {
+    if (model.MeetTime != null) {
       if(model.accept!) {
         return Container(
           height: 50.0,
@@ -302,35 +273,14 @@ class FollowAppointmentScreen extends StatelessWidget {
 
   Widget buildReplay() => Builder(
       builder: (context) {
-        // if(model.isreply){
-        //   return Row(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       Expanded(
-        //         flex: 1,
-        //         child: Text(
-        //           'الرد علي الطلب : ',
-        //           style: Theme.of(context).textTheme.headline6,
-        //         ),
-        //       ),
-        //       Expanded(
-        //         flex: 1,
-        //         child: Text(
-        //           model.reply,
-        //           textAlign: TextAlign.center,
-        //           style: Theme.of(context).textTheme.bodyText1,
-        //         ),
-        //       ),
-        //     ],
-        //   );
-        // }else{
+         if(model.accept == true){
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 1,
               child: Text(
-                'الرد علي الطلب : ',
+                'موعد المقابلة : ',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
@@ -344,7 +294,11 @@ class FollowAppointmentScreen extends StatelessWidget {
             ),
           ],
         );
-        // }
       }
+         else {
+           return Row(
+           );
+         }
+  }
   );
 }

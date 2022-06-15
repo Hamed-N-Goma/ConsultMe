@@ -57,7 +57,7 @@ class RequestAppoinmentDetails extends StatelessWidget {
                 child: Column(
                   children: [
                     smallDashBoardTitleBox(
-                        svgImage: 'assets/images/follow.svg',
+                        svgImage: 'assets/images/call.svg',
                         title: 'طلبات الاستشارة ',
                         svg: true
                     ),
@@ -302,6 +302,8 @@ class RequestAppoinmentDetails extends StatelessWidget {
                                   function: () {;
                                     cubit.acceptAppointment(
                                       MeetTime : consultTimeController.text,
+                                      appoItem : appoItem!,
+
                                     );
                                   },
                                   text: 'اوافق',

@@ -193,9 +193,6 @@ class FollowRequestsScreen extends StatelessWidget {
 Widget buildOrderScreen(context) => Column(
   children: [
 
-
-
-    //Guestorders
     Builder(builder: (context) {
       if(UserLayoutCubit.get(context).appointments!.isEmpty){
         return const SizedBox(height: 2.0,);
@@ -203,7 +200,7 @@ Widget buildOrderScreen(context) => Column(
         return Column(
           children: [
             smallDashBoardTitleBox(
-                svgImage: 'assets/images/follow.svg',
+                svgImage: 'assets/images/call.svg',
                 svg: true,
                 title: 'طلبات الإستشارة'),
             const SizedBox(height: 15.0),
@@ -226,9 +223,7 @@ Widget buildOrderScreen(context) => Column(
           ],
         );
       }
-
     }),
-
   ],
 );
 
@@ -239,7 +234,7 @@ Widget buildGuestItem(context,AppointmentModel  model) => Padding(
   child: buildEnquiry(
     context,
     height: 100.0,
-    state: model.MeetTime != "" ? model.accept == true  ? StatusStates.ACCEPT : StatusStates.REJECT :StatusStates.WAITING,
+    state: model.MeetTime != null ? model.accept == true  ? StatusStates.ACCEPT : StatusStates.REJECT :StatusStates.WAITING,
     body: Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -254,12 +249,13 @@ Widget buildGuestItem(context,AppointmentModel  model) => Padding(
                   SizedBox(
                     width: double.infinity,
                     child:  Text(
-                      'الأسم: ${model.userName}',
+                      'الأسم: ${model.consultName}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
+
                   SizedBox(
                     width: double.infinity,
                     child:  Text(
@@ -276,7 +272,7 @@ Widget buildGuestItem(context,AppointmentModel  model) => Padding(
               onTap: (){
                 navigateTo(
                   context,
-                  FollowAppointmentScreen(model: model,),
+                  FollowAppointmentScreen(model: model),
                 );
               },
               child: Text(
