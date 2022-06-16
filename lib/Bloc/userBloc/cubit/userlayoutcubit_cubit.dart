@@ -252,7 +252,51 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
       emit(GetMessagesSuccessState());
     });
   }
+
+
+
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String content,
+  }) {
+    MessageModel model = MessageModel(
+      content: content,
+      senderId: userModel?.uid ,
+      receiverId: receiverId,
+      dateTime: dateTime,
+    );
+
+    // set my chats
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel?.uid)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+
+    // set receiver chats
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(userModel?.uid)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+  }
+
 }
-
-
 

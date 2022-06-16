@@ -53,3 +53,6 @@ class  GetAppointmentsErrorState extends UserLayoutState
 }
 
 class GetMessagesSuccessState extends UserLayoutState {}
+class SendMessageSuccessState extends UserLayoutState {}
+class SendMessageErrorState extends UserLayoutState {}
+

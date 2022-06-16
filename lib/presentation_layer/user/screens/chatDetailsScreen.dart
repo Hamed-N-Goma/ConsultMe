@@ -1,5 +1,7 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../../shard/style/iconly_broken.dart';
 
 class ChatDetails extends StatelessWidget {
    ChatDetails({Key? key, required ConsultantModel this.consultant}) : super(key: key);
@@ -33,7 +37,86 @@ class ChatDetails extends StatelessWidget {
           title: buildAppbarTitle(context),
           actions: actionsAppBar(),
         ),
-        body: buildMessageStructure(),
+        body: ConditionalBuilder(
+          condition: UserLayoutCubit.get(context).messages.length > 0,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index)
+                    {
+                      var message = UserLayoutCubit.get(context).messages[index];
+
+                      if(UserLayoutCubit.get(context).userModel?.uid == message.senderId)
+                        return buildMyMessage(message);
+
+                      return buildMessage(message);
+                    },
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 15.0,
+                    ),
+                    itemCount: UserLayoutCubit.get(context).messages.length,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      15.0,
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0,
+                          ),
+                          child: TextFormField(
+                            controller: messageController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'type your message here ...',
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 50.0,
+                        color: mainColors,
+                        child: MaterialButton(
+                          onPressed: () {
+                            UserLayoutCubit.get(context).sendMessage(
+                              receiverId: consultant.uid!,
+                              dateTime: DateTime.now().toString(),
+                              content : messageController.text,
+                            );
+                          },
+                          minWidth: 1.0,
+                          child: Icon(
+                            IconBroken.Send,
+                            size: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          fallback: (context) => Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
       ),
     );
   }
@@ -80,86 +163,59 @@ class ChatDetails extends StatelessWidget {
     ];
   }
 
-  Widget buildMessageStructure() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadiusDirectional.only(
-                  bottomEnd: Radius.circular(10),
-                  topEnd: Radius.circular(10),
-                  topStart: Radius.circular(10),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-                horizontal: 10.0,
-              ),
-              child: Text("مرحبا"),
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: Container(
-              decoration: BoxDecoration(
-                color: ColorManager.myBlue.withOpacity(0.2),
-                borderRadius: BorderRadiusDirectional.only(
-                  bottomStart: Radius.circular(10),
-                  topEnd: Radius.circular(10),
-                  topStart: Radius.circular(10),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-                horizontal: 10.0,
-              ),
-              child: Text("مرحبا"),
-            ),
-          ),
-          Spacer(),
-          Container(
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "  اكتب رسالتك هنا",
-                    ),
-                  ),
-                ),
-                Container(
-                  color: ColorManager.myBlue.withOpacity(0.8),
-                  height: 52.0,
-                  child: MaterialButton(
-                    onPressed: () {},
-                    minWidth: 1,
-                    child: Icon(
-                      FontAwesomeIcons.paperPlane,
-                      color: ColorManager.myWhite,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
+   Widget buildMessage(MessageModel model) => Align(
+     alignment: AlignmentDirectional.centerStart,
+     child: Container(
+       decoration: BoxDecoration(
+         color: Colors.grey[300],
+         borderRadius: BorderRadiusDirectional.only(
+           bottomEnd: Radius.circular(
+             10.0,
+           ),
+           topStart: Radius.circular(
+             10.0,
+           ),
+           topEnd: Radius.circular(
+             10.0,
+           ),
+         ),
+       ),
+       padding: EdgeInsets.symmetric(
+         vertical: 5.0,
+         horizontal: 10.0,
+       ),
+       child: Text(
+         model.content!,
+       ),
+     ),
+   );
+
+   Widget buildMyMessage(MessageModel model) => Align(
+     alignment: AlignmentDirectional.centerEnd,
+     child: Container(
+       decoration: BoxDecoration(
+         color: mainColors.withOpacity(
+           .2,
+         ),
+         borderRadius: BorderRadiusDirectional.only(
+           bottomStart: Radius.circular(
+             10.0,
+           ),
+           topStart: Radius.circular(
+             10.0,
+           ),
+           topEnd: Radius.circular(
+             10.0,
+           ),
+         ),
+       ),
+       padding: EdgeInsets.symmetric(
+         vertical: 5.0,
+         horizontal: 10.0,
+       ),
+       child: Text(
+         model.content!,
+       ),
+     ),
+   );
 }
