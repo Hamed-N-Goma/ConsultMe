@@ -22,7 +22,7 @@ class UserLayout extends StatefulWidget {
 }
 
 class _UserLayoutState extends State<UserLayout> {
-  List<Widget> screens = [Home(), Search(), Chat(), More()];
+  List<Widget> screens = [Home(), Search(), UserChat(), More()];
   int _selectedIndex = 0;
 
   @override

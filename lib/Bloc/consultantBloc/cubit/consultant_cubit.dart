@@ -5,6 +5,7 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/ConsultantModel.dart';
+import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/complaintsModel.dart';
 import 'package:consultme/models/PostModel.dart';
@@ -334,5 +335,100 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
 
 
+
 }
+
+  List<UserModel> usersInChat = [];
+
+  void getUsersChat() async {
+    CollectionReference user =
+    FirebaseFirestore.instance.collection('users');
+    await user.where('userType', isEqualTo: 'user').get().then(
+          (user) =>
+      {
+        usersInChat = user.docs
+            .map((e) =>
+            UserModel.fromJson(e.data() as Map<String, dynamic>))
+            .toList(),
+        emit(GitUsersChatSucsess(usersInChat)),
+        user.docs.forEach((element) {
+          print(element.data());
+          print("++++============================");
+        })
+      },
+    );
+  }
+
+
+  List<MessageModel> messages = [];
+
+  void getMessages({
+    required String userId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(consultantModel?.uid)
+        .collection('chats')
+        .doc(userId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+
+      emit(GetMessagesSuccessState());
+    });
+  }
+
+
+
+  void sendMessage({
+    required String receiverId,
+    required String dateTime,
+    required String content,
+  }) {
+    MessageModel model = MessageModel(
+      content: content,
+      senderId: consultantModel?.uid ,
+      receiverId: receiverId,
+      dateTime: dateTime,
+    );
+
+    // set my chats
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(consultantModel?.uid)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+
+    // set receiver chats
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .collection('chats')
+        .doc(consultantModel?.uid)
+        .collection('messages')
+        .add(model.toMap())
+        .then((value) {
+      emit(SendMessageSuccessState());
+    }).catchError((error) {
+      emit(SendMessageErrorState());
+    });
+  }
+
+
+
 }

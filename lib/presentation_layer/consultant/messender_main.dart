@@ -1,17 +1,19 @@
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/presentation_layer/consultant/chatDetailsScreen.dart';
+import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../const.dart';
 import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
-import '../../presentation_layer_manager/color_manager/color_manager.dart';
 
-class ChatitemConsult extends StatelessWidget {
-  ChatitemConsult(ConsultantModel this.conslutant, BuildContext context, {Key? key}) : super(key: key);
+class ChatitemUser extends StatelessWidget {
+  ChatitemUser(UserModel this.user, BuildContext context, {Key? key}) : super(key: key);
   var size, width, height;
 
-  ConsultantModel conslutant;
+  UserModel user;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -19,9 +21,9 @@ class ChatitemConsult extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        navigateTo(context, ChatDetails(
-            consultant : conslutant,
-         ));
+        navigateTo(context, ChatDetailss(
+          User : user,
+        ));
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -60,7 +62,7 @@ class ChatitemConsult extends StatelessWidget {
       backgroundColor: Colors.black,
       radius: 40,
       backgroundImage: NetworkImage(
-        '${conslutant.image!}',
+        '${user.image!}',
       ),
     );
   }
@@ -73,17 +75,10 @@ class ChatitemConsult extends StatelessWidget {
           height: 8,
         ),
         Text(
-          '${conslutant.name!}',
+          '${user.name}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
 
-        Text(
-          '${conslutant.speachalist!}',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:consultme/models/ConsultantModel.dart';
+import 'package:consultme/models/UserModel.dart';
 
 abstract class ConsultantStates {}
 
@@ -110,6 +111,18 @@ class AcceptedAppointmentErrorStates extends ConsultantStates {
   final String error;
   AcceptedAppointmentErrorStates(this.error);
 }
+
+class GitUsersChatSucsess extends ConsultantStates{
+  final List<UserModel> users;
+
+  GitUsersChatSucsess(this.users);
+}
+
+class GetMessagesSuccessState extends ConsultantStates {}
+class SendMessageSuccessState extends ConsultantStates {}
+class SendMessageErrorState extends ConsultantStates {}
+
+
 
 // Students
 class ChangeTerm extends ConsultantStates {}

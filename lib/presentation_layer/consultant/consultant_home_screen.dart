@@ -2,6 +2,7 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
+import 'package:consultme/presentation_layer/consultant/chat.dart';
 import 'package:consultme/presentation_layer/consultant/complaints/complaints_screen.dart';
 import 'package:consultme/presentation_layer/consultant/edit_profile.dart';
 import 'package:consultme/presentation_layer/consultant/news/news_screen.dart';
@@ -224,7 +225,8 @@ class ConsultantHomeScreen extends StatelessWidget {
 
                           InkWell(
                             onTap: () {
-                              navigateTo(context, Chat());
+
+                              navigateTo(context, ConsultChat());
                             },
                             child: defaultDashBoardTitleBox(
                                 img: 'assets/images/chat.png',

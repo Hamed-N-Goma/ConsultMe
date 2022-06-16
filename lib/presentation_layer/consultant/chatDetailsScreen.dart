@@ -1,10 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
-import 'package:consultme/const.dart';
+import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
+import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/models/MessageModel.dart';
-import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,20 +11,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../shard/style/iconly_broken.dart';
 
-class ChatDetails extends StatelessWidget {
-   ChatDetails({Key? key, required ConsultantModel this.consultant}) : super(key: key);
+class ChatDetailss extends StatelessWidget {
+   ChatDetailss({Key? key, required UserModel this.User}) : super(key: key);
 
-   ConsultantModel consultant ;
+   UserModel User ;
    var messageController = TextEditingController();
 
    @override
    Widget build(BuildContext context) {
      return Builder(
          builder: (BuildContext context) {
-       UserLayoutCubit.get(context).getMessages(
-         consultId: consultant.uid!,
+           ConsultantCubit.get(context).getMessages(
+         userId: User.uid!,
        );
-       return BlocConsumer<UserLayoutCubit, UserLayoutState>(
+       return BlocConsumer<ConsultantCubit, ConsultantStates>(
            listener: (context, state) {},
            builder: (context, state) {
     return Directionality(
@@ -38,7 +37,7 @@ class ChatDetails extends StatelessWidget {
           actions: actionsAppBar(),
         ),
         body: ConditionalBuilder(
-          condition: UserLayoutCubit.get(context).messages.length >= 0,
+          condition: ConsultantCubit.get(context).messages.length >= 0,
           builder: (context) => Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -48,9 +47,9 @@ class ChatDetails extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index)
                     {
-                      var message = UserLayoutCubit.get(context).messages[index];
+                      var message = ConsultantCubit.get(context).messages[index];
 
-                      if(UserLayoutCubit.get(context).userModel?.uid == message.senderId)
+                      if(ConsultantCubit.get(context).consultantModel?.uid == message.senderId)
                         return buildMyMessage(message);
 
                       return buildMessage(message);
@@ -58,7 +57,7 @@ class ChatDetails extends StatelessWidget {
                     separatorBuilder: (context, index) => SizedBox(
                       height: 15.0,
                     ),
-                    itemCount: UserLayoutCubit.get(context).messages.length,
+                    itemCount: ConsultantCubit.get(context).messages.length,
                   ),
                 ),
                 Container(
@@ -93,8 +92,8 @@ class ChatDetails extends StatelessWidget {
                         color: mainColors,
                         child: MaterialButton(
                           onPressed: () {
-                            UserLayoutCubit.get(context).sendMessage(
-                              receiverId: consultant.uid!,
+                            ConsultantCubit.get(context).sendMessage(
+                              receiverId: User.uid!,
                               dateTime: DateTime.now().toString(),
                               content : messageController.text,
                             );
@@ -131,13 +130,13 @@ class ChatDetails extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 20.0,
-          backgroundImage: NetworkImage(consultant.image!),
+          backgroundImage: NetworkImage(User.image!),
         ),
         SizedBox(
           width: 15.0,
         ),
         Text(
-          consultant.name!,
+          User.name!,
           style: Theme.of(context).textTheme.bodyText1,
         )
       ],
