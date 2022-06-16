@@ -10,10 +10,10 @@ import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
 
 class ConsultChatitem extends StatelessWidget {
-  ConsultChatitem(UserModel this.user, BuildContext context, {Key? key}) : super(key: key);
+  ConsultChatitem(UserModel this.User, BuildContext context, {Key? key}) : super(key: key);
   var size, width, height;
 
-  UserModel user;
+  UserModel User;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -22,7 +22,7 @@ class ConsultChatitem extends StatelessWidget {
     return InkWell(
       onTap: () {
         navigateTo(context, ConsultChatDetails(
-          User : user,
+          User : User,
         ));
       },
       child: Padding(
@@ -44,9 +44,9 @@ class ConsultChatitem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              consultantImage(),
+              UserImage(),
               SizedBox(width: width * 0.03),
-              consultantDetales(height, context),
+              UserDetales(height, context),
             ],
           ),
         ),
@@ -57,17 +57,17 @@ class ConsultChatitem extends StatelessWidget {
   ///Widgets
   /////
 
-  Widget consultantImage() {
+  Widget UserImage() {
     return CircleAvatar(
       backgroundColor: Colors.black,
       radius: 40,
       backgroundImage: NetworkImage(
-        '${user.image!}',
+        '${User.image!}',
       ),
     );
   }
 
-  Widget consultantDetales(double height, context) {
+  Widget UserDetales(double height, context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,7 +75,7 @@ class ConsultChatitem extends StatelessWidget {
           height: 8,
         ),
         Text(
-          '${user.name!}',
+          '${User.name}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
 

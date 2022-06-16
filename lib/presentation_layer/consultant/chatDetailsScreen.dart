@@ -22,7 +22,7 @@ class ConsultChatDetails extends StatelessWidget {
      return Builder(
          builder: (BuildContext context) {
            ConsultantCubit.get(context).getMessages(
-         userId: User.uid!,
+         userId: User.uid,
        );
        return BlocConsumer<ConsultantCubit, ConsultantStates>(
            listener: (context, state) {},
@@ -93,7 +93,7 @@ class ConsultChatDetails extends StatelessWidget {
                         child: MaterialButton(
                           onPressed: () {
                             ConsultantCubit.get(context).sendMessage(
-                              receiverId: User.uid!,
+                              receiverId: User.uid,
                               dateTime: DateTime.now().toString(),
                               content : messageController.text,
                             );
@@ -136,7 +136,7 @@ class ConsultChatDetails extends StatelessWidget {
           width: 15.0,
         ),
         Text(
-          User.name!,
+          User.name,
           style: Theme.of(context).textTheme.bodyText1,
         )
       ],
