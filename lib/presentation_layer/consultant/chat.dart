@@ -32,7 +32,7 @@ class ConsultChat extends StatelessWidget {
                   ListView.separated(
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) =>
-                          ChatitemUser(ConsultantCubit
+                          ConsultChatitem(ConsultantCubit
                               .get(context)
                               .usersInChat[index], context),
                       separatorBuilder: (context, index) => myDivider(),

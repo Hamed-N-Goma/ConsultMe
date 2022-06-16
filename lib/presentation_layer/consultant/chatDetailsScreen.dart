@@ -11,8 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../shard/style/iconly_broken.dart';
 
-class ChatDetailss extends StatelessWidget {
-   ChatDetailss({Key? key, required UserModel this.User}) : super(key: key);
+class ConsultChatDetails extends StatelessWidget {
+  ConsultChatDetails({Key? key, required UserModel this.User}) : super(key: key);
 
    UserModel User ;
    var messageController = TextEditingController();

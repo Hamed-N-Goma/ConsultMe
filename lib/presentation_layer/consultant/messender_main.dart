@@ -9,8 +9,8 @@ import '../../../const.dart';
 import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
 
-class ChatitemUser extends StatelessWidget {
-  ChatitemUser(UserModel this.user, BuildContext context, {Key? key}) : super(key: key);
+class ConsultChatitem extends StatelessWidget {
+  ConsultChatitem(UserModel this.user, BuildContext context, {Key? key}) : super(key: key);
   var size, width, height;
 
   UserModel user;
@@ -21,7 +21,7 @@ class ChatitemUser extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        navigateTo(context, ChatDetailss(
+        navigateTo(context, ConsultChatDetails(
           User : user,
         ));
       },
@@ -75,7 +75,7 @@ class ChatitemUser extends StatelessWidget {
           height: 8,
         ),
         Text(
-          '${user.name}',
+          '${user.name!}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
 

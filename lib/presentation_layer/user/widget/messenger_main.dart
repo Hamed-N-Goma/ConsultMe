@@ -19,7 +19,7 @@ class ChatitemConsult extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        navigateTo(context, ChatDetails(
+        navigateTo(context, UserChatDetails(
             consultant : conslutant,
          ));
       },
