@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../components/components.dart';
 
 class ConsultChat extends StatelessWidget {
   ConsultChat({Key? key}) : super(key: key);
@@ -16,65 +17,46 @@ class ConsultChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          size = MediaQuery
-              .of(context)
-              .size;
-          height = size.height;
-          width = size.width;
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                elevation: Theme.of(context).appBarTheme.elevation,
-                foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
-                title: leadingTitle(),
-               // actions: appBarItems(model?.image),
-              ),
-              body: ConditionalBuilder(
-                condition: ConsultantCubit
-                    .get(context)
-                    .usersInChat
-                    .length > 0,
-                builder: (context) =>
-                    ListView.separated(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            ConsultChatitem(ConsultantCubit
-                                .get(context)
-                                .usersInChat[index], context),
-                        separatorBuilder: (context, index) => myDivider(),
-                        itemCount: ConsultantCubit
-                            .get(context)
-                            .usersInChat
-                            .length),
-                fallback: (context) => Center(child: CircularProgressIndicator()),
-
-              ),
+      listener: (context, state) {},
+      builder: (context, state) {
+        size = MediaQuery.of(context).size;
+        height = size.height;
+        width = size.width;
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            appBar: AppBar(
+              iconTheme: Theme.of(context).iconTheme,
+              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+              elevation: 1,
+              foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+              title: leadingTitle(context),
+              // actions: appBarItems(model?.image),
             ),
-          );
-        },
+            body: ConditionalBuilder(
+              condition: ConsultantCubit.get(context).usersInChat.length > 0,
+              builder: (context) => ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) => ConsultChatitem(
+                      ConsultantCubit.get(context).usersInChat[index], context),
+                  separatorBuilder: (context, index) => myDivider(),
+                  itemCount: ConsultantCubit.get(context).usersInChat.length),
+              fallback: (context) => Center(child: CircularProgressIndicator()),
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
-Widget myDivider() => Padding(
-  padding: const EdgeInsetsDirectional.only(
-    start: 20.0,
-  ),
-  child: Container(
-    width: double.infinity,
-    height: 1.0,
-    color: Colors.grey[300],
-  ),
-);
-Widget leadingTitle() {
-  return Text(
-    'إستشرني',
-  //  style: Theme.of(context).textTheme.bodyText1,
-  );
+Widget myDivider() => const SizedBox(
+      width: double.infinity,
+      height: 3.0,
+    );
+Widget leadingTitle(context) {
+  return buildCustomText(
+      text: 'إستشرني', style: Theme.of(context).textTheme.bodyLarge);
 }
 
 List<Widget> appBarItems(image) {
@@ -88,17 +70,16 @@ List<Widget> appBarItems(image) {
     ),
     InkWell(
       onTap: () {
-      //  navigateTo(context, const Profile());
+        //  navigateTo(context, const Profile());
       },
       child: CircleAvatar(
         backgroundImage: image == null
             ? const AssetImage(
-          "assets/images/user.png",
-        ) as ImageProvider
+                "assets/images/user.png",
+              ) as ImageProvider
             : NetworkImage(image),
         radius: 15,
       ),
     )
   ];
 }
-

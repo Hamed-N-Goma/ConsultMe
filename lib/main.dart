@@ -46,8 +46,7 @@ class MyApp extends StatelessWidget {
               ..getConsultantData()
               ..getPosts()
               ..getAppoinments()
-              ..getUsersChat()
-        ),
+              ..getUsersChat()),
         BlocProvider(
             create: (BuildContext context) => UserCubit()..getUserData()),
         BlocProvider(
@@ -57,7 +56,11 @@ class MyApp extends StatelessWidget {
               ..getData()
               ..getUsers()),
         BlocProvider(
-            create: (BuildContext context) => UserLayoutCubit()..GetUserInfo()),
+            create: (BuildContext context) => UserLayoutCubit()
+              ..GetUserInfo()
+              ..getCategory()
+              ..getConsultants()
+              ..getFavorite()),
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},

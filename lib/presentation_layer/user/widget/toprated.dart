@@ -1,10 +1,14 @@
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/appoinment.dart';
 import 'package:consultme/presentation_layer/user/screens/consultantDetails.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -12,9 +16,11 @@ import '../../../const.dart';
 
 class Toprated extends StatelessWidget {
   final ConsultantModel consultant;
+  final List<FavoriteModel> favoriteUid;
 
-  Toprated({Key? key, required this.consultant}) : super(key: key);
-
+  Toprated({Key? key, required this.consultant, required this.favoriteUid})
+      : super(key: key);
+  bool isfavee = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,7 +34,7 @@ class Toprated extends StatelessWidget {
           navigateTo(
               context,
               consultantDetails(
-                consultant : consultant,
+                consultant: consultant,
               ));
         },
         child: Container(
@@ -51,15 +57,40 @@ class Toprated extends StatelessWidget {
               consultantImage(),
               const SizedBox(width: 16),
               consultantDetales(context, consultant),
+              const SizedBox(width: 16),
+              Expanded(child: favoriteButton())
             ],
           ),
         ),
       ),
     );
   }
+
   ///////
   ///Widgets
   /////
+  Widget favoriteButton() {
+    return BlocBuilder<UserLayoutCubit, UserLayoutState>(
+      builder: (context, state) {
+        chekisfavorite();
+        bool isfave = isfavee;
+        return FavoriteButton(
+          isFavorite: isfave,
+
+          iconSize: 45,
+          // iconDisabledColor: Colors.white,
+          valueChanged: (ifave) {
+            if (isfave) {
+            } else {
+              BlocProvider.of<UserLayoutCubit>(context)
+                  .postFavorite(consultant.uid!);
+              BlocProvider.of<UserLayoutCubit>(context).getFavorite();
+            }
+          },
+        );
+      },
+    );
+  }
 
   Widget consultantImage() {
     return Container(
@@ -143,6 +174,14 @@ class Toprated extends StatelessWidget {
           )
         ],
       );
+    });
+  }
+
+  void chekisfavorite() {
+    favoriteUid.forEach((element) {
+      if (element.favoriteConsultant == consultant.uid) {
+        isfavee = true;
+      }
     });
   }
 }

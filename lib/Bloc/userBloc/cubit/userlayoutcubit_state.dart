@@ -25,34 +25,68 @@ class ErrorWithUpdateUser extends UserLayoutState {}
 
 class UpdateUserInfoScusses extends UserLayoutState {}
 
-class GitConsultantsDataSucsess extends UserLayoutState {
+class GetConsultanatDataSucsses extends UserLayoutState {
   final List<ConsultantModel> consultants;
 
-  GitConsultantsDataSucsess(this.consultants);
+  GetConsultanatDataSucsses(
+    this.consultants,
+  );
+}
+
+class GetCategoryDataSucsses extends UserLayoutState {
+  final List<CategoryModel> category;
+
+  GetCategoryDataSucsses(this.category);
 }
 
 class ChangeThemeSuccessState extends UserLayoutState {}
 
-class CreateAppoinmentLoadingState extends UserLayoutState{}
+class CreateAppoinmentLoadingState extends UserLayoutState {}
+
 class CreateAppoinmentSuccessState extends UserLayoutState {}
-class CreateAppoinmentErrorState extends UserLayoutState
-{
+
+class CreateAppoinmentErrorState extends UserLayoutState {
   final String error;
 
   CreateAppoinmentErrorState(this.error);
 }
 
-
 class GetAppointmentsLodingState extends UserLayoutState {}
-class  GetAppointmentsSuccessState extends UserLayoutState {}
-class  GetAppointmentsErrorState extends UserLayoutState
-{
+
+class GetAppointmentsSuccessState extends UserLayoutState {}
+
+class GetAppointmentsErrorState extends UserLayoutState {
   final String error;
 
   GetAppointmentsErrorState(this.error);
 }
 
 class GetMessagesSuccessState extends UserLayoutState {}
+
 class SendMessageSuccessState extends UserLayoutState {}
+
 class SendMessageErrorState extends UserLayoutState {}
 
+class LoadingConsultant extends UserLayoutState {}
+
+class LoadingCategory extends UserLayoutState {}
+
+class AddConsultantToFavoriteSucssesfuly extends UserLayoutState {}
+
+class ErrorWithAddConsultantToFavoriteSucssesfuly extends UserLayoutState {
+  final String error;
+
+  ErrorWithAddConsultantToFavoriteSucssesfuly(this.error);
+}
+
+class GetConsultantToFavoriteSucssesfuly extends UserLayoutState {
+  final List<FavoriteModel> favoriteConsultant;
+
+  GetConsultantToFavoriteSucssesfuly(this.favoriteConsultant);
+}
+
+class ErrorWithGetConsultantToFavoriteSucssesfuly extends UserLayoutState {
+  final String error;
+
+  ErrorWithGetConsultantToFavoriteSucssesfuly(this.error);
+}

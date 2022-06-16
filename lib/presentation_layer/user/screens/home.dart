@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/user/screens/view_all_impo_artcle.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';
 import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
@@ -14,25 +17,37 @@ import '../../presentation_layer_manager/font_manager/fontmanager.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
-  late List<ConsultantModel> allConsultants;
-
+  List<ConsultantModel> allConsultants = [];
+  List<CategoryModel> categoryList = [];
+  List<FavoriteModel> favorite = [];
+  bool categoryfalg = false;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserLayoutCubit, UserLayoutState>(
-      builder: (context, state) {
-        if (state is GitConsultantsDataSucsess) {
+    return BlocListener<UserLayoutCubit, UserLayoutState>(
+      listener: (context, state) {
+        if (state is GetCategoryDataSucsses) {
+          categoryList = state.category;
+          print('From home');
+        }
+        if (state is GetConsultanatDataSucsses) {
           allConsultants = state.consultants;
-          return buildLayout(context);
-        } else if (state is ChangeThemeSuccessState) {
-          return buildLayout(context);
-        } else {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).indicatorColor,
-            ),
-          );
+        }
+        if (state is GetConsultantToFavoriteSucssesfuly) {
+          favorite = state.favoriteConsultant;
         }
       },
+      child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
+        builder: (context, state) {
+          if (allConsultants.isNotEmpty && categoryList.isNotEmpty) {
+            return buildLayout(context);
+          } else {
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).progressIndicatorTheme.color,
+            ));
+          }
+        },
+      ),
     );
   }
 
@@ -95,9 +110,12 @@ class Home extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => category(context),
-              separatorBuilder: (context, index) => const SizedBox(width: 5),
-              itemCount: 30,
+              itemBuilder: (context, index) => Category(
+                categotyItem: categoryList[index],
+                allConsultants: allConsultants,
+              ),
+              separatorBuilder: (context, index) => const SizedBox(width: 7),
+              itemCount: categoryList.length,
             ),
           ),
         ),
@@ -131,6 +149,7 @@ class Home extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) => Toprated(
               consultant: allConsultants[index],
+              favoriteUid: favorite,
             ),
         separatorBuilder: (context, index) => const Divider(
               thickness: 16,

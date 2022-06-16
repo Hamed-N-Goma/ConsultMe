@@ -10,7 +10,8 @@ import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
 
 class ConsultChatitem extends StatelessWidget {
-  ConsultChatitem(UserModel this.User, BuildContext context, {Key? key}) : super(key: key);
+  ConsultChatitem(UserModel this.User, BuildContext context, {Key? key})
+      : super(key: key);
   var size, width, height;
 
   UserModel User;
@@ -21,9 +22,11 @@ class ConsultChatitem extends StatelessWidget {
     width = size.width;
     return InkWell(
       onTap: () {
-        navigateTo(context, ConsultChatDetails(
-          User : User,
-        ));
+        navigateTo(
+            context,
+            ConsultChatDetails(
+              User: User,
+            ));
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -38,7 +41,7 @@ class ConsultChatitem extends StatelessWidget {
           decoration: BoxDecoration(
             color: ThemeCubit.get(context).darkTheme
                 ? mainColors
-                : Theme.of(context).scaffoldBackgroundColor,
+                : Theme.of(context).highlightColor.withOpacity(0.3),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -78,7 +81,6 @@ class ConsultChatitem extends StatelessWidget {
           '${User.name}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
-
       ],
     );
   }

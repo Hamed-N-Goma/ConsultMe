@@ -50,6 +50,9 @@ dependencies:
   shared_preferences: ^2.0.6
   cached_network_image: ^3.2.0
   link_text: ^0.2.0
+  shimmer: ^2.0.0
+  favorite_button: ^0.0.4
+
 
 
 

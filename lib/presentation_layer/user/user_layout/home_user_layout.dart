@@ -28,7 +28,6 @@ class _UserLayoutState extends State<UserLayout> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<UserLayoutCubit>(context).getConsultants();
   }
 
   @override

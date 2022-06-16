@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +15,6 @@ import 'package:meta/meta.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../../models/MessageModel.dart';
-
 
 part 'userlayoutcubit_state.dart';
 
@@ -26,14 +27,18 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   UserModel? userModel;
   List<ConsultantModel> conslutants = [];
-
+  List<CategoryModel> categoryList = [];
+  List<FavoriteModel> favoriteList = [];
   void GetUserInfo() {
     emit(GetDataLoading());
-    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) =>
-    {
-      userModel = UserModel.fromJson(value.data()!),
-      emit(GetUserDataSucsses()),
-    })
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .get()
+        .then((value) => {
+              userModel = UserModel.fromJson(value.data()!),
+              emit(GetUserDataSucsses()),
+            })
         .catchError((onError) {
       emit(ErrorWithGetUserData());
     });
@@ -59,26 +64,21 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   Future<void> uploadProfile() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child("users/${Uri
-        .file(profileImage!.path)
-        .pathSegments
-        .last}")
+        .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
         .putFile(profileImage!)
-        .then((value) =>
-    {
-      value.ref
-          .getDownloadURL()
-          .then(
-            (value) =>
-        {
-          profileImageUrl = value.toString(),
-          print(profileImageUrl)
-        },
-      )
-          .catchError((error) {
-        emit(ErrorWithUploadProfileimagge());
-      })
-    })
+        .then((value) => {
+              value.ref
+                  .getDownloadURL()
+                  .then(
+                    (value) => {
+                      profileImageUrl = value.toString(),
+                      print(profileImageUrl)
+                    },
+                  )
+                  .catchError((error) {
+                emit(ErrorWithUploadProfileimagge());
+              })
+            })
         .catchError((error) {
       emit(ErrorWithUploadProfileimagge());
 
@@ -101,11 +101,10 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) =>
-      {
-        emit(UpdateUserInfoScusses()),
-        GetUserInfo(),
-      })
+          .then((value) => {
+                emit(UpdateUserInfoScusses()),
+                GetUserInfo(),
+              })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
@@ -122,34 +121,48 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) =>
-      {
-        emit(UpdateUserInfoScusses()),
-        GetUserInfo(),
-      })
+          .then((value) => {
+                emit(UpdateUserInfoScusses()),
+                GetUserInfo(),
+              })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
     }
   }
 
-  void getConsultants() async {
+  void getConsultants() {
+    emit(LoadingConsultant());
     CollectionReference consultant =
-    FirebaseFirestore.instance.collection('users');
-    await consultant.where('userType', isEqualTo: 'Consultant').get().then(
-          (consultant) =>
-      {
-        conslutants = consultant.docs
-            .map((e) =>
-            ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
-            .toList(),
-        emit(GitConsultantsDataSucsess(conslutants)),
-        consultant.docs.forEach((element) {
-          print(element.data());
-          print("++++============================");
-        })
-      },
-    );
+        FirebaseFirestore.instance.collection('users');
+    consultant.where('userType', isEqualTo: 'Consultant').get().then(
+          (consultant) => {
+            conslutants = consultant.docs
+                .map((e) =>
+                    ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
+                .toList(),
+            emit(GetConsultanatDataSucsses(conslutants)),
+            consultant.docs.forEach((element) {
+              print(element.data());
+              print("++++============================");
+            })
+          },
+        );
+  }
+
+  void getCategory() {
+    emit(LoadingCategory());
+    CollectionReference category =
+        FirebaseFirestore.instance.collection('Category');
+    category.get().then((value) => {
+          categoryList = value.docs
+              .map((e) =>
+                  CategoryModel.fromJson(e.data() as Map<String, dynamic>))
+              .toList(),
+          print('before emmmmmit'),
+          emit(GetCategoryDataSucsses(categoryList)),
+          print('after emmmmmit'),
+        });
   }
 
   // edit profile screen
@@ -159,7 +172,6 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     isDark = !isDark;
     emit(ChangeThemeSuccessState());
   }
-
 
   AppointmentModel? appoinmentModel;
 
@@ -173,11 +185,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     emit(CreateAppoinmentLoadingState());
 
     AppointmentModel model = AppointmentModel(
-      consultId: consultId ,
-      consultName: consultName ,
-      consultSp: consultSp ,
-      resson: resson ,
-      userID : userModel!.uid,
+      consultId: consultId,
+      consultName: consultName,
+      consultSp: consultSp,
+      resson: resson,
+      userID: userModel!.uid,
       description: description,
       time: DateTime.now().toString(),
       userEmail: userModel!.email,
@@ -185,30 +197,32 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
       userName: userModel!.name,
       MeetTime: null,
       accept: null,
-      appoId : null,
-
+      appoId: null,
     );
 
     FirebaseFirestore.instance
         .collection('appointments')
         .add(model.toMap())
-        .then((value) =>{
-    print("appointment ceateted"),
-      FirebaseFirestore.instance
-          .collection('appointments')
-          .doc(value.id)
-          .update({'appoId': value.id})
-          .then((value)=> {
-    emit(CreateAppoinmentSuccessState()),
-    showToast(message: 'تم ارسال الطلب بنجاح', state: ToastStates.SUCCESS)
-  }).catchError((error) {
-      emit(CreateAppoinmentErrorState(error.toString()));
-      showToast(message: 'حدث خطأ , يرجى إعادة المحاولة ', state: ToastStates.ERROR);
-
-      })
-  });
+        .then((value) => {
+              print("appointment ceateted"),
+              FirebaseFirestore.instance
+                  .collection('appointments')
+                  .doc(value.id)
+                  .update({'appoId': value.id})
+                  .then((value) => {
+                        emit(CreateAppoinmentSuccessState()),
+                        showToast(
+                            message: 'تم ارسال الطلب بنجاح',
+                            state: ToastStates.SUCCESS)
+                      })
+                  .catchError((error) {
+                    emit(CreateAppoinmentErrorState(error.toString()));
+                    showToast(
+                        message: 'حدث خطأ , يرجى إعادة المحاولة ',
+                        state: ToastStates.ERROR);
+                  })
+            });
   }
-
 
   List<AppointmentModel>? appointments = [];
 
@@ -221,13 +235,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         }
       });
       emit(GetAppointmentsSuccessState());
-
     }).catchError((error) {
       print(error.toString());
       emit(GetAppointmentsErrorState(error.toString()));
     });
   }
-
 
   List<MessageModel> messages = [];
 
@@ -253,8 +265,6 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
-
-
   void sendMessage({
     required String receiverId,
     required String dateTime,
@@ -262,7 +272,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   }) {
     MessageModel model = MessageModel(
       content: content,
-      senderId: userModel?.uid ,
+      senderId: userModel?.uid,
       receiverId: receiverId,
       dateTime: dateTime,
     );
@@ -298,5 +308,36 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
-}
+  void postFavorite(String consultantid) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favorite')
+        .doc(consultantid)
+        .set({'favoriteConsultant': consultantid})
+        .then((value) => {emit(AddConsultantToFavoriteSucssesfuly())})
+        .catchError((error) {
+          emit(ErrorWithAddConsultantToFavoriteSucssesfuly(error.toString()));
+        });
+  }
 
+  void getFavorite() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favorite')
+        .get()
+        .then((value) => {
+              favoriteList = value.docs
+                  .map((e) => FavoriteModel.fronJson(e.data()))
+                  .toList(),
+              emit(GetConsultantToFavoriteSucssesfuly(favoriteList)),
+              favoriteList.forEach((element) {
+                print(element.favoriteConsultant.toString());
+              })
+            })
+        .catchError((error) {
+      emit(ErrorWithGetConsultantToFavoriteSucssesfuly(error));
+    });
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,27 +21,31 @@ class _SearchState extends State<Search> {
   late List<ConsultantModel> allConsultants;
 
   late List<ConsultantModel> searchedConsultant;
-
+  late List<FavoriteModel> favo;
   bool _isSearching = false;
 
   var searchController = TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    allConsultants = BlocProvider.of<UserLayoutCubit>(context).conslutants;
+    favo = BlocProvider.of<UserLayoutCubit>(context).favoriteList;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserLayoutCubit, UserLayoutState>(
       builder: (context, state) {
-        if (state is GitConsultantsDataSucsess) {
-          allConsultants = state.consultants;
-          return buildSearchScreen();
-        } else if (state is ChangeThemeSuccessState) {
-          BlocProvider.of<UserLayoutCubit>(context).getConsultants();
-
-          return buildSearchScreen();
-        } else {
+        if (allConsultants.isEmpty) {
           return Center(
-              child: CircularProgressIndicator(
-            color: Theme.of(context).progressIndicatorTheme.color,
-          ));
+            child: CircularProgressIndicator(
+              color: Theme.of(context).progressIndicatorTheme.color,
+            ),
+          );
+        } else {
+          return buildSearchScreen();
         }
       },
     );
@@ -63,8 +68,10 @@ class _SearchState extends State<Search> {
               builder: (context) => Expanded(
                     child: SizedBox(
                       child: ListView.separated(
-                          itemBuilder: ((context, index) =>
-                              Toprated(consultant: searchedConsultant[index])),
+                          itemBuilder: ((context, index) => Toprated(
+                                consultant: searchedConsultant[index],
+                                favoriteUid: favo,
+                              )),
                           separatorBuilder: (context, index) => SizedBox(
                                 height: 10,
                               ),
