@@ -357,4 +357,24 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
       emit(GetAllPostsErrorState(error.toString()));
     });
   }
+
+  List<ConsultantModel> favConslutants = [];
+
+
+  void getFavoriteConsult() {
+
+          favoriteList.forEach((element) {
+            FirebaseFirestore.instance.collection('users').get().then((value) {
+              value.docs.forEach((fav) {
+                if (fav.data()['uid'] == element.favoriteConsultant) {
+                  favConslutants.add(ConsultantModel.fromJson(fav.data()));
+                }
+              });
+              emit(GetAllFavSuccessState());
+            }).catchError((error) {
+              print(error.toString());
+              emit(GetAllFavErrorState(error.toString()));
+            });
+          });
+  }
 }
