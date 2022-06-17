@@ -54,27 +54,27 @@ Widget mostImportantItem({
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   height: height,
                   width: width! / 2,
                   child: Padding(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     child: Column(
                       children: [
                         Text(
                           '${model.title}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: FontConst.fontFamily,
                               fontWeight: FontWeightManager.bold),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
                           '${model.text}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: FontConst.fontFamily,
                               fontWeight: FontWeightManager.regular),
                           overflow: TextOverflow.ellipsis,
@@ -91,20 +91,22 @@ Widget mostImportantItem({
                     padding: const EdgeInsets.all(4.0),
                     child: CachedNetworkImage(
                       imageUrl: '${model.postImage}',
-                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>  Container(
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Container(
                         alignment: Alignment.center,
                         height: 80.0,
-                        child: Icon(Icons.error,
+                        child: Icon(
+                          Icons.error,
                           color: ThemeCubit.get(context).darkTheme
                               ? mainTextColor
-                              : mainColors,),
+                              : mainColors,
+                        ),
                       ),
-                      fit:BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
-
               ],
             ),
           )
@@ -134,10 +136,10 @@ Widget messageItem({double? width, double? height}) => Padding(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               backgroundColor: Colors.black,
               radius: 40,
-              backgroundImage: NetworkImage(
+              backgroundImage: const NetworkImage(
                 profileImageUri,
               ),
             ),
@@ -848,17 +850,17 @@ Widget dashWhiteBoard(
     );
 
 Widget buildEnquiry(
-    context, {
-      required double height,
-      required StatusStates state,
-      required Widget body,
-    }) =>
+  context, {
+  required double height,
+  required StatusStates state,
+  required Widget body,
+}) =>
     Container(
       height: height,
       width: double.infinity,
       decoration: BoxDecoration(
         color:
-        ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
+            ThemeCubit.get(context).darkTheme ? finesColorDark : Colors.white,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Row(

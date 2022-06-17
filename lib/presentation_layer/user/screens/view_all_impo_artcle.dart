@@ -3,6 +3,7 @@ import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
+import 'package:consultme/presentation_layer/user/widget/mostImportantNews.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +24,9 @@ class ViewAll extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           iconTheme: IconThemeData(color: Colors.black),
+          elevation: 1,
           centerTitle: true,
           title: const Text('مواضيع رآئجه',
               style: TextStyle(
@@ -36,14 +38,15 @@ class ViewAll extends StatelessWidget {
         body: Center(
           child: ListView.separated(
               itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 15),
-                  child: mostImportantItem(
-                      width: width - 20,
-                      cubit: cubit,
-                      model: UserLayoutCubit.get(context).posts[index]
-                  )),
+                    padding: const EdgeInsets.only(top: 15),
+                    child: MostImportnatNews(
+                      post: cubit.posts[index],
+                      height: height * 0.158,
+                      width: width,
+                    ),
+                  ),
               separatorBuilder: (context, index) => const SizedBox(),
-              itemCount: UserLayoutCubit.get(context).posts.length ),
+              itemCount: UserLayoutCubit.get(context).posts.length),
         ),
       ),
     );

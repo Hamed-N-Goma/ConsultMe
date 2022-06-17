@@ -2,11 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/user/screens/view_all_impo_artcle.dart';
 import 'package:consultme/presentation_layer/user/widget/category.dart';
+import 'package:consultme/presentation_layer/user/widget/mostImportantNews.dart';
 import 'package:consultme/presentation_layer/user/widget/mostimportant.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,8 @@ class Home extends StatelessWidget {
   List<ConsultantModel> allConsultants = [];
   List<CategoryModel> categoryList = [];
   List<FavoriteModel> favorite = [];
+  List<PostModel> posts = [];
+
   var size, width, height;
   bool categoryfalg = false;
   @override
@@ -39,10 +43,15 @@ class Home extends StatelessWidget {
         if (state is GetConsultantToFavoriteSucssesfuly) {
           favorite = state.favoriteConsultant;
         }
+        if (state is GetAllPostsSuccessState) {
+          posts = state.posts;
+        }
       },
       child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
         builder: (context, state) {
-          if (allConsultants.isNotEmpty && categoryList.isNotEmpty) {
+          if (allConsultants.isNotEmpty &&
+              categoryList.isNotEmpty &&
+              posts.isNotEmpty) {
             return buildLayout(context);
           } else {
             return Center(
@@ -133,17 +142,13 @@ class Home extends StatelessWidget {
         width: double.infinity,
         child: CarouselSlider.builder(
             itemCount: UserLayoutCubit.get(context).posts.length,
-            itemBuilder: (context, index, pageindex) =>
-                mostImportantItem(
-                    width: width - 20,
-                    cubit: UserLayoutCubit.get(context),
-                    model: UserLayoutCubit.get(context).posts[index]
-                ),
+            itemBuilder: (context, index, pageindex) => MostImportnatNews(
+                post: posts[index], height: height, width: width - 10),
             options: CarouselOptions(
                 height: 140,
                 autoPlay: true,
                 autoPlayCurve: Curves.slowMiddle,
-                viewportFraction: 0.8,
+                viewportFraction: 1,
                 autoPlayAnimationDuration: Duration(milliseconds: 800),
                 aspectRatio: 16 / 9,
                 enableInfiniteScroll: true)));

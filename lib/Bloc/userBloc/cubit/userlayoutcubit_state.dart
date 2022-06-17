@@ -91,11 +91,15 @@ class ErrorWithGetConsultantToFavoriteSucssesfuly extends UserLayoutState {
   ErrorWithGetConsultantToFavoriteSucssesfuly(this.error);
 }
 
-
 class GetAllPostsLoadingState extends UserLayoutState {}
-class  GetAllPostsSuccessState extends UserLayoutState {}
-class  GetAllPostsErrorState extends UserLayoutState
-{
+
+class GetAllPostsSuccessState extends UserLayoutState {
+  final List<PostModel> posts;
+
+  GetAllPostsSuccessState(this.posts);
+}
+
+class GetAllPostsErrorState extends UserLayoutState {
   final String error;
 
   GetAllPostsErrorState(this.error);

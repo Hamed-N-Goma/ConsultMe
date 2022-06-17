@@ -346,12 +346,8 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   void getAllPosts() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
-      posts = [];
-      value.docs.forEach((element) {
-          posts.add(PostModel.fromJson(element.data()));
-        }
-      );
-      emit(GetAllPostsSuccessState());
+      posts = value.docs.map((e) => PostModel.fromJson(e.data())).toList();
+      emit(GetAllPostsSuccessState(posts));
     }).catchError((error) {
       print(error.toString());
       emit(GetAllPostsErrorState(error.toString()));
