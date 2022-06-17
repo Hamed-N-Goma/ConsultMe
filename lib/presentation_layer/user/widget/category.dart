@@ -1,7 +1,6 @@
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/models/consultantmodel.dart';
-import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/user/screens/categoryDetails.dart';
 import 'package:flutter/material.dart';
 

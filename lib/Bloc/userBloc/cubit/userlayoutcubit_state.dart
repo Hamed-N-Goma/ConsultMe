@@ -104,3 +104,10 @@ class GetAllPostsErrorState extends UserLayoutState {
 
   GetAllPostsErrorState(this.error);
 }
+
+class GetAllFavSuccessState extends UserLayoutState {}
+class GetAllFavErrorState extends UserLayoutState {
+  final String error;
+
+  GetAllFavErrorState(this.error);
+}

@@ -5,6 +5,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TechnicalSupportScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScreen.dart';
+import 'package:consultme/presentation_layer/user/screens/favScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/profile.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
@@ -48,7 +49,7 @@ class More extends StatelessWidget {
                         UserLayoutCubit.get(context).getAppoinments();
                             navigateTo(
                             context,
-                            const FollowRequestsScreen(),
+                             favScreen(),
                           );
                       },
                       child: Row(
@@ -84,10 +85,10 @@ class More extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        //   navigateTo(
-                        //     context,
-                        // StudentRateScreen(),
-                        //  );
+                         navigateTo(
+                             context,
+                           favScreen(),
+                         );
                       },
                       child: Row(
                         children: [
