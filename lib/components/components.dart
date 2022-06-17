@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/models/PostModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,6 +27,9 @@ Widget mostImportantItem({
   Function()? ontap,
   double? height,
   double? width,
+  context,
+  required PostModel model,
+  required UserLayoutCubit cubit,
 }) =>
     InkWell(
       borderRadius: BorderRadius.circular(20),
@@ -54,9 +60,9 @@ Widget mostImportantItem({
                   child: Padding(
                     padding: EdgeInsets.all(1),
                     child: Column(
-                      children: const [
+                      children: [
                         Text(
-                          'كورونا والعالم',
+                          '${model.title}',
                           style: TextStyle(
                               fontFamily: FontConst.fontFamily,
                               fontWeight: FontWeightManager.bold),
@@ -67,7 +73,7 @@ Widget mostImportantItem({
                           height: 5,
                         ),
                         Text(
-                          'فيروسات كورونا هي عائلة من الفيروسات التي يمكنها أن تسبب أمراضًا مثل الزكام والالتهاب التنفُّسي الحاد الوخيم (السارس) ومتلازمة الشرق الأوسط التنفُّسية (ميرس). في عام 2019، اُكتشِف نوع جديد من فيروسات كورونا تسبب في تفشي مرض كان منشأه في الصين.',
+                          '${model.text}',
                           style: TextStyle(
                               fontFamily: FontConst.fontFamily,
                               fontWeight: FontWeightManager.regular),
@@ -78,23 +84,27 @@ Widget mostImportantItem({
                     ),
                   ),
                 ),
-                Container(
-                  height: height,
-                  width: width / 2,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(profileImageUri),
-                      fit: BoxFit.cover,
-                    ),
-                    color: ColorManager.myBlue,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+                SizedBox(
+                  width: 120.0,
+                  height: 100.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: CachedNetworkImage(
+                      imageUrl: '${model.postImage}',
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>  Container(
+                        alignment: Alignment.center,
+                        height: 80.0,
+                        child: Icon(Icons.error,
+                          color: ThemeCubit.get(context).darkTheme
+                              ? mainTextColor
+                              : mainColors,),
+                      ),
+                      fit:BoxFit.cover,
                     ),
                   ),
                 ),
+
               ],
             ),
           )

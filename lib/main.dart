@@ -60,7 +60,8 @@ class MyApp extends StatelessWidget {
               ..GetUserInfo()
               ..getCategory()
               ..getConsultants()
-              ..getFavorite()),
+              ..getFavorite()
+              ..getAllPosts()),
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},

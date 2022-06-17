@@ -15,6 +15,7 @@ import 'package:meta/meta.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../../models/MessageModel.dart';
+import '../../../models/PostModel.dart';
 
 part 'userlayoutcubit_state.dart';
 
@@ -338,6 +339,22 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
             })
         .catchError((error) {
       emit(ErrorWithGetConsultantToFavoriteSucssesfuly(error));
+    });
+  }
+
+  List<PostModel> posts = [];
+
+  void getAllPosts() {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      posts = [];
+      value.docs.forEach((element) {
+          posts.add(PostModel.fromJson(element.data()));
+        }
+      );
+      emit(GetAllPostsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetAllPostsErrorState(error.toString()));
     });
   }
 }

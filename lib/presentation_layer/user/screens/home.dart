@@ -20,9 +20,13 @@ class Home extends StatelessWidget {
   List<ConsultantModel> allConsultants = [];
   List<CategoryModel> categoryList = [];
   List<FavoriteModel> favorite = [];
+  var size, width, height;
   bool categoryfalg = false;
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return BlocListener<UserLayoutCubit, UserLayoutState>(
       listener: (context, state) {
         if (state is GetCategoryDataSucsses) {
@@ -78,7 +82,7 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            buildMostImportantList(),
+            buildMostImportantList(context),
             const SizedBox(
               height: 25,
             ),
@@ -123,14 +127,18 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildMostImportantList() {
+  Widget buildMostImportantList(context) {
     return SizedBox(
         height: 150,
         width: double.infinity,
         child: CarouselSlider.builder(
-            itemCount: 10,
+            itemCount: UserLayoutCubit.get(context).posts.length,
             itemBuilder: (context, index, pageindex) =>
-                buildMostImportant(context),
+                mostImportantItem(
+                    width: width - 20,
+                    cubit: UserLayoutCubit.get(context),
+                    model: UserLayoutCubit.get(context).posts[index]
+                ),
             options: CarouselOptions(
                 height: 140,
                 autoPlay: true,
