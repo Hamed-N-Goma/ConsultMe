@@ -354,9 +354,9 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
-  List<ConsultantModel> favConslutants = [];
+  void consultantfav() {}
 
-
+/*
   void getFavoriteConsult() {
 
           favoriteList.forEach((element) {
@@ -372,5 +372,5 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
               emit(GetAllFavErrorState(error.toString()));
             });
           });
-  }
+  }*/
 }

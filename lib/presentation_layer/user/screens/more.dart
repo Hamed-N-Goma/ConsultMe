@@ -5,7 +5,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TechnicalSupportScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScreen.dart';
-import 'package:consultme/presentation_layer/user/screens/favScreen.dart';
+import 'package:consultme/presentation_layer/user/screens/favoritescreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/profile.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 class More extends StatelessWidget {
   More({Key? key}) : super(key: key);
@@ -47,10 +46,10 @@ class More extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         UserLayoutCubit.get(context).getAppoinments();
-                            navigateTo(
-                            context,
-                             favScreen(),
-                          );
+                        navigateTo(
+                          context,
+                          FavoriteScreen(),
+                        );
                       },
                       child: Row(
                         children: [
@@ -85,15 +84,15 @@ class More extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                         navigateTo(
-                             context,
-                           favScreen(),
-                         );
+                        navigateTo(
+                          context,
+                          FavoriteScreen(),
+                        );
                       },
                       child: Row(
                         children: [
                           Text(
-                            'تقييم الطلاب',
+                            'المفضلة',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const Spacer(),
@@ -291,7 +290,6 @@ class More extends StatelessWidget {
                     const SizedBox(
                       height: 40.0,
                     ),
-
                     InkWell(
                       onTap: () {
                         showDialog<void>(
@@ -319,7 +317,7 @@ class More extends StatelessWidget {
                                       'تأكيد الخروج من الحساب ؟',
                                       textDirection: TextDirection.rtl,
                                       style:
-                                      Theme.of(context).textTheme.subtitle1,
+                                          Theme.of(context).textTheme.subtitle1,
                                     ),
                                   ],
                                 ),
@@ -338,7 +336,7 @@ class More extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   navigateAndFinish(context, LoginScreen());
-                                } ,
+                                },
                                 child: Text(
                                   'تأكيد',
                                   textDirection: TextDirection.rtl,
@@ -358,7 +356,6 @@ class More extends StatelessWidget {
                             fontWeight: FontWeight.bold, color: Colors.red),
                       ),
                     ),
-
                   ],
                 ),
               )
