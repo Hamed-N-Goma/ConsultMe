@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/presentation_layer/consultant/success_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
@@ -155,11 +157,28 @@ class AddCategoy extends StatelessWidget {
                           cubit: cubit,
                         );
                       },
-                      text: 'إضافة الخبر',
+                      text: 'إضافة القسم',
                       width: double.infinity,
                       height: 47.0,
                       btnColor: mainColors,
                     ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => buildCategoryItem(
+                          context: context,
+                          model: AdminCubit.get(context).categorys[index],
+                          cubit: cubit),
+                      separatorBuilder: (context, index) =>
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      itemCount: AdminCubit.get(context).categorys.length,
+                    ),
+
                   ],
                 ),
               ),
@@ -188,4 +207,87 @@ void validation({
       name: name,
     );
   }
+}
+
+Widget buildCategoryItem({
+  context,
+  required CategoryModel model,
+  required AdminCubit cubit,
+}) {
+
+  return Dismissible(
+    direction: DismissDirection.startToEnd,
+    resizeDuration: const Duration(milliseconds: 200),
+    onDismissed: (direction) {
+      cubit.DeleteCategory(model);
+    },
+    background: Container(
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadiusDirectional.circular(8.0),
+      ),
+      padding: const EdgeInsets.all(5.0),
+      alignment: AlignmentDirectional.centerStart,
+      child: const Icon(
+        Icons.delete_forever,
+        color: Colors.white,
+      ),
+    ),
+    key: UniqueKey(),
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey, width: 1),
+        borderRadius: BorderRadius.circular(
+          8.0,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120.0,
+            height: 100.0,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: CachedNetworkImage(
+                imageUrl: '${model.image}',
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) =>  Container(
+                  alignment: Alignment.center,
+                  height: 80.0,
+                  child: Icon(Icons.error,
+                    color: ThemeCubit.get(context).darkTheme
+                        ? mainTextColor
+                        : mainColors,),
+                ),
+                fit:BoxFit.cover,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: SizedBox(
+                height: 80.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${model.name}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

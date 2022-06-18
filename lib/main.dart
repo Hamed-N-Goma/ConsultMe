@@ -54,7 +54,8 @@ class MyApp extends StatelessWidget {
               ..getAdminData()
               ..getUserInSecurity()
               ..getData()
-              ..getUsers()),
+              ..getUsers()
+              ..getCategorys()),
         BlocProvider(
             create: (BuildContext context) => UserLayoutCubit()
               ..GetUserInfo()

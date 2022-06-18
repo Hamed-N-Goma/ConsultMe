@@ -76,6 +76,18 @@ class CreateCategoryErrorState extends AdminStates
 
   CreateCategoryErrorState(this.error);
 }
+
+class GetCategorySuccessState extends AdminStates{}
+class GetCategoryErrorState extends AdminStates{
+  final String error;
+
+  GetCategoryErrorState(this.error);
+}
+
+class DeleteCategorySuccessState extends AdminStates{}
+class DeleteCategoryErrorState extends AdminStates{}
+
+
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}
 class PostAttendanceSuccessStates extends AdminStates {}
