@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
+import 'package:consultme/presentation_layer/user/screens/postsDetails.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +21,13 @@ class MostImportnatNews extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       radius: 20,
-      onTap: () {},
+      onTap: () {
+        navigateTo(
+            context,
+            PostsDetails(
+              post: post,
+            ));
+      },
       child: Row(
         children: [
           Container(
