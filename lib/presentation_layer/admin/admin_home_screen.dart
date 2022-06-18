@@ -3,6 +3,7 @@ import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
+import 'package:consultme/presentation_layer/admin/AddCategory.dart';
 import 'package:consultme/presentation_layer/admin/complaints/accept/accept_screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/dash_complaints_screen.dart';
 import 'package:consultme/presentation_layer/admin/seach.dart';
@@ -274,6 +275,17 @@ class AdminHomeScreen extends StatelessWidget {
                               child: defaultDashBoardTitleBox(
                                   img: 'assets/images/home.png',
                                   title: 'إداره الخبراء'),
+                            ),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                navigateTo(context,  AddCategoy());
+                              },
+                              child: defaultDashBoardTitleBox(
+                                  img: 'assets/images/home.png',
+                                  title: 'اضافة قسم '),
                             ),
                             const SizedBox(
                               height: 12.0,

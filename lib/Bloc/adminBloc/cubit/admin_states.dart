@@ -63,6 +63,19 @@ class GitUsersDataSucsess extends AdminStates {
 
   GitUsersDataSucsess(this.users);
 }
+
+class categImagePickedSuccessState extends AdminStates {}
+class categImagePickedErrorState extends AdminStates {}
+class ImageRemoveSuccessState extends AdminStates {}
+
+class CreateCategoryLoadingState extends AdminStates{}
+class CreateCategorySuccessState extends AdminStates {}
+class CreateCategoryErrorState extends AdminStates
+{
+  final String error;
+
+  CreateCategoryErrorState(this.error);
+}
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}
 class PostAttendanceSuccessStates extends AdminStates {}

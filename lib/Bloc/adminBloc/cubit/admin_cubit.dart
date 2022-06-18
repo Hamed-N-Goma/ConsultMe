@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:consultme/models/categorymodel.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
@@ -6,10 +9,9 @@ import 'package:consultme/models/ConsultantModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/complaintsModel.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
-import 'package:consultme/shard/network/remote/dio_helper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AdminCubit extends Cubit<AdminStates> {
   AdminCubit() : super(AdminInitialState());
@@ -293,5 +295,77 @@ class AdminCubit extends Cubit<AdminStates> {
             })
           },
         );
+  }
+
+
+  var picker = ImagePicker();
+  File? categImage;
+
+  Future<void> getcategImage() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      categImage = File(pickedFile.path);
+      emit(categImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(categImagePickedErrorState());
+    }
+  }
+
+  void removePostImage() {
+    categImage = null;
+    emit(ImageRemoveSuccessState());
+  }
+
+  void uploadcategImage({
+    required String name,
+  }) {
+    emit(CreateCategoryLoadingState());
+
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Category/${Uri.file(categImage!.path).pathSegments.last}')
+        .putFile(categImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+
+        AddCategory(
+          name: name,
+          categImage:value,
+        );
+      }).catchError((error) {
+        emit(CreateCategoryErrorState(error));
+      });
+    }).catchError((error) {
+      emit(CreateCategoryErrorState(error));
+    });
+  }
+
+  CategoryModel? categoryModel;
+
+  void AddCategory({
+
+    required String name,
+    String? categImage,
+  }) {
+    emit(CreateCategoryLoadingState());
+
+    CategoryModel model = CategoryModel(
+      image: categImage,
+      name: name ,
+    );
+
+    FirebaseFirestore.instance
+        .collection('Category')
+        .add(model.toMap())
+        .then((value) {
+      emit(CreateCategorySuccessState());
+    }).catchError((error) {
+      emit(CreateCategoryErrorState(error.toString()));
+    });
   }
 }

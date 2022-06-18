@@ -2,15 +2,22 @@ class CategoryModel {
   String? name;
   String? image;
 
-  CategoryModel({required this.image, required this.name});
+  CategoryModel({
+    required this.name,
+    required this.image,
+  });
 
-  CategoryModel.fromJson(Map<dynamic, dynamic> categorymap) {
-    if (categorymap == null) {
-      return;
-    } else {
-      name = categorymap['name'];
-      image = categorymap['image'];
-    }
+  CategoryModel.fromJson(Map<String, dynamic> json)
+  {
+    name = json['name'];
+    image = json['image'];
   }
-  // TODO CREATE TO JESON METHOD OR REPOSOTRY TO RERUTN MAPPED CATEGORY DATA
+
+  Map<String, dynamic> toMap()
+  {
+    return {
+      'name':name,
+      'image':image,
+    };
+  }
 }
