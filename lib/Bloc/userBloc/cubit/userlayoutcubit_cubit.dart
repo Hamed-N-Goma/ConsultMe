@@ -316,7 +316,10 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .collection('favorite')
         .doc(consultantid)
         .set({'favoriteConsultant': consultantid})
-        .then((value) => {emit(AddConsultantToFavoriteSucssesfuly())})
+        .then((value) => {
+              emit(AddConsultantToFavoriteSucssesfuly()),
+              getFavorite(),
+            })
         .catchError((error) {
           emit(ErrorWithAddConsultantToFavoriteSucssesfuly(error.toString()));
         });
@@ -339,6 +342,24 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
             })
         .catchError((error) {
       emit(ErrorWithGetConsultantToFavoriteSucssesfuly(error));
+    });
+  }
+
+  void deleteFavorite(String id) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .collection('favorite')
+        .doc(id)
+        .delete()
+        .then((value) => {
+              print('getting sucssesfuly'),
+              print('delete sucssesfuly'),
+              emit(DeleteFromFavSucsses()),
+              getFavorite(),
+            })
+        .catchError((error) {
+      emit(ErrorWithDeleteFromFav(error.toString()));
     });
   }
 

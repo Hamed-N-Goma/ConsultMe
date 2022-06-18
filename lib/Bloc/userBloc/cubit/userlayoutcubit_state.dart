@@ -106,8 +106,17 @@ class GetAllPostsErrorState extends UserLayoutState {
 }
 
 class GetAllFavSuccessState extends UserLayoutState {}
+
 class GetAllFavErrorState extends UserLayoutState {
   final String error;
 
   GetAllFavErrorState(this.error);
+}
+
+class DeleteFromFavSucsses extends UserLayoutState {}
+
+class ErrorWithDeleteFromFav extends UserLayoutState {
+  final String error;
+
+  ErrorWithDeleteFromFav(this.error);
 }

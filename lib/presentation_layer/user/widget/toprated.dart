@@ -81,10 +81,12 @@ class Toprated extends StatelessWidget {
           // iconDisabledColor: Colors.white,
           valueChanged: (ifave) {
             if (isfave) {
+              BlocProvider.of<UserLayoutCubit>(context)
+                  .deleteFavorite(consultant.uid!);
             } else {
               BlocProvider.of<UserLayoutCubit>(context)
                   .postFavorite(consultant.uid!);
-              BlocProvider.of<UserLayoutCubit>(context).getFavorite();
+              // BlocProvider.of<UserLayoutCubit>(context).getFavorite();
             }
           },
         );

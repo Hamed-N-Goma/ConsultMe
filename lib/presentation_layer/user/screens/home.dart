@@ -35,13 +35,13 @@ class Home extends StatelessWidget {
       listener: (context, state) {
         if (state is GetCategoryDataSucsses) {
           categoryList = state.category;
-          print('From home');
         }
         if (state is GetConsultanatDataSucsses) {
           allConsultants = state.consultants;
         }
         if (state is GetConsultantToFavoriteSucssesfuly) {
           favorite = state.favoriteConsultant;
+          print('from hoooooooooooooooome');
         }
         if (state is GetAllPostsSuccessState) {
           posts = state.posts;
