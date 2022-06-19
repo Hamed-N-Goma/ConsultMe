@@ -25,7 +25,7 @@ class FavoriteScreen extends StatelessWidget {
       body: BlocBuilder<UserLayoutCubit, UserLayoutState>(
         builder: (context, state) {
           if (state is DeleteFromFavSucsses) {
-            // BlocProvider.of<UserLayoutCubit>(context).getFavorite();
+            BlocProvider.of<UserLayoutCubit>(context).getFavorite();
             List<FavoriteModel> favorite =
                 BlocProvider.of<UserLayoutCubit>(context).favoriteList;
             return ListView.separated(

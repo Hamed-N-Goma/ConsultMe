@@ -14,6 +14,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../const.dart';
 
+// ignore: must_be_immutable
 class Toprated extends StatelessWidget {
   final ConsultantModel consultant;
   final List<FavoriteModel> favoriteUid;

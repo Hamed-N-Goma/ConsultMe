@@ -336,6 +336,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
                   .map((e) => FavoriteModel.fronJson(e.data()))
                   .toList(),
               emit(GetConsultantToFavoriteSucssesfuly(favoriteList)),
+              print("gettttttting favorite"),
               favoriteList.forEach((element) {
                 print(element.favoriteConsultant.toString());
               })

@@ -49,10 +49,13 @@ class Home extends StatelessWidget {
       },
       child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
         builder: (context, state) {
+          List<FavoriteModel> myfave =
+              BlocProvider.of<UserLayoutCubit>(context).favoriteList;
+
           if (allConsultants.isNotEmpty &&
               categoryList.isNotEmpty &&
               posts.isNotEmpty) {
-            return buildLayout(context);
+            return buildLayout(context, myfave);
           } else {
             return Center(
                 child: CircularProgressIndicator(
@@ -64,7 +67,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildLayout(context) {
+  Widget buildLayout(context, myfave) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SingleChildScrollView(
@@ -104,7 +107,7 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            buildTopRatedConsultant(),
+            buildTopRatedConsultant(myfave),
             const SizedBox(
               height: 15,
             ),
@@ -154,7 +157,7 @@ class Home extends StatelessWidget {
                 enableInfiniteScroll: true)));
   }
 
-  Widget buildTopRatedConsultant() {
+  Widget buildTopRatedConsultant(myfave) {
     return ListView.separated(
         physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
@@ -162,7 +165,7 @@ class Home extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) => Toprated(
               consultant: allConsultants[index],
-              favoriteUid: favorite,
+              favoriteUid: myfave,
             ),
         separatorBuilder: (context, index) => const Divider(
               thickness: 16,
