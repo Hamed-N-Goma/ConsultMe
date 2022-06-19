@@ -62,7 +62,8 @@ class MyApp extends StatelessWidget {
               ..getCategory()
               ..getConsultants()
               ..getFavorite()
-              ..getAllPosts()),
+              ..getAllPosts()
+               ..getConsultChat()),
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},

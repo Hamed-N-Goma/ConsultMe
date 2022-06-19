@@ -30,16 +30,18 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   List<ConsultantModel> conslutants = [];
   List<CategoryModel> categoryList = [];
   List<FavoriteModel> favoriteList = [];
+
   void GetUserInfo() {
     emit(GetDataLoading());
     FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .get()
-        .then((value) => {
-              userModel = UserModel.fromJson(value.data()!),
-              emit(GetUserDataSucsses()),
-            })
+        .then((value) =>
+    {
+      userModel = UserModel.fromJson(value.data()!),
+      emit(GetUserDataSucsses()),
+    })
         .catchError((onError) {
       emit(ErrorWithGetUserData());
     });
@@ -65,21 +67,26 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   Future<void> uploadProfile() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
+        .child("users/${Uri
+        .file(profileImage!.path)
+        .pathSegments
+        .last}")
         .putFile(profileImage!)
-        .then((value) => {
-              value.ref
-                  .getDownloadURL()
-                  .then(
-                    (value) => {
-                      profileImageUrl = value.toString(),
-                      print(profileImageUrl)
-                    },
-                  )
-                  .catchError((error) {
-                emit(ErrorWithUploadProfileimagge());
-              })
-            })
+        .then((value) =>
+    {
+      value.ref
+          .getDownloadURL()
+          .then(
+            (value) =>
+        {
+          profileImageUrl = value.toString(),
+          print(profileImageUrl)
+        },
+      )
+          .catchError((error) {
+        emit(ErrorWithUploadProfileimagge());
+      })
+    })
         .catchError((error) {
       emit(ErrorWithUploadProfileimagge());
 
@@ -102,10 +109,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) => {
-                emit(UpdateUserInfoScusses()),
-                GetUserInfo(),
-              })
+          .then((value) =>
+      {
+        emit(UpdateUserInfoScusses()),
+        GetUserInfo(),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
@@ -122,10 +130,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .collection('users')
           .doc(userModel!.uid)
           .update(userModel!.toMap())
-          .then((value) => {
-                emit(UpdateUserInfoScusses()),
-                GetUserInfo(),
-              })
+          .then((value) =>
+      {
+        emit(UpdateUserInfoScusses()),
+        GetUserInfo(),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
       });
@@ -135,35 +144,37 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   void getConsultants() {
     emit(LoadingConsultant());
     CollectionReference consultant =
-        FirebaseFirestore.instance.collection('users');
+    FirebaseFirestore.instance.collection('users');
     consultant.where('userType', isEqualTo: 'Consultant').get().then(
-          (consultant) => {
-            conslutants = consultant.docs
-                .map((e) =>
-                    ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
-                .toList(),
-            emit(GetConsultanatDataSucsses(conslutants)),
-            consultant.docs.forEach((element) {
-              print(element.data());
-              print("++++============================");
-            })
-          },
-        );
+          (consultant) =>
+      {
+        conslutants = consultant.docs
+            .map((e) =>
+            ConsultantModel.fromJson(e.data() as Map<String, dynamic>))
+            .toList(),
+        emit(GetConsultanatDataSucsses(conslutants)),
+        consultant.docs.forEach((element) {
+          print(element.data());
+          print("++++============================");
+        })
+      },
+    );
   }
 
   void getCategory() {
     emit(LoadingCategory());
     CollectionReference category =
-        FirebaseFirestore.instance.collection('Category');
-    category.get().then((value) => {
-          categoryList = value.docs
-              .map((e) =>
-                  CategoryModel.fromJson(e.data() as Map<String, dynamic>))
-              .toList(),
-          print('before emmmmmit'),
-          emit(GetCategoryDataSucsses(categoryList)),
-          print('after emmmmmit'),
-        });
+    FirebaseFirestore.instance.collection('Category');
+    category.get().then((value) =>
+    {
+      categoryList = value.docs
+          .map((e) =>
+          CategoryModel.fromJson(e.data() as Map<String, dynamic>))
+          .toList(),
+      print('before emmmmmit'),
+      emit(GetCategoryDataSucsses(categoryList)),
+      print('after emmmmmit'),
+    });
   }
 
   // edit profile screen
@@ -204,25 +215,27 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     FirebaseFirestore.instance
         .collection('appointments')
         .add(model.toMap())
-        .then((value) => {
-              print("appointment ceateted"),
-              FirebaseFirestore.instance
-                  .collection('appointments')
-                  .doc(value.id)
-                  .update({'appoId': value.id})
-                  .then((value) => {
-                        emit(CreateAppoinmentSuccessState()),
-                        showToast(
-                            message: 'تم ارسال الطلب بنجاح',
-                            state: ToastStates.SUCCESS)
-                      })
-                  .catchError((error) {
-                    emit(CreateAppoinmentErrorState(error.toString()));
-                    showToast(
-                        message: 'حدث خطأ , يرجى إعادة المحاولة ',
-                        state: ToastStates.ERROR);
-                  })
-            });
+        .then((value) =>
+    {
+      print("appointment ceateted"),
+      FirebaseFirestore.instance
+          .collection('appointments')
+          .doc(value.id)
+          .update({'appoId': value.id})
+          .then((value) =>
+      {
+        emit(CreateAppoinmentSuccessState()),
+        showToast(
+            message: 'تم ارسال الطلب بنجاح',
+            state: ToastStates.SUCCESS)
+      })
+          .catchError((error) {
+        emit(CreateAppoinmentErrorState(error.toString()));
+        showToast(
+            message: 'حدث خطأ , يرجى إعادة المحاولة ',
+            state: ToastStates.ERROR);
+      })
+    });
   }
 
   List<AppointmentModel>? appointments = [];
@@ -316,13 +329,14 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .collection('favorite')
         .doc(consultantid)
         .set({'favoriteConsultant': consultantid})
-        .then((value) => {
-              emit(AddConsultantToFavoriteSucssesfuly()),
-              getFavorite(),
-            })
+        .then((value) =>
+    {
+      emit(AddConsultantToFavoriteSucssesfuly()),
+      getFavorite(),
+    })
         .catchError((error) {
-          emit(ErrorWithAddConsultantToFavoriteSucssesfuly(error.toString()));
-        });
+      emit(ErrorWithAddConsultantToFavoriteSucssesfuly(error.toString()));
+    });
   }
 
   void getFavorite() {
@@ -331,16 +345,17 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .doc(uId)
         .collection('favorite')
         .get()
-        .then((value) => {
-              favoriteList = value.docs
-                  .map((e) => FavoriteModel.fronJson(e.data()))
-                  .toList(),
-              emit(GetConsultantToFavoriteSucssesfuly(favoriteList)),
-              print("gettttttting favorite"),
-              favoriteList.forEach((element) {
-                print(element.favoriteConsultant.toString());
-              })
-            })
+        .then((value) =>
+    {
+      favoriteList = value.docs
+          .map((e) => FavoriteModel.fronJson(e.data()))
+          .toList(),
+      emit(GetConsultantToFavoriteSucssesfuly(favoriteList)),
+      print("gettttttting favorite"),
+      favoriteList.forEach((element) {
+        print(element.favoriteConsultant.toString());
+      })
+    })
         .catchError((error) {
       emit(ErrorWithGetConsultantToFavoriteSucssesfuly(error));
     });
@@ -353,12 +368,13 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .collection('favorite')
         .doc(id)
         .delete()
-        .then((value) => {
-              print('getting sucssesfuly'),
-              print('delete sucssesfuly'),
-              emit(DeleteFromFavSucsses()),
-              getFavorite(),
-            })
+        .then((value) =>
+    {
+      print('getting sucssesfuly'),
+      print('delete sucssesfuly'),
+      emit(DeleteFromFavSucsses()),
+      getFavorite(),
+    })
         .catchError((error) {
       emit(ErrorWithDeleteFromFav(error.toString()));
     });
@@ -376,23 +392,23 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
-  void consultantfav() {}
+  List<ConsultantModel> chats = [];
 
-/*
-  void getFavoriteConsult() {
 
-          favoriteList.forEach((element) {
-            FirebaseFirestore.instance.collection('users').get().then((value) {
-              value.docs.forEach((fav) {
-                if (fav.data()['uid'] == element.favoriteConsultant) {
-                  favConslutants.add(ConsultantModel.fromJson(fav.data()));
-                }
-              });
-              emit(GetAllFavSuccessState());
-            }).catchError((error) {
-              print(error.toString());
-              emit(GetAllFavErrorState(error.toString()));
-            });
-          });
-  }*/
+  getConsultChat() {
+    chats = [];
+    appointments!.forEach((element) {
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((consult) {
+          if (consult.data()['uid'] == element.consultId && element.accept == true) {
+            chats.add(ConsultantModel.fromJson(consult.data()));
+          }
+        });
+           emit(GetAllChatSuccessState(chats));
+      }).catchError((error) {
+        print(error.toString());
+         emit(GetAllChatErrorState(error.toString()));
+      });
+    });
+  }
 }

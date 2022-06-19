@@ -24,6 +24,7 @@ class Home extends StatelessWidget {
   List<FavoriteModel> favorite = [];
   List<PostModel> posts = [];
 
+
   var size, width, height;
   bool categoryfalg = false;
   @override
@@ -46,6 +47,7 @@ class Home extends StatelessWidget {
         if (state is GetAllPostsSuccessState) {
           posts = state.posts;
         }
+
       },
       child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
         builder: (context, state) {

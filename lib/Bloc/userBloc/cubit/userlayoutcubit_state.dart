@@ -120,3 +120,15 @@ class ErrorWithDeleteFromFav extends UserLayoutState {
 
   ErrorWithDeleteFromFav(this.error);
 }
+
+class GetAllChatSuccessState extends UserLayoutState {
+  final List<ConsultantModel> chats;
+
+  GetAllChatSuccessState(this.chats);
+}
+
+class GetAllChatErrorState extends UserLayoutState {
+  final String error;
+
+  GetAllChatErrorState(this.error);
+}

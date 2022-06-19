@@ -34,7 +34,7 @@ class ConsultChat extends StatelessWidget {
               // actions: appBarItems(model?.image),
             ),
             body: ConditionalBuilder(
-              condition: ConsultantCubit.get(context).usersInChat.length > 0,
+              condition: ConsultantCubit.get(context).usersInChat.length >= 0,
               builder: (context) => ListView.separated(
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) => ConsultChatitem(

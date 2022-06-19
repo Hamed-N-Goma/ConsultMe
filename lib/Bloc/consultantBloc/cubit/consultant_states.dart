@@ -1,5 +1,6 @@
 import 'package:consultme/models/ConsultantModel.dart';
 import 'package:consultme/models/UserModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class ConsultantStates {}
 
@@ -122,7 +123,17 @@ class GetMessagesSuccessState extends ConsultantStates {}
 class SendMessageSuccessState extends ConsultantStates {}
 class SendMessageErrorState extends ConsultantStates {}
 
+class GetAllChatSuccessState extends ConsultantStates {
+  final List<UserModel> chats;
 
+  GetAllChatSuccessState(this.chats);
+}
+
+class GetAllChatErrorState extends ConsultantStates {
+  final String error;
+
+  GetAllChatErrorState(this.error);
+}
 
 // Students
 class ChangeTerm extends ConsultantStates {}

@@ -24,19 +24,19 @@ class UserChat extends StatelessWidget {
             child: ConditionalBuilder(
               condition: UserLayoutCubit
                   .get(context)
-                  .conslutants
-                  .length > 0,
+                  .chats
+                  .length >= 0,
               builder: (context) =>
                   ListView.separated(
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) =>
                           ChatitemConsult(UserLayoutCubit
                               .get(context)
-                              .conslutants[index], context),
+                              .chats[index], context),
                       separatorBuilder: (context, index) => myDivider(),
                       itemCount: UserLayoutCubit
                           .get(context)
-                          .conslutants
+                          .chats
                           .length),
               fallback: (context) => Center(child: CircularProgressIndicator()),
 

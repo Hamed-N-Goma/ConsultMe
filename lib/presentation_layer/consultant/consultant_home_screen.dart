@@ -225,7 +225,7 @@ class ConsultantHomeScreen extends StatelessWidget {
 
                           InkWell(
                             onTap: () {
-
+                              ConsultantCubit.get(context).getUsersChat();
                               navigateTo(context, ConsultChat());
                             },
                             child: defaultDashBoardTitleBox(

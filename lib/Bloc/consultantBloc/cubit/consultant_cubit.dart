@@ -10,6 +10,7 @@ import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/complaintsModel.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -338,26 +339,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
 }
 
-  List<UserModel> usersInChat = [];
 
-  void getUsersChat() async {
-    CollectionReference user =
-    FirebaseFirestore.instance.collection('users');
-    await user.where('userType', isEqualTo: 'user').get().then(
-          (user) =>
-      {
-        usersInChat = user.docs
-            .map((e) =>
-            UserModel.fromJson(e.data() as Map<String, dynamic>))
-            .toList(),
-        emit(GitUsersChatSucsess(usersInChat)),
-        user.docs.forEach((element) {
-          print(element.data());
-          print("++++============================");
-        })
-      },
-    );
-  }
+
 
 
   List<MessageModel> messages = [];
@@ -430,5 +413,23 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
 
+  List<UserModel> usersInChat = [];
 
+
+  getUsersChat() {
+    usersInChat = [];
+    appointments!.forEach((element) {
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+        value.docs.forEach((user) {
+          if (user.data()['uid'] == element.userID && element.accept == true) {
+            usersInChat.add(UserModel.fromJson(user.data()));
+          }
+        });
+        emit(GetAllChatSuccessState(usersInChat));
+      }).catchError((error) {
+        print(error.toString());
+        emit(GetAllChatErrorState(error.toString()));
+      });
+    });
+  }
 }

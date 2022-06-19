@@ -48,7 +48,7 @@ class More extends StatelessWidget {
                         UserLayoutCubit.get(context).getAppoinments();
                         navigateTo(
                           context,
-                          FavoriteScreen(),
+                          FollowRequestsScreen(),
                         );
                       },
                       child: Row(
