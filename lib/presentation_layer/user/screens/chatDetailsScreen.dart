@@ -13,116 +13,117 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../shard/style/iconly_broken.dart';
 
 class UserChatDetails extends StatelessWidget {
-  UserChatDetails({Key? key, required ConsultantModel this.consultant}) : super(key: key);
+  UserChatDetails({Key? key, required ConsultantModel this.consultant})
+      : super(key: key);
 
-   ConsultantModel consultant ;
-   var messageController = TextEditingController();
+  ConsultantModel consultant;
+  var messageController = TextEditingController();
 
-   @override
-   Widget build(BuildContext context) {
-     return Builder(
-         builder: (BuildContext context) {
-       UserLayoutCubit.get(context).getMessages(
-         consultId: consultant.uid!,
-       );
-       return BlocConsumer<UserLayoutCubit, UserLayoutState>(
-           listener: (context, state) {},
-           builder: (context, state) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ColorManager.myBlue.withOpacity(0.5),
-          titleSpacing: 0,
-          title: buildAppbarTitle(context),
-          actions: actionsAppBar(),
-        ),
-        body: ConditionalBuilder(
-          condition: UserLayoutCubit.get(context).messages.length >= 0,
-          builder: (context) => Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index)
-                    {
-                      var message = UserLayoutCubit.get(context).messages[index];
-
-                      if(UserLayoutCubit.get(context).userModel?.uid == message.senderId)
-                        return buildMyMessage(message);
-
-                      return buildMessage(message);
-                    },
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 15.0,
-                    ),
-                    itemCount: UserLayoutCubit.get(context).messages.length,
-                  ),
+  @override
+  Widget build(BuildContext context) {
+    return Builder(builder: (BuildContext context) {
+      UserLayoutCubit.get(context).getMessages(
+        consultId: consultant.uid!,
+      );
+      return BlocConsumer<UserLayoutCubit, UserLayoutState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: ColorManager.myBlue.withOpacity(0.5),
+                  titleSpacing: 0,
+                  title: buildAppbarTitle(context),
+                  actions: actionsAppBar(),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      15.0,
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0,
+                body: ConditionalBuilder(
+                  condition: UserLayoutCubit.get(context).messages.length >= 0,
+                  builder: (context) => Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var message =
+                                  UserLayoutCubit.get(context).messages[index];
+
+                              if (UserLayoutCubit.get(context).userModel?.uid ==
+                                  message.senderId)
+                                return buildMyMessage(message);
+
+                              return buildMessage(message);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 15.0,
+                            ),
+                            itemCount:
+                                UserLayoutCubit.get(context).messages.length,
                           ),
-                          child: TextFormField(
-                            controller: messageController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'type your message here ...',
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              15.0,
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        height: 50.0,
-                        color: mainColors,
-                        child: MaterialButton(
-                          onPressed: () {
-                            UserLayoutCubit.get(context).sendMessage(
-                              receiverId: consultant.uid!,
-                              dateTime: DateTime.now().toString(),
-                              content : messageController.text,
-                            );
-                          },
-                          minWidth: 1.0,
-                          child: Icon(
-                            IconBroken.Send,
-                            size: 16.0,
-                            color: Colors.white,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0,
+                                  ),
+                                  child: TextFormField(
+                                    controller: messageController,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'type your message here ...',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 50.0,
+                                color: mainColors,
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    UserLayoutCubit.get(context).sendMessage(
+                                      receiverId: consultant.uid!,
+                                      dateTime: DateTime.now().toString(),
+                                      content: messageController.text,
+                                    );
+                                  },
+                                  minWidth: 1.0,
+                                  child: Icon(
+                                    IconBroken.Send,
+                                    size: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                  fallback: (context) => Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-              ],
-            ),
-          ),
-          fallback: (context) => Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      ),
-    );
+              ),
+            );
+          });
+    });
   }
-       );
-         });
-   }
 
   //you must send user Model with Navigation
 
@@ -163,59 +164,59 @@ class UserChatDetails extends StatelessWidget {
     ];
   }
 
-   Widget buildMessage(MessageModel model) => Align(
-     alignment: AlignmentDirectional.centerStart,
-     child: Container(
-       decoration: BoxDecoration(
-         color: Colors.grey[300],
-         borderRadius: BorderRadiusDirectional.only(
-           bottomEnd: Radius.circular(
-             10.0,
-           ),
-           topStart: Radius.circular(
-             10.0,
-           ),
-           topEnd: Radius.circular(
-             10.0,
-           ),
-         ),
-       ),
-       padding: EdgeInsets.symmetric(
-         vertical: 5.0,
-         horizontal: 10.0,
-       ),
-       child: Text(
-         model.content!,
-       ),
-     ),
-   );
+  Widget buildMessage(MessageModel model) => Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadiusDirectional.only(
+              bottomEnd: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
+          ),
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Text(
+            model.content!,
+          ),
+        ),
+      );
 
-   Widget buildMyMessage(MessageModel model) => Align(
-     alignment: AlignmentDirectional.centerEnd,
-     child: Container(
-       decoration: BoxDecoration(
-         color: mainColors.withOpacity(
-           .2,
-         ),
-         borderRadius: BorderRadiusDirectional.only(
-           bottomStart: Radius.circular(
-             10.0,
-           ),
-           topStart: Radius.circular(
-             10.0,
-           ),
-           topEnd: Radius.circular(
-             10.0,
-           ),
-         ),
-       ),
-       padding: EdgeInsets.symmetric(
-         vertical: 5.0,
-         horizontal: 10.0,
-       ),
-       child: Text(
-         model.content!,
-       ),
-     ),
-   );
+  Widget buildMyMessage(MessageModel model) => Align(
+        alignment: AlignmentDirectional.centerEnd,
+        child: Container(
+          decoration: BoxDecoration(
+            color: mainColors.withOpacity(
+              .2,
+            ),
+            borderRadius: BorderRadiusDirectional.only(
+              bottomStart: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
+          ),
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Text(
+            model.content!,
+          ),
+        ),
+      );
 }

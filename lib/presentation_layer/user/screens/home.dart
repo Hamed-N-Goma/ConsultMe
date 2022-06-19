@@ -24,7 +24,6 @@ class Home extends StatelessWidget {
   List<FavoriteModel> favorite = [];
   List<PostModel> posts = [];
 
-
   var size, width, height;
   bool categoryfalg = false;
   @override
@@ -42,12 +41,10 @@ class Home extends StatelessWidget {
         }
         if (state is GetConsultantToFavoriteSucssesfuly) {
           favorite = state.favoriteConsultant;
-          print('from hoooooooooooooooome');
         }
         if (state is GetAllPostsSuccessState) {
           posts = state.posts;
         }
-
       },
       child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
         builder: (context, state) {
@@ -148,12 +145,12 @@ class Home extends StatelessWidget {
         child: CarouselSlider.builder(
             itemCount: UserLayoutCubit.get(context).posts.length,
             itemBuilder: (context, index, pageindex) => MostImportnatNews(
-                post: posts[index], height: height, width: width - 10),
+                post: posts[index], height: height, width: width - 80),
             options: CarouselOptions(
                 height: 140,
                 autoPlay: true,
                 autoPlayCurve: Curves.slowMiddle,
-                viewportFraction: 1,
+                viewportFraction: 0.8,
                 autoPlayAnimationDuration: Duration(milliseconds: 800),
                 aspectRatio: 16 / 9,
                 enableInfiniteScroll: true)));

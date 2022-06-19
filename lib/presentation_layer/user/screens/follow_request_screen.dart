@@ -10,8 +10,6 @@ import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
-
-
 class FollowRequestsScreen extends StatelessWidget {
   const FollowRequestsScreen({Key? key}) : super(key: key);
   @override
@@ -54,9 +52,10 @@ class FollowRequestsScreen extends StatelessWidget {
               ],
             ),
             body: Builder(
-              builder: (context){
-                if(state is GetAppointmentsSuccessState){
-                  if(validation(context)){
+              builder: (context) {
+                if (state is GetAppointmentsSuccessState ||
+                    state is GetAllChatSuccessState) {
+                  if (validation(context)) {
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Column(
@@ -74,11 +73,13 @@ class FollowRequestsScreen extends StatelessWidget {
                             '" لا يوجد طلبات حاليا "',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
-                          const SizedBox(height: 20.0,),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
                         ],
                       ),
                     );
-                  }else{
+                  } else {
                     return SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Padding(
@@ -88,9 +89,12 @@ class FollowRequestsScreen extends StatelessWidget {
                           children: [
                             Text(
                               '* يجب مراعاه الارشادات التاليه',
-                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                fontSize: 14.0,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                    fontSize: 14.0,
+                                  ),
                             ),
                             const SizedBox(height: 10.0),
                             Row(
@@ -99,7 +103,8 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 10.0,
                                   height: 10.0,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadiusDirectional.circular(3.0),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(3.0),
                                     color: Colors.green,
                                   ),
                                 ),
@@ -108,10 +113,12 @@ class FollowRequestsScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'تمت الموافقه علي طلبكم',
-                                  style:
-                                  Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    fontSize: 10.0,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontSize: 10.0,
+                                      ),
                                 ),
                                 const SizedBox(
                                   width: 14.0,
@@ -120,7 +127,8 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 10.0,
                                   height: 10.0,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadiusDirectional.circular(3.0),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(3.0),
                                     color: Colors.amber,
                                   ),
                                 ),
@@ -129,10 +137,12 @@ class FollowRequestsScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'جاري الرد علي طلبكم',
-                                  style:
-                                  Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    fontSize: 10.0,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontSize: 10.0,
+                                      ),
                                 ),
                                 const SizedBox(
                                   width: 14.0,
@@ -141,7 +151,8 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 10.0,
                                   height: 10.0,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadiusDirectional.circular(3.0),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(3.0),
                                     color: Colors.red,
                                   ),
                                 ),
@@ -150,10 +161,12 @@ class FollowRequestsScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'تم رفض طلبكم',
-                                  style:
-                                  Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    fontSize: 10.0,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontSize: 10.0,
+                                      ),
                                 ),
                               ],
                             ),
@@ -168,17 +181,23 @@ class FollowRequestsScreen extends StatelessWidget {
                             ),
                             Conditional.single(
                               context: context,
-                              conditionBuilder: (BuildContext context) => UserLayoutCubit.get(context).appointments != null ,
-                              widgetBuilder: (BuildContext context) => buildOrderScreen(context),
-                              fallbackBuilder: (BuildContext context) => buildOrderShimmerScreen(context),
+                              conditionBuilder: (BuildContext context) =>
+                                  UserLayoutCubit.get(context).appointments !=
+                                  null,
+                              widgetBuilder: (BuildContext context) =>
+                                  buildOrderScreen(context),
+                              fallbackBuilder: (BuildContext context) =>
+                                  buildOrderShimmerScreen(context),
                             ),
                           ],
                         ),
                       ),
                     );
                   }
-                }else{
-                  return const Center(child: CircularProgressIndicator(),);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
               },
             ),
@@ -189,180 +208,181 @@ class FollowRequestsScreen extends StatelessWidget {
   }
 }
 
-
 Widget buildOrderScreen(context) => Column(
-  children: [
-
-    Builder(builder: (context) {
-      if(UserLayoutCubit.get(context).appointments!.isEmpty){
-        return const SizedBox(height: 2.0,);
-      }else{
-        return Column(
-          children: [
-            smallDashBoardTitleBox(
-                svgImage: 'assets/images/call.svg',
-                svg: true,
-                title: 'طلبات الإستشارة'),
-            const SizedBox(height: 15.0),
-            SizedBox(
-              height:UserLayoutCubit.get(context).appointments!.length == 1 ? 105 : 210,
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) =>
-                    buildGuestItem(context, UserLayoutCubit.get(context).appointments![index]),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 8.0,
-                ),
-                itemCount: UserLayoutCubit.get(context).appointments!.length,
-              ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-          ],
-        );
-      }
-    }),
-  ],
-);
-
-
-
-Widget buildGuestItem(context,AppointmentModel  model) => Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  child: buildEnquiry(
-    context,
-    height: 100.0,
-    state: model.MeetTime != null ? model.accept == true  ? StatusStates.ACCEPT : StatusStates.REJECT :StatusStates.WAITING,
-    body: Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          alignment: AlignmentDirectional.bottomEnd,
-          children:[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child:  Text(
-                      'الأسم: ${model.consultName}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
+      children: [
+        Builder(builder: (context) {
+          if (UserLayoutCubit.get(context).appointments!.isEmpty) {
+            return const SizedBox(
+              height: 2.0,
+            );
+          } else {
+            return Column(
+              children: [
+                smallDashBoardTitleBox(
+                    svgImage: 'assets/images/call.svg',
+                    svg: true,
+                    title: 'طلبات الإستشارة'),
+                const SizedBox(height: 15.0),
+                SizedBox(
+                  height: UserLayoutCubit.get(context).appointments!.length == 1
+                      ? 105
+                      : 210,
+                  child: ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) => buildGuestItem(context,
+                        UserLayoutCubit.get(context).appointments![index]),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 8.0,
                     ),
+                    itemCount:
+                        UserLayoutCubit.get(context).appointments!.length,
                   ),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child:  Text(
-                      'تاريخ الطلب: ${model.time}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-              onTap: (){
-                navigateTo(
-                  context,
-                  FollowAppointmentScreen(model: model),
-                );
-              },
-              child: Text(
-                'عرض التفاصيل',
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  decoration:TextDecoration.underline,
                 ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ],
+            );
+          }
+        }),
+      ],
+    );
 
-              ),
+Widget buildGuestItem(context, AppointmentModel model) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: buildEnquiry(
+        context,
+        height: 150.0,
+        state: model.MeetTime != null
+            ? model.accept == true
+                ? StatusStates.ACCEPT
+                : StatusStates.REJECT
+            : StatusStates.WAITING,
+        body: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Stack(
+              alignment: AlignmentDirectional.bottomEnd,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 2.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'الأسم: ${model.consultName}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'تاريخ الطلب: ${model.time}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    navigateTo(
+                      context,
+                      FollowAppointmentScreen(model: model),
+                    );
+                  },
+                  child: Text(
+                    'عرض التفاصيل',
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-
       ),
-    ),
-  ),
-);
+    );
 
 Widget buildOrderShimmerScreen(context) => Column(
-  children: [
-    Shimmer.fromColors(
-      child: Container(
-        height: 50.0,
-        width: double.infinity,
-        color: baseColor,
-      ),
-      baseColor: baseColor,
-      highlightColor: highlightColor,
-    ),
-    const SizedBox(height: 15.0),
-    SizedBox(
-      height: 215,
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) =>
-            buildRequestShimmerItem(context),
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 8.0,
+      children: [
+        Shimmer.fromColors(
+          child: Container(
+            height: 50.0,
+            width: double.infinity,
+            color: baseColor,
+          ),
+          baseColor: baseColor,
+          highlightColor: highlightColor,
         ),
-        itemCount: 10,
-      ),
-    ),
-    const SizedBox(
-      height: 20.0,
-    ),
-    Shimmer.fromColors(
-      child: Container(
-        height: 50.0,
-        width: double.infinity,
-        color: baseColor,
-      ),
-      baseColor: baseColor,
-      highlightColor: highlightColor,
-    ),
-    const SizedBox(height: 15.0),
-    SizedBox(
-      height: 215,
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) =>
-            buildRequestShimmerItem(context),
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 8.0,
+        const SizedBox(height: 15.0),
+        SizedBox(
+          height: 215,
+          child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) => buildRequestShimmerItem(context),
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 8.0,
+            ),
+            itemCount: 10,
+          ),
         ),
-        itemCount: 10,
-      ),
-    ),
-    const SizedBox(
-      height: 20.0,
-    ),
-  ],
-);
+        const SizedBox(
+          height: 20.0,
+        ),
+        Shimmer.fromColors(
+          child: Container(
+            height: 50.0,
+            width: double.infinity,
+            color: baseColor,
+          ),
+          baseColor: baseColor,
+          highlightColor: highlightColor,
+        ),
+        const SizedBox(height: 15.0),
+        SizedBox(
+          height: 215,
+          child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) => buildRequestShimmerItem(context),
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 8.0,
+            ),
+            itemCount: 10,
+          ),
+        ),
+        const SizedBox(
+          height: 20.0,
+        ),
+      ],
+    );
 
 Widget buildRequestShimmerItem(context) => Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  child:  Shimmer.fromColors(
-    child: Container(
-      height: 100.0,
-      width: double.infinity,
-      color: baseColor,
-    ),
-    baseColor: baseColor,
-    highlightColor: highlightColor,
-  ),
-);
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Shimmer.fromColors(
+        child: Container(
+          height: 100.0,
+          width: double.infinity,
+          color: baseColor,
+        ),
+        baseColor: baseColor,
+        highlightColor: highlightColor,
+      ),
+    );
 
-validation (context) {
-  if(UserLayoutCubit.get(context).appointments!.isEmpty ){
+validation(context) {
+  if (UserLayoutCubit.get(context).appointments!.isEmpty) {
     return true;
   }
   return false;

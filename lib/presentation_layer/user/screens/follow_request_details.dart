@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class FollowAppointmentScreen extends StatelessWidget {
-
   final AppointmentModel model;
 
   const FollowAppointmentScreen({
@@ -71,9 +69,9 @@ class FollowAppointmentScreen extends StatelessWidget {
                         Text(
                           '* في حاله وجود خطأ في التفاصيل يرجى المتابعه من خلال ',
                           style:
-                          Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontSize: 10.0,
-                          ),
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: 10.0,
+                                  ),
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -85,10 +83,10 @@ class FollowAppointmentScreen extends StatelessWidget {
                           child: Text(
                             'الدعم الفني',
                             style:
-                            Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.w900,
-                              decoration: TextDecoration.underline,
-                            ),
+                                Theme.of(context).textTheme.bodyText2!.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      decoration: TextDecoration.underline,
+                                    ),
                           ),
                         ),
                       ],
@@ -103,7 +101,6 @@ class FollowAppointmentScreen extends StatelessWidget {
                       height: 30.0,
                     ),
                     buildBoxCheckColor(),
-
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -178,7 +175,6 @@ class FollowAppointmentScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-
                     Column(
                       children: [
                         Row(
@@ -221,84 +217,80 @@ class FollowAppointmentScreen extends StatelessWidget {
   }
 
   Widget buildBoxCheckColor() => Builder(builder: (context) {
-    if (model.MeetTime != null) {
-      if(model.accept!) {
-        return Container(
-          height: 50.0,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadiusDirectional.circular(8.0),
-          ),
-          alignment: AlignmentDirectional.center,
-          child: const Text(
-            'تمت الموافقه عليه',
-            style: TextStyle(fontSize: 18.0, color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-        );
-      }else{
-        return Container(
-          height: 50.0,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadiusDirectional.circular(8.0),
-          ),
-          alignment: AlignmentDirectional.center,
-          child: const Text(
-            'تم الرفض عليه',
-            style: TextStyle(fontSize: 18.0, color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-        );
-      }
-    } else {
-      return Container(
-        height: 50.0,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.amber ,
-          borderRadius: BorderRadiusDirectional.circular(8.0),
-        ),
-        alignment: AlignmentDirectional.center,
-        child:  const Text(
-          'أنتظر حني يتم الموافقة علي الطلب',
-          style: TextStyle(fontSize: 18.0, color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
-  });
-
-  Widget buildReplay() => Builder(
-      builder: (context) {
-         if(model.accept == true){
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                'موعد المقابلة : ',
-                style: Theme.of(context).textTheme.bodyText1,
+        if (model.MeetTime != null) {
+          if (model.accept!) {
+            return Container(
+              height: 50.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadiusDirectional.circular(8.0),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text(
-                model.MeetTime!,
+              alignment: AlignmentDirectional.center,
+              child: const Text(
+                'تمت الموافقه عليه',
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
               ),
+            );
+          } else {
+            return Container(
+              height: 50.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadiusDirectional.circular(8.0),
+              ),
+              alignment: AlignmentDirectional.center,
+              child: const Text(
+                'تم الرفض عليه',
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+        } else {
+          return Container(
+            height: 50.0,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadiusDirectional.circular(8.0),
             ),
-          ],
-        );
-      }
-         else {
-           return Row(
-           );
-         }
-  }
-  );
+            alignment: AlignmentDirectional.center,
+            child: const Text(
+              'أنتظر حني يتم الموافقة علي الطلب',
+              style: TextStyle(fontSize: 18.0, color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
+      });
+
+  Widget buildReplay() => Builder(builder: (context) {
+        if (model.accept == true) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  'موعد المقابلة : ',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  model.MeetTime!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Row();
+        }
+      });
 }

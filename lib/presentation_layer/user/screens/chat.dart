@@ -4,7 +4,6 @@ import 'package:consultme/presentation_layer/user/widget/messenger_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class UserChat extends StatelessWidget {
   UserChat({Key? key}) : super(key: key);
   var size, width, height;
@@ -12,48 +11,36 @@ class UserChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<UserLayoutCubit, UserLayoutState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          size = MediaQuery
-              .of(context)
-              .size;
-          height = size.height;
-          width = size.width;
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: ConditionalBuilder(
-              condition: UserLayoutCubit
-                  .get(context)
-                  .chats
-                  .length >= 0,
-              builder: (context) =>
-                  ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) =>
-                          ChatitemConsult(UserLayoutCubit
-                              .get(context)
-                              .chats[index], context),
-                      separatorBuilder: (context, index) => myDivider(),
-                      itemCount: UserLayoutCubit
-                          .get(context)
-                          .chats
-                          .length),
-              fallback: (context) => Center(child: CircularProgressIndicator()),
-
-            ),
-          );
-        },
+      listener: (context, state) {},
+      builder: (context, state) {
+        size = MediaQuery.of(context).size;
+        height = size.height;
+        width = size.width;
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: ConditionalBuilder(
+            condition: UserLayoutCubit.get(context).chats.length >= 0,
+            builder: (context) => ListView.separated(
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) => ChatitemConsult(
+                    UserLayoutCubit.get(context).chats[index], context),
+                separatorBuilder: (context, index) => myDivider(),
+                itemCount: UserLayoutCubit.get(context).chats.length),
+            fallback: (context) => Center(child: CircularProgressIndicator()),
+          ),
+        );
+      },
     );
   }
 }
 
 Widget myDivider() => Padding(
-  padding: const EdgeInsetsDirectional.only(
-    start: 20.0,
-  ),
-  child: Container(
-    width: double.infinity,
-    height: 1.0,
-    color: Colors.grey[300],
-  ),
-);
+      padding: const EdgeInsetsDirectional.only(
+        start: 20.0,
+      ),
+      child: Container(
+        width: double.infinity,
+        height: 1.0,
+        color: Colors.grey[300],
+      ),
+    );

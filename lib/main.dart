@@ -1,6 +1,5 @@
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
-import 'package:consultme/Bloc/userBloc/cubit/user_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/approute.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
@@ -48,8 +47,6 @@ class MyApp extends StatelessWidget {
               ..getAppoinments()
               ..getUsersChat()),
         BlocProvider(
-            create: (BuildContext context) => UserCubit()..getUserData()),
-        BlocProvider(
             create: (BuildContext context) => AdminCubit()
               ..getAdminData()
               ..getUserInSecurity()
@@ -63,7 +60,8 @@ class MyApp extends StatelessWidget {
               ..getConsultants()
               ..getFavorite()
               ..getAllPosts()
-               ..getConsultChat()),
+              ..getConsultChat()
+              ..getAppoinments()),
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},
