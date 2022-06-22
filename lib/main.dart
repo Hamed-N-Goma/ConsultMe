@@ -8,27 +8,41 @@ import 'package:consultme/shard/network/remote/dio_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:consultme/shard/style/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:consultme/shard/bloc_observer.dart';
-
 import 'shard/style/theme/cubit/states.dart';
+
+
+
+Future BackgroundMessage(RemoteMessage message) async {
+  print("================================== Background Notafecation ================================");
+
+  print("${message.notification!.body}");
+
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool? isDark = false;
   await Firebase.initializeApp();
 
+
+  FirebaseMessaging.onBackgroundMessage(BackgroundMessage);
+  
   DioHelper.init();
   await CacheHelper.init();
+
 
   runApp(MyApp(appRouter: AppRouter(), isDark: isDark));
 }
 
 class MyApp extends StatelessWidget {
+
+
   final AppRouter appRouter;
   final bool? isDark;
-  const MyApp({Key? key, required this.appRouter, this.isDark})
+   MyApp({Key? key, required this.appRouter, this.isDark})
       : super(key: key);
 
   // This widget is the root of your application.
@@ -61,7 +75,8 @@ class MyApp extends StatelessWidget {
               ..getFavorite()
               ..getAllPosts()
               ..getConsultChat()
-              ..getAppoinments()),
+              ..getAppoinments()
+              ..getConsultChat()),
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},

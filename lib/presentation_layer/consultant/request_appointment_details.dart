@@ -47,7 +47,7 @@ class RequestAppoinmentDetails extends StatelessWidget {
           textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'الإستضافة',
+              title: 'الاستشارة',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -66,8 +66,6 @@ class RequestAppoinmentDetails extends StatelessWidget {
                       child: Column(
                         children: [
 
-
-                          // name
                           const SizedBox(
                             height: 10.0,
                           ),
@@ -299,11 +297,14 @@ class RequestAppoinmentDetails extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: defaultButton(
-                                  function: () {;
+                                  function: () {
+                                    cubit.sendNotfiy(
+                                        "${appoItem?.consultName}",
+                                        "لقد تم قبول طلبك , يمكنك بدء المحادثة ",
+                                          cubit.getTokenById("${appoItem!.userID}")!);
                                     cubit.acceptAppointment(
                                       MeetTime : consultTimeController.text,
                                       appoItem : appoItem!,
-
                                     );
                                   },
                                   text: 'اوافق',
@@ -317,7 +318,9 @@ class RequestAppoinmentDetails extends StatelessWidget {
                                 child: defaultButton(
                                   function: () {
 
-                                   // cubit.refusalAppointment();
+                                    cubit.refusalAppointment(
+                                      appoItem : appoItem!,
+                                    );
 
                                   },
                                   text: 'ارفض',

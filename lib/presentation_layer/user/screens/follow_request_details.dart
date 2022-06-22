@@ -243,7 +243,7 @@ class FollowAppointmentScreen extends StatelessWidget {
               ),
               alignment: AlignmentDirectional.center,
               child: const Text(
-                'تم الرفض عليه',
+                'تم الرفض ',
                 style: TextStyle(fontSize: 18.0, color: Colors.white),
                 textAlign: TextAlign.center,
               ),

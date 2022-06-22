@@ -1,12 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
-import 'package:consultme/const.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
+import 'package:consultme/presentation_layer/user/screens/Call.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -35,7 +34,7 @@ class UserChatDetails extends StatelessWidget {
                   backgroundColor: ColorManager.myBlue.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
-                  actions: actionsAppBar(),
+                  actions: actionsAppBar(context),
                 ),
                 body: ConditionalBuilder(
                   condition: UserLayoutCubit.get(context).messages.length >= 0,
@@ -45,18 +44,20 @@ class UserChatDetails extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
                                   UserLayoutCubit.get(context).messages[index];
 
                               if (UserLayoutCubit.get(context).userModel?.uid ==
-                                  message.senderId)
+                                  message.senderId) {
                                 return buildMyMessage(message);
+                              }
 
                               return buildMessage(message);
                             },
-                            separatorBuilder: (context, index) => SizedBox(
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                               height: 15.0,
                             ),
                             itemCount:
@@ -83,7 +84,7 @@ class UserChatDetails extends StatelessWidget {
                                   ),
                                   child: TextFormField(
                                     controller: messageController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       hintText: 'type your message here ...',
                                     ),
@@ -102,7 +103,7 @@ class UserChatDetails extends StatelessWidget {
                                     );
                                   },
                                   minWidth: 1.0,
-                                  child: Icon(
+                                  child: const Icon(
                                     IconBroken.Send,
                                     size: 16.0,
                                     color: Colors.white,
@@ -115,7 +116,7 @@ class UserChatDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  fallback: (context) => Center(
+                  fallback: (context) => const Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
@@ -134,7 +135,7 @@ class UserChatDetails extends StatelessWidget {
           radius: 20.0,
           backgroundImage: NetworkImage(consultant.image!),
         ),
-        SizedBox(
+        const SizedBox(
           width: 15.0,
         ),
         Text(
@@ -145,10 +146,12 @@ class UserChatDetails extends StatelessWidget {
     );
   }
 
-  List<Widget> actionsAppBar() {
+  List<Widget> actionsAppBar(context) {
     return [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          navigateTo(context, CallScreen());
+        },
         icon: FaIcon(
           FontAwesomeIcons.phone,
           color: ColorManager.myWhite.withOpacity(0.8),
@@ -169,7 +172,7 @@ class UserChatDetails extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.grey[300],
-            borderRadius: BorderRadiusDirectional.only(
+            borderRadius: const BorderRadiusDirectional.only(
               bottomEnd: Radius.circular(
                 10.0,
               ),
@@ -181,7 +184,7 @@ class UserChatDetails extends StatelessWidget {
               ),
             ),
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 5.0,
             horizontal: 10.0,
           ),
@@ -198,7 +201,7 @@ class UserChatDetails extends StatelessWidget {
             color: mainColors.withOpacity(
               .2,
             ),
-            borderRadius: BorderRadiusDirectional.only(
+            borderRadius: const BorderRadiusDirectional.only(
               bottomStart: Radius.circular(
                 10.0,
               ),
@@ -210,7 +213,7 @@ class UserChatDetails extends StatelessWidget {
               ),
             ),
           ),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: 5.0,
             horizontal: 10.0,
           ),

@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
+import 'package:consultme/moduls/signup/signup.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,8 +30,30 @@ class _UserLayoutState extends State<UserLayout> {
   List<Widget> screens = [Home(), Search(), UserChat(), More()];
   int _selectedIndex = 0;
 
+
+  initalMessage() async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (message != null) {
+      navigateTo(context, SignUpScreen);
+    }
+  }
+
   @override
   void initState() {
+    initalMessage();
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      //navigateTo(context, UserChat);
+    });
+
+    FirebaseMessaging.onMessage.listen((event) {
+      print(
+          "================================== Notafecation ================================");
+      print("${event.notification}");
+      print(
+          "================================== Notafecation  ==========================================");
+    });
     super.initState();
   }
 

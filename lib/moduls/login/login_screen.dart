@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/moduls/signup/signup.dart';
 import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
 import 'package:consultme/presentation_layer/consultant/consultant_home_screen.dart';
 import 'package:consultme/presentation_layer/user/user_layout/home_user_layout.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,6 +32,12 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, state) async {
           if (state is UserAuthFoundedSuccess) {
+
+            var token =  await FirebaseMessaging.instance.getToken();
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(state.uId)
+                .update({'token': token});
             CacheHelper.saveData(
               key: 'uId',
               value: state.uId,
@@ -55,6 +63,11 @@ class LoginScreen extends StatelessWidget {
 
           }else if (state is ConsultantVeryfied) {
 
+            var token =  await FirebaseMessaging.instance.getToken();
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(state.uId)
+                .update({'token': token});
               CacheHelper.saveData(
                 key: 'uId',
                 value: state.uId,

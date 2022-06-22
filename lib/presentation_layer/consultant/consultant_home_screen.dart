@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
@@ -11,18 +12,23 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../moduls/signup/signup.dart';
 
 
 class ConsultantHomeScreen extends StatelessWidget {
   const ConsultantHomeScreen({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
-      listener: (BuildContext context, state) {},
+      listener: (BuildContext context, state) {
+      },
       builder: (BuildContext context, state) {
         var consultantModel = ConsultantCubit.get(context).consultantModel;
         return Directionality(

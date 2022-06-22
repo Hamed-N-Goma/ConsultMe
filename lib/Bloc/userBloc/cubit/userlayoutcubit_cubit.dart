@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/models/categorymodel.dart';
@@ -396,5 +398,39 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         emit(GetAllChatErrorState(error.toString()));
       });
     });
+  }
+
+
+  var token ;
+  String? getTokenById(String id)  {
+    FirebaseFirestore.instance.collection('users').doc(id).get().then((value)  {
+      token = value.data()!["token"];
+    });
+    return token;
+  }
+
+  sendNotfiy(String title , String body , String Token) async {
+    await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': body.toString(),
+            'title': title.toString()
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done'
+          },
+          'to': Token,
+        },
+      ),
+    );
   }
 }

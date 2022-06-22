@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
 import 'package:consultme/models/ConsultantModel.dart';
 import 'package:consultme/models/MessageModel.dart';
@@ -22,6 +24,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
   ConsultantModel? consultantModel;
   String uId = CacheHelper.getData(key: "uId");
+
 
   void getConsultantData() {
     print('----------get Consultant Data----------');
@@ -309,6 +312,34 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     emit(SecurityShowWarningState());
   }
 
+  void refusalAppointment( {required AppointmentModel appoItem}){
+    FirebaseFirestore.instance
+        .collection('appointments')
+        .doc(appoItem.appoId)
+        .update(
+        {
+          'accept': false,
+        })
+        .then((value) => {
+      print('Appointment Unaccepted '),
+    })
+        .then((value) {
+
+      getAppoinments();
+      emit(refusalAppointmentSuccessStates());
+      showToast(message: 'تم رفض الطلب بنجاح', state: ToastStates.SUCCESS);
+    })
+        .catchError((error) {
+      print(error);
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+          state: ToastStates.ERROR);
+      emit(refusalAppointmentErrorStates(error.toString()));
+    });
+
+  }
+
+
   void acceptAppointment({required String MeetTime, required AppointmentModel appoItem}) {
     FirebaseFirestore.instance
         .collection('appointments')
@@ -322,6 +353,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
       print('Appointment accepted '),
     })
         .then((value) {
+
       getAppoinments();
       emit(AcceptedAppointmentSuccessStates());
       showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
@@ -334,11 +366,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
       emit(AcceptedAppointmentErrorStates(error.toString()));
     });
 
-
-
-
 }
-
 
 
 
@@ -431,5 +459,38 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         emit(GetAllChatErrorState(error.toString()));
       });
     });
+  }
+
+  var token ;
+ String? getTokenById(String id)  {
+    FirebaseFirestore.instance.collection('users').doc(id).get().then((value)  {
+      token = value.data()!["token"];
+    });
+    return token;
+ }
+
+  sendNotfiy(String title , String body , String Token) async {
+    await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': body.toString(),
+            'title': title.toString()
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done'
+          },
+          'to': Token,
+        },
+      ),
+    );
   }
 }

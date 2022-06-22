@@ -112,6 +112,11 @@ class AcceptedAppointmentErrorStates extends ConsultantStates {
   final String error;
   AcceptedAppointmentErrorStates(this.error);
 }
+class refusalAppointmentSuccessStates extends ConsultantStates {}
+class refusalAppointmentErrorStates extends ConsultantStates {
+  final String error;
+  refusalAppointmentErrorStates(this.error);
+}
 
 class GitUsersChatSucsess extends ConsultantStates{
   final List<UserModel> users;
