@@ -35,7 +35,7 @@ class ConsultantHomeScreen extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-                title: 'إستشرني', context: context, pop: false),
+                title: 'أهلاً بعودتك  ${consultantModel!.name}', context: context, pop: false),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(

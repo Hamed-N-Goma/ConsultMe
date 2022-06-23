@@ -30,7 +30,11 @@ class ComplaintsScreen extends StatelessWidget {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            appBar: defaultAppBar(context: context, state: state),
+            appBar:dashAppBar(
+              title: 'إستشرني',
+              context: context,
+              pop: true,
+            ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(

@@ -21,36 +21,17 @@ class EditProfile extends StatelessWidget {
         builder: (context, state) {
       var usermodel = UserLayoutCubit.get(context).userModel;
       imagePicker = UserLayoutCubit.get(context).profileImage;
+      nameController = TextEditingController(text: usermodel!.name);
+      emailController = TextEditingController(text: usermodel!.email);
+      phoneController = TextEditingController(text: usermodel!.phone);
       return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'تعديل الملف الشخصي',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    UserLayoutCubit.get(context).upDateUser(
-                        name: nameController.text,
-                        phone: nameController.text,
-                        email: emailController.text);
-
-                    /* UserLayoutCubit.get(context).upDateUser(
-                          name: nameController.text,
-                          phone:nameController.text,
-                          email: emailController.text);*/
-                  },
-                  child: Text(
-                    'Update',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  )),
-              const SizedBox(
-                width: 15,
-              )
-            ],
-          ),
+          appBar: dashAppBar(
+            title: 'تعديل الملف الشخصي',
+            context: context,
+            pop: true,
+        ),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -94,14 +75,14 @@ class EditProfile extends StatelessWidget {
           ),
           buildCustomText(
             text: usermodel!.name,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
             height: 20,
           ),
           defaultFormField(
               controller: nameController,
-              type: TextInputType.emailAddress,
+              type: TextInputType.name,
               validate: (String value) {
                 if (value.isEmpty) {
                   return 'يجب ملئ الإسم';
@@ -109,7 +90,7 @@ class EditProfile extends StatelessWidget {
               },
               prefix: IconBroken.User,
               context: context,
-              label: 'الإسم'),
+              label: "الإسم كامل"),
           const SizedBox(
             height: 20,
           ),
@@ -121,9 +102,9 @@ class EditProfile extends StatelessWidget {
                   return 'يجب ملئ البريد الالكتروني';
                 }
               },
-              prefix: IconBroken.User,
+              prefix: IconBroken.Message,
               context: context,
-              label: 'البريد الالكتروني'),
+              label:  'البريد الالكتروني'),
           const SizedBox(
             height: 20,
           ),
@@ -137,7 +118,27 @@ class EditProfile extends StatelessWidget {
               },
               prefix: IconBroken.Call,
               context: context,
-              label: 'رقم الهاتف')
+              label:  'رقم الهاتف'),
+           SizedBox(
+            height: 30,
+          ),
+
+          defaultButton(
+            function: () {
+              UserLayoutCubit.get(context).upDateUser(
+                  name: nameController.text,
+                  phone: phoneController.text,
+                  email: emailController.text);
+            },
+            text: 'تعديل ',
+            fontSize: 18,
+            height: 60.0,
+            btnColor: mainColors,
+            width: double.infinity,
+          ),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );

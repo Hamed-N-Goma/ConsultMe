@@ -67,14 +67,28 @@ class _UserLayoutState extends State<UserLayout> {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              elevation: Theme.of(context).appBarTheme.elevation,
-              foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
-              title: leadingTitle(),
-              actions: appBarItems(model?.image),
+            appBar:
+            dashAppBar(
+              title: 'إستشرني',
+              context: context,
+              pop: false,
+              action: InkWell(
+                onTap: () {
+                  navigateTo(context, const Profile());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircleAvatar(
+                    backgroundImage: model!.image == null
+                        ? const AssetImage(
+                      "assets/images/user.png",
+                    ) as ImageProvider
+                        : NetworkImage("${model!.image}"),
+                    radius: 15,
+                  ),
+                ),
+              ),
             ),
-
             //bottom navebar controller
             body: screens[_selectedIndex],
 
@@ -135,37 +149,5 @@ class _UserLayoutState extends State<UserLayout> {
         );
       },
     );
-  }
-
-  Widget leadingTitle() {
-    return Text(
-      'إستشرني',
-      style: Theme.of(context).textTheme.bodyText1,
-    );
-  }
-
-  List<Widget> appBarItems(image) {
-    return [
-      IconButton(
-        onPressed: () {},
-        icon: const FaIcon(
-          FontAwesomeIcons.bell,
-          color: ColorManager.myGrey,
-        ),
-      ),
-      InkWell(
-        onTap: () {
-          navigateTo(context, const Profile());
-        },
-        child: CircleAvatar(
-          backgroundImage: image == null
-              ? const AssetImage(
-                  "assets/images/user.png",
-                ) as ImageProvider
-              : NetworkImage(image),
-          radius: 15,
-        ),
-      )
-    ];
   }
 }

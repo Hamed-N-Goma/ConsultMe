@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,37 +23,18 @@ class EditProfileScreen extends StatelessWidget {
         builder: (context, state) {
           var consultantModel = ConsultantCubit.get(context).consultantModel;
           imagePicker = ConsultantCubit.get(context).profileImage;
+          nameController = TextEditingController(text: consultantModel!.name);
+          emailController = TextEditingController(text: consultantModel!.email);
+          phoneController = TextEditingController(text: consultantModel!.phone);
+          depatmentController = TextEditingController(text: consultantModel!.department);
           return Directionality(
             textDirection: TextDirection.rtl,
             child: Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  'تعديل الملف الشخصي',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        ConsultantCubit.get(context).upDateConsultant(
-                            name: nameController.text,
-                            phone: nameController.text,
-                            email: emailController.text,
-                            depatment : depatmentController.text);
-
-                        /* UserLayoutCubit.get(context).upDateUser(
-                          name: nameController.text,
-                          phone:nameController.text,
-                          email: emailController.text);*/
-                      },
-                      child: Text(
-                        'Update',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )),
-                  const SizedBox(
-                    width: 15,
-                  )
-                ],
-              ),
+              appBar: dashAppBar(
+              title: 'تعديل الملف الشخصي',
+              context: context,
+              pop: true,
+            ),
 
               body: SingleChildScrollView(
                 child: Column(
@@ -97,7 +79,7 @@ class EditProfileScreen extends StatelessWidget {
           ),
           buildCustomText(
             text: consultantModel!.name,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
             height: 20,
@@ -124,7 +106,7 @@ class EditProfileScreen extends StatelessWidget {
                   return 'يجب ملئ البريد الالكتروني';
                 }
               },
-              prefix: IconBroken.User,
+              prefix: IconBroken.Message,
               context: context,
               label: 'البريد الالكتروني'),
           const SizedBox(
@@ -154,7 +136,28 @@ class EditProfileScreen extends StatelessWidget {
               },
               prefix: IconBroken.Work,
               context: context,
-              label: 'المجال')
+              label: 'المجال'),
+          SizedBox(
+            height: 30,
+          ),
+
+          defaultButton(
+            function: () {
+              ConsultantCubit.get(context).upDateConsultant(
+                  name: nameController.text,
+                  phone: phoneController.text,
+                  email: emailController.text,
+                  depatment : depatmentController.text);
+            },
+            text: 'تعديل ',
+            fontSize: 18,
+            height: 60.0,
+            btnColor: mainColors,
+            width: double.infinity,
+          ),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );

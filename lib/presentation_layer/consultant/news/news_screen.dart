@@ -39,7 +39,7 @@ class NewsScreen extends StatelessWidget {
           textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'أخبار المعهد',
+              title: 'إستشرني',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -58,7 +58,7 @@ class NewsScreen extends StatelessWidget {
                         children: [
                           defaultDashBoardTitleBox(
                               img: 'assets/images/newspaper.png',
-                              title: 'أخبار المعهد'),
+                              title: 'أخر أخباري'),
                           const SizedBox(
                             height: 20.0,
                           ),

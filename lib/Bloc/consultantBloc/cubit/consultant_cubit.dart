@@ -247,10 +247,13 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
                 getConsultantData(),
-              })
+                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
           .catchError((onError) {
             emit(ErrorWithUpdateConsultant());
-          });
+            showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+
+      });
     } else {
       FirebaseFirestore.instance
           .collection('users')
@@ -264,10 +267,13 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
                 getConsultantData(),
-              })
+                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
           .catchError((onError) {
             emit(ErrorWithUpdateConsultant());
-          });
+            showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+
+      });
     }
   }
 

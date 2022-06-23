@@ -108,9 +108,12 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .then((value) => {
                 emit(UpdateUserInfoScusses()),
                 GetUserInfo(),
-              })
+                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
+        showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+
       });
     } else {
       userModel = UserModel(
@@ -128,9 +131,12 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .then((value) => {
                 emit(UpdateUserInfoScusses()),
                 GetUserInfo(),
-              })
+                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
+        showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+
       });
     }
   }

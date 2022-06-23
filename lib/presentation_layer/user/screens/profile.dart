@@ -24,11 +24,10 @@ class Profile extends StatelessWidget {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-              appBar: AppBar(
-                title: Text('Profile',
-                    style: Theme.of(context).textTheme.bodyLarge),
-                centerTitle: true,
-                elevation: 5,
+              appBar: dashAppBar(
+                title: ' الملف الشخصي',
+                context: context,
+                pop: true,
               ),
               body: ConditionalBuilder(
                 builder: (context) => profileWidget(context, cubit.userModel),
@@ -62,24 +61,24 @@ class Profile extends StatelessWidget {
           ),
           buildCustomText(
             text: usermodel!.name,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
-            height: 20,
+            height: 50,
           ),
           buildinfoItems(
               bodyText: usermodel!.email,
               context: context,
               titleText: 'البريد الإلكتروني :'),
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
           buildinfoItems(
               bodyText: usermodel!.phone,
               context: context,
               titleText: 'رقم الهاتف : '),
           const SizedBox(
-            height: 15,
+            height: 50,
           ),
           defaultButton(
             function: () {
@@ -125,17 +124,18 @@ class Profile extends StatelessWidget {
 
   Widget buildinfoItems(
       {required context, required titleText, required bodyText}) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+    return Row(
+        children: [
       buildCustomText(
         text: titleText,
-        style: Theme.of(context).textTheme.bodyLarge,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       const SizedBox(
-        width: 20,
+        width: 50,
       ),
       buildCustomText(
         text: bodyText,
-        style: Theme.of(context).textTheme.bodyLarge,
+        style: Theme.of(context).textTheme.bodyText1,
       ),
     ]);
   }
