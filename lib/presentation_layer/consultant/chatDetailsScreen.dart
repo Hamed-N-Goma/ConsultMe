@@ -28,6 +28,7 @@ class ConsultChatDetails extends StatelessWidget {
       return BlocConsumer<ConsultantCubit, ConsultantStates>(
           listener: (context, state) {},
           builder: (context, state) {
+            var cubit = ConsultantCubit.get(context);
             return Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
@@ -98,11 +99,16 @@ class ConsultChatDetails extends StatelessWidget {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
+
                                     ConsultantCubit.get(context).sendMessage(
                                       receiverId: User.uid,
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
+                                    cubit.sendNotfiy(
+                                        " لديك رسالة جديدة  ",
+                                        " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
+                                        cubit.getTokenById("${User.uid!}")!);
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,

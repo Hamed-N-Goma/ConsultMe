@@ -27,6 +27,7 @@ class UserChatDetails extends StatelessWidget {
       return BlocConsumer<UserLayoutCubit, UserLayoutState>(
           listener: (context, state) {},
           builder: (context, state) {
+            var cubit = UserLayoutCubit.get(context);
             return Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
@@ -96,11 +97,17 @@ class UserChatDetails extends StatelessWidget {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
+
                                     UserLayoutCubit.get(context).sendMessage(
                                       receiverId: consultant.uid!,
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
+                                    cubit.sendNotfiy(
+                                        " لديك رسالة جديدة  ",
+                                        " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
+                                        cubit.getTokenById("${consultant.uid!}")!);
+
                                   },
                                   minWidth: 1.0,
                                   child: const Icon(
