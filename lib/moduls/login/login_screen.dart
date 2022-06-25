@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/moduls/signup/signup.dart';
 import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
@@ -32,57 +33,52 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, state) async {
           if (state is UserAuthFoundedSuccess) {
-
-            var token =  await FirebaseMessaging.instance.getToken();
+            var token = await FirebaseMessaging.instance.getToken();
             FirebaseFirestore.instance
                 .collection('users')
-                .doc(state.uId)
+                .doc(state.loginModel.uid)
                 .update({'token': token});
+            CacheHelper.saveData(key: 'type', value: state.loginModel.userType);
             CacheHelper.saveData(
               key: 'uId',
-              value: state.uId,
-            ).then((value)
-            {
+              value: state.loginModel.uid,
+            ).then((value) {
               navigateAndFinish(
                 context,
                 UserLayout(),
               );
             });
           } else if (state is AdminAuthFoundedSuccess) {
-
+            CacheHelper.saveData(key: 'type', value: state.loginModel.userType);
             CacheHelper.saveData(
               key: 'uId',
-              value: state.uId,
-            ).then((value)
-            {
+              value: state.loginModel.uid,
+            ).then((value) {
               navigateAndFinish(
                 context,
                 AdminHomeScreen(),
               );
             });
-
-          }else if (state is ConsultantVeryfied) {
-
-            var token =  await FirebaseMessaging.instance.getToken();
+          } else if (state is ConsultantVeryfied) {
+            var token = await FirebaseMessaging.instance.getToken();
             FirebaseFirestore.instance
                 .collection('users')
-                .doc(state.uId)
+                .doc(state.loginModel.uid)
                 .update({'token': token});
-              CacheHelper.saveData(
-                key: 'uId',
-                value: state.uId,
-              ).then((value)
-              {
-                navigateAndFinish(
-                  context,
-                  ConsultantHomeScreen(),
-                );
-              });
-
+            CacheHelper.saveData(key: 'type', value: state.loginModel.userType);
+            CacheHelper.saveData(
+              key: 'uId',
+              value: state.loginModel.uid,
+            ).then((value) {
+              navigateAndFinish(
+                context,
+                ConsultantHomeScreen(),
+              );
+            });
           } else if (state is ConsultantNotVeryfied) {
             showToast(
                 message:
-                ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
+                    ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
                 state: ToastStates.WARNING);
             LoginCubit.get(context).loginbutton.stop();
           }
@@ -96,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                 body: WillPopScope(
                   onWillPop: () async {
                     final difference =
-                    DateTime.now().difference(timeBackPressed);
+                        DateTime.now().difference(timeBackPressed);
                     final isExitWarning =
                         difference >= const Duration(seconds: 2);
                     timeBackPressed = DateTime.now();
@@ -117,25 +113,25 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 14.0),
+                                const EdgeInsets.symmetric(horizontal: 14.0),
                             child: Align(
                               alignment: AlignmentDirectional.topStart,
                               child: ThemeCubit.get(context).darkTheme
                                   ? Image.asset(
-                                'assets/images/logo_dark.png',
-                                width: 71.0,
-                                height: 71.0,
-                              )
+                                      'assets/images/logo_dark.png',
+                                      width: 71.0,
+                                      height: 71.0,
+                                    )
                                   : Image.asset(
-                                'assets/images/logo.png',
-                                width: 71.0,
-                                height: 71.0,
-                              ),
+                                      'assets/images/logo.png',
+                                      width: 71.0,
+                                      height: 71.0,
+                                    ),
                             ),
                           ),
                           Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 28.0),
+                                const EdgeInsets.symmetric(horizontal: 28.0),
                             child: Column(
                               children: [
                                 Align(

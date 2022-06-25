@@ -108,7 +108,7 @@ class ConsultChatDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${User.uid!}")!);
+                                        cubit.getTokenById("${User.uid}")!);
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,

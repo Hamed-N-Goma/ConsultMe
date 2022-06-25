@@ -9,8 +9,9 @@ import 'package:consultme/moduls/login/cubit/states.dart';
 import 'package:consultme/shard/network/end_point.dart';
 import 'package:consultme/shard/network/remote/dio_helper.dart';
 
-class LoginCubit extends Cubit<LoginStates>{
+import '../../../models/usermodel.dart';
 
+class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginInitialStates());
 
   static LoginCubit get(context) => BlocProvider.of(context);
@@ -20,7 +21,8 @@ class LoginCubit extends Cubit<LoginStates>{
 
   void changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix = isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    suffix =
+        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(ChangePasswordVisibilityState());
   }
@@ -35,43 +37,40 @@ class LoginCubit extends Cubit<LoginStates>{
     });
   }
 
-
 /////
   ///Login auth creation
   void login({required email, required password}) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    )
+          email: email,
+          password: password,
+        )
         .then((reuslt) => {
-      emit(
-        LoginIsAuth(reuslt),
-      ),
-      checkIsUser(
-        uid: reuslt.user!.uid,
-      ),
-    })
+              emit(
+                LoginIsAuth(reuslt),
+              ),
+              checkIsUser(
+                uid: reuslt.user!.uid,
+              ),
+            })
         .catchError((error) {
       emit(LoginIsNotAuth(error));
     });
   }
 
-
+  UserModel? loginModel ;
 
   ////
   ///check if user of consultent
   ///
   void checkIsUser({required uid}) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      switch (documentSnapshot.get('userType')) {
+    loginModel = null ;
+    FirebaseFirestore.instance.collection('users').doc(uid).get().then((user) {
+      loginModel = UserModel.fromJson(user.data()!);
+      switch (user.get('userType')) {
         case 'user':
           {
-            emit(UserAuthFoundedSuccess(uid));
+            emit(UserAuthFoundedSuccess(loginModel!));
           }
           break;
         case 'Consultant':
@@ -82,7 +81,7 @@ class LoginCubit extends Cubit<LoginStates>{
           break;
         case 'admin':
           {
-            emit(AdminAuthFoundedSuccess(uid));
+            emit(AdminAuthFoundedSuccess(loginModel!));
           }
           break;
         default:
@@ -93,15 +92,13 @@ class LoginCubit extends Cubit<LoginStates>{
   }
 
   void checkIsConsultantVirefied({required uid}) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      switch (documentSnapshot.get('accept')) {
+    loginModel = null ;
+    FirebaseFirestore.instance.collection('users').doc(uid).get().then((user) {
+      loginModel = UserModel.fromJson(user.data()!);
+      switch (user.get('accept')) {
         case true:
           {
-            emit(ConsultantVeryfied(uid));
+            emit(ConsultantVeryfied(loginModel!));
           }
           break;
         case false:
@@ -115,7 +112,6 @@ class LoginCubit extends Cubit<LoginStates>{
       emit(ErrorWithCheckVreifcation(virifvaionError));
     });
   }
- // late LoginModel loginModel;
 
   void userLogin({
     required int id,
@@ -129,15 +125,15 @@ class LoginCubit extends Cubit<LoginStates>{
         'id': id,
         'password': password,
       },
-    ).then((value) {
-      // print(value!.data);
-      //loginModel = LoginModel.fromJson(value!.data);
-      //emit(LoginSuccessStates(loginModel));
-    },
+    ).then(
+      (value) {
+        // print(value!.data);
+        //loginModel = LoginModel.fromJson(value!.data);
+        //emit(LoginSuccessStates(loginModel));
+      },
     ).catchError((error) {
       print(error.toString());
       emit(LoginErrorStates(error.toString()));
     });
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/admin/AddCategory.dart';
@@ -144,7 +145,7 @@ class AdminHomeScreen extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          navigateAndFinish(context, LoginScreen());
+                                          signOut(context);
                                         } ,
                                         child: Text(
                                           'تأكيد',

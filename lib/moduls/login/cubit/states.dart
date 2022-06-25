@@ -1,4 +1,6 @@
 
+import '../../../models/usermodel.dart';
+
 abstract class LoginStates {}
 
 class LoginInitialStates extends LoginStates {}
@@ -16,32 +18,30 @@ class LoginIsNotAuth extends LoginStates {
 }
 
 class UserAuthFoundedSuccess extends LoginStates {
-  final String uId;
-  UserAuthFoundedSuccess(this.uId);
+  final UserModel loginModel;
+  UserAuthFoundedSuccess(this.loginModel);
 }
 
 class ConsultantAuthFoundedSuccess extends LoginStates {
-
   ConsultantAuthFoundedSuccess();
 }
 
-class AdminAuthFoundedSuccess extends LoginStates {
-  final String uId;
+class ConsultantVeryfied extends LoginStates {
+  final UserModel loginModel;
 
-  AdminAuthFoundedSuccess(this.uId);
+  ConsultantVeryfied(this.loginModel);
+}
+
+class AdminAuthFoundedSuccess extends LoginStates {
+  final UserModel loginModel;
+
+  AdminAuthFoundedSuccess(this.loginModel);
 }
 
 class ErrorWithCheck extends LoginStates {
   final errorWithCheck;
 
   ErrorWithCheck(this.errorWithCheck);
-}
-
-class ConsultantVeryfied extends LoginStates {
-
-  final String uId;
-
-  ConsultantVeryfied(this.uId);
 }
 
 class ConsultantNotVeryfied extends LoginStates {}
@@ -51,7 +51,6 @@ class ErrorWithCheckVreifcation extends LoginStates {
 
   ErrorWithCheckVreifcation(this.errorWithCheckVreifcation);
 }
-
 
 class LoginLoadingStates extends LoginStates {}
 
@@ -70,4 +69,3 @@ class LoginErrorStates extends LoginStates {
 
   LoginErrorStates(this.error);
 }
-

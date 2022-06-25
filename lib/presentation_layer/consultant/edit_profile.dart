@@ -24,9 +24,9 @@ class EditProfileScreen extends StatelessWidget {
           var consultantModel = ConsultantCubit.get(context).consultantModel;
           imagePicker = ConsultantCubit.get(context).profileImage;
           nameController = TextEditingController(text: consultantModel!.name);
-          emailController = TextEditingController(text: consultantModel!.email);
-          phoneController = TextEditingController(text: consultantModel!.phone);
-          depatmentController = TextEditingController(text: consultantModel!.department);
+          emailController = TextEditingController(text: consultantModel.email);
+          phoneController = TextEditingController(text: consultantModel.phone);
+          depatmentController = TextEditingController(text: consultantModel.department);
           return Directionality(
             textDirection: TextDirection.rtl,
             child: Scaffold(

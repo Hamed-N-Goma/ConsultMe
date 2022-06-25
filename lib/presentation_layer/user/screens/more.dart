@@ -1,5 +1,6 @@
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
@@ -8,6 +9,7 @@ import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScre
 import 'package:consultme/presentation_layer/user/screens/favoritescreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/profile.dart';
+import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -335,7 +337,7 @@ class More extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  navigateAndFinish(context, LoginScreen());
+                                  signOut(context);
                                 },
                                 child: Text(
                                   'تأكيد',

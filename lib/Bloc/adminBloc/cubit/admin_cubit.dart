@@ -418,4 +418,6 @@ class AdminCubit extends Cubit<AdminStates> {
           state: ToastStates.ERROR);
     });
   }
-}
+
+  }
+

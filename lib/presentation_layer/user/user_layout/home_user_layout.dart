@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/const.dart';
 import 'package:consultme/moduls/signup/signup.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
@@ -10,12 +8,9 @@ import 'package:consultme/presentation_layer/user/screens/search.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 import '../screens/profile.dart';
 
@@ -79,11 +74,11 @@ class _UserLayoutState extends State<UserLayout> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: CircleAvatar(
-                    backgroundImage: model!.image == null
+                    backgroundImage: model?.image == null
                         ? const AssetImage(
                       "assets/images/user.png",
                     ) as ImageProvider
-                        : NetworkImage("${model!.image}"),
+                        : NetworkImage("${model?.image}"),
                     radius: 15,
                   ),
                 ),

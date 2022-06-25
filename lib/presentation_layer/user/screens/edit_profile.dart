@@ -22,8 +22,8 @@ class EditProfile extends StatelessWidget {
       var usermodel = UserLayoutCubit.get(context).userModel;
       imagePicker = UserLayoutCubit.get(context).profileImage;
       nameController = TextEditingController(text: usermodel!.name);
-      emailController = TextEditingController(text: usermodel!.email);
-      phoneController = TextEditingController(text: usermodel!.phone);
+      emailController = TextEditingController(text: usermodel.email);
+      phoneController = TextEditingController(text: usermodel.phone);
       return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
