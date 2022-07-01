@@ -140,12 +140,12 @@ class Home extends StatelessWidget {
 
   Widget buildMostImportantList(context) {
     return SizedBox(
-        height: 150,
+        height: 200,
         width: double.infinity,
         child: CarouselSlider.builder(
             itemCount: UserLayoutCubit.get(context).posts.length,
             itemBuilder: (context, index, pageindex) => MostImportnatNews(
-                post: posts[index], height: height, width: width - 80),
+                post: posts[index], height: height, width: width - 100),
             options: CarouselOptions(
                 height: 140,
                 autoPlay: true,

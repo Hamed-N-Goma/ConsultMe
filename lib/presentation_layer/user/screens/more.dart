@@ -33,10 +33,13 @@ class More extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
+              const SizedBox(
+                height: 12.0,
+              ),
               buildOthersIten(
                   name: 'الملف الشخصي',
                   context: context,
-                  icon: FontAwesomeIcons.user,
+                  icon: FontAwesomeIcons.addressCard,
                   widgetNavigation: const Profile()),
               const SizedBox(
                 height: 20.0,

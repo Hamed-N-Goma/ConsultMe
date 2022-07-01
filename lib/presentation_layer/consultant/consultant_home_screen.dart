@@ -17,6 +17,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../moduls/signup/signup.dart';
 
@@ -122,15 +123,78 @@ class ConsultantHomeScreen extends StatelessWidget {
                         const SizedBox(
                           height: 12.0,
                         ),
+                        Container(
+                          width: double.infinity,
+                          height: 1.0,
+                          color: separator,
+                        ),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+
+                        InkWell(
+                          onTap: () {
+                            ConsultantCubit.get(context).getUsersChat();
+                            navigateTo(context, ConsultChat());
+                          },
+                          child: buildOthersIten(
+                              name: 'الدردشة',
+                              context: context,
+                              icon: FontAwesomeIcons.message,
+                              widgetNavigation: ConsultChat()),
+                        ),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+
+                        InkWell(
+                          onTap: () {
+                            ConsultantCubit.get(context).getAppoinments();
+                            navigateTo(context, RequestAppoinmentScreen());
+                          },
+                          child: buildOthersIten(
+                              name: 'طلبات الإستشارة',
+                              context: context,
+                              icon: FontAwesomeIcons.phone,
+                              widgetNavigation: RequestAppoinmentScreen()),
+                        ),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            ConsultantCubit.get(context).getPosts();
+                            navigateTo(context, const NewsScreen());
+                          },
+                          child: buildOthersIten(
+                              name: 'المنشورات',
+                              context: context,
+                              icon: FontAwesomeIcons.paperPlane,
+                              widgetNavigation: NewsScreen()),
+                        ),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+                        buildOthersIten(
+                            name: 'تقديم شكوى ',
+                            context: context,
+                            icon: FontAwesomeIcons.reply,
+                            widgetNavigation: ComplaintsScreen()),
+                        const SizedBox(
+                          height: 12.0,
+                        ),
+                        const SizedBox(
+                          height: 22.0,
+                        ),
                         InkWell(
                           onTap: () {
                             showDialog<void>(
                               context: context,
                               builder: (context) => AlertDialog(
                                 backgroundColor:
-                                    ThemeCubit.get(context).darkTheme
-                                        ? mainColors
-                                        : Colors.white,
+                                ThemeCubit.get(context).darkTheme
+                                    ? mainColors
+                                    : Colors.white,
                                 content: Directionality(
                                   textDirection: TextDirection.rtl,
                                   child: Padding(
@@ -165,7 +229,7 @@ class ConsultantHomeScreen extends StatelessWidget {
                                       'الغاء',
                                       textDirection: TextDirection.rtl,
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                      Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
                                   TextButton(
@@ -191,66 +255,9 @@ class ConsultantHomeScreen extends StatelessWidget {
                                 .textTheme
                                 .bodyText1!
                                 .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 22.0,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 1.0,
-                          color: separator,
-                        ),
-                        const SizedBox(
-                          height: 22.0,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            ConsultantCubit.get(context).getUsersChat();
-                            navigateTo(context, ConsultChat());
-                          },
-                          child: defaultDashBoardTitleBox(
-                              img: 'assets/images/chat.png', title: 'الدردشة'),
-                        ),
-                        const SizedBox(
-                          height: 12.0,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            ConsultantCubit.get(context).getAppoinments();
-                            navigateTo(context, RequestAppoinmentScreen());
-                          },
-                          child: defaultDashBoardTitleBox(
-                              img: 'assets/images/checklist.png',
-                              title: 'طلبات الإستشارة'),
-                        ),
-                        const SizedBox(
-                          height: 12.0,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            ConsultantCubit.get(context).getPosts();
-                            navigateTo(context, const NewsScreen());
-                          },
-                          child: defaultDashBoardTitleBox(
-                              img: 'assets/images/news.png', title: 'الأخبار'),
-                        ),
-                        const SizedBox(
-                          height: 12.0,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            navigateTo(context, ComplaintsScreen());
-                          },
-                          child: defaultDashBoardTitleBox(
-                              title: 'تقديم شكوى ',
-                              svg: true,
-                              svgImage: 'assets/images/review.svg'),
-                        ),
-                        const SizedBox(
-                          height: 12.0,
                         ),
                       ],
                     );

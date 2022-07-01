@@ -5,6 +5,7 @@ import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/Call.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -55,7 +56,7 @@ class UserChatDetails extends StatelessWidget {
                                 return buildMyMessage(message);
                               }
 
-                              return buildMessage(message);
+                              return buildMessage(message , context);
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
@@ -182,11 +183,13 @@ class UserChatDetails extends StatelessWidget {
     ];
   }
 
-  Widget buildMessage(MessageModel model) => Align(
+  Widget buildMessage(MessageModel model , context ) => Align(
         alignment: AlignmentDirectional.centerStart,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.grey[300],
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : mainColors.withOpacity(0.4),
             borderRadius: const BorderRadiusDirectional.only(
               bottomEnd: Radius.circular(
                 10.0,

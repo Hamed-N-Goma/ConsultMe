@@ -3,21 +3,16 @@ import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/models/UserModel.dart';
-import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/admin/AddCategory.dart';
 import 'package:consultme/presentation_layer/admin/complaints/accept/accept_screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/dash_complaints_screen.dart';
 import 'package:consultme/presentation_layer/admin/seach.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/shard/network/local/cache_helper.dart';
-import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 
 
@@ -336,7 +331,7 @@ class AdminHomeScreen extends StatelessWidget {
                                 name: 'اضافة قسم ',
                                 context: context,
                                 icon: FontAwesomeIcons.addressBook,
-                                widgetNavigation:  AddCategoy()),
+                                widgetNavigation: AddCategoy()),
                             const SizedBox(
                               height: 12.0,
                             ),
@@ -344,7 +339,7 @@ class AdminHomeScreen extends StatelessWidget {
                                 name: 'الشكاوي',
                                 context: context,
                                 icon: FontAwesomeIcons.personCircleExclamation,
-                                widgetNavigation:  DashComplimentsScreen()),
+                                widgetNavigation: DashComplimentsScreen()),
 
                             const SizedBox(
                               height: 12.0,
@@ -353,7 +348,7 @@ class AdminHomeScreen extends StatelessWidget {
                                 name: 'المستخدمين',
                                 context: context,
                                 icon: FontAwesomeIcons.users,
-                                widgetNavigation:   SearchUsers()),
+                                widgetNavigation: SearchUsers()),
                             const SizedBox(
                               height: 12.0,
                             ),
@@ -465,62 +460,4 @@ class AdminHomeScreen extends StatelessWidget {
         ],
       );
 
-
-  Widget buildOthersIten(
-      {required name, context, required icon, required widgetNavigation}) {
-    return InkWell(
-      onTap: () {
-        navigateTo(context, widgetNavigation);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: ThemeCubit
-                .get(context)
-                .darkTheme
-                ? mainColors
-                : Theme
-                .of(context)
-                .scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(0, 3),
-                  color: HexColor('#404863').withOpacity(0.2),
-                  blurRadius: 10)
-            ]),
-        width: width,
-        height: 80,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(icon,
-                  color: ThemeCubit
-                      .get(context)
-                      .darkTheme
-                      ? Theme
-                      .of(context)
-                      .primaryIconTheme
-                      .color
-                      : Theme
-                      .of(context)
-                      .iconTheme
-                      .color),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                name,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodyLarge,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

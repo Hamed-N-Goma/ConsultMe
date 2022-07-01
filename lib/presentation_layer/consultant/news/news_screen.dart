@@ -58,7 +58,7 @@ class NewsScreen extends StatelessWidget {
                         children: [
                           defaultDashBoardTitleBox(
                               img: 'assets/images/newspaper.png',
-                              title: 'أخر أخباري'),
+                              title: 'أخر منشوراتي'),
                           const SizedBox(
                             height: 20.0,
                           ),

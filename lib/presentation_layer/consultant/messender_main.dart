@@ -1,3 +1,4 @@
+import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/consultant/chatDetailsScreen.dart';
@@ -80,6 +81,13 @@ class ConsultChatitem extends StatelessWidget {
         Text(
           '${User.name}',
           style: Theme.of(context).textTheme.bodyText1,
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Text(
+          '${ ConsultantCubit.get(context).messages.last.content}',
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ],
     );

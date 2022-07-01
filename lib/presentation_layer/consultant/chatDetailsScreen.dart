@@ -191,8 +191,8 @@ class ConsultChatDetails extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: ThemeCubit.get(context).darkTheme
-                ? Colors.grey
-                : Colors.grey[300],
+                ? mainColors
+                : mainColors.withOpacity(0.4),
             borderRadius: const BorderRadiusDirectional.only(
               bottomEnd: Radius.circular(
                 10.0,

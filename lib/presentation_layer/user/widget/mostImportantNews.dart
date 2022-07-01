@@ -34,7 +34,7 @@ class MostImportnatNews extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-                color: ColorManager.myWhite,
+                color: mainColors,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
@@ -56,9 +56,9 @@ class MostImportnatNews extends StatelessWidget {
                       children: [
                         Text(
                           post.title!,
-                          style: const TextStyle(
-                              fontFamily: FontConst.fontFamily,
-                              fontWeight: FontWeightManager.bold),
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              fontWeight: FontWeight.bold
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -67,9 +67,9 @@ class MostImportnatNews extends StatelessWidget {
                         ),
                         Text(
                           post.text!,
-                          style: const TextStyle(
-                              fontFamily: FontConst.fontFamily,
-                              fontWeight: FontWeightManager.regular),
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.bold
+                          ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 7,
                         )

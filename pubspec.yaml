@@ -53,8 +53,10 @@ dependencies:
   shimmer: ^2.0.0
   favorite_button: ^0.0.4
   flutter_webrtc: ^0.8.6
+  sdp_transform: ^0.3.2
   firebase_messaging: ^11.4.2
   http: ^0.13.4
+
 
 
 

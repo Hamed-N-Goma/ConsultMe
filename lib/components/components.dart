@@ -903,3 +903,63 @@ Color chooseStatusColor(StatusStates state) {
 
   return color;
 }
+
+Widget buildOthersIten(
+    {required name, context, required icon, required widgetNavigation}) {
+  return InkWell(
+    onTap: () {
+      navigateTo(context, widgetNavigation);
+    },
+    child: Container(
+      decoration: BoxDecoration(
+          color: ThemeCubit
+              .get(context)
+              .darkTheme
+              ? mainColors
+              : Theme
+              .of(context)
+              .scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(0, 3),
+                color: HexColor('#404863').withOpacity(0.2),
+                blurRadius: 10)
+          ]),
+      width: MediaQuery
+          .of(context)
+          .size.width,
+      height: 80,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(icon,
+                color: ThemeCubit
+                    .get(context)
+                    .darkTheme
+                    ? Theme
+                    .of(context)
+                    .primaryIconTheme
+                    .color
+                    : Theme
+                    .of(context)
+                    .iconTheme
+                    .color),
+            const SizedBox(
+              width: 20,
+            ),
+            Text(
+              name,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyLarge,
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}

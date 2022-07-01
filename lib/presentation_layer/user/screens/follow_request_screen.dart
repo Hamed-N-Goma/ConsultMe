@@ -253,7 +253,7 @@ Widget buildGuestItem(context, AppointmentModel model) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: buildEnquiry(
         context,
-        height: 150.0,
+        height: 100.0,
         state: model.MeetTime != null
             ? model.accept == true
                 ? StatusStates.ACCEPT
