@@ -17,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../../../models/callerhandshakeModel.dart';
+
 class ConsultantCubit extends Cubit<ConsultantStates> {
   ConsultantCubit() : super(ConsultantInitialState());
 
@@ -24,7 +26,6 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
   ConsultantModel? consultantModel;
   String uId = CacheHelper.getData(key: "uId");
-
 
   void getConsultantData() {
     print('----------get Consultant Data----------');
@@ -247,13 +248,15 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
                 getConsultantData(),
-                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-      })
+                showToast(
+                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+              })
           .catchError((onError) {
             emit(ErrorWithUpdateConsultant());
-            showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
-
-      });
+            showToast(
+                message: 'حدث خطأ يرجى إعادة المحاولة',
+                state: ToastStates.ERROR);
+          });
     } else {
       FirebaseFirestore.instance
           .collection('users')
@@ -267,13 +270,15 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
                 getConsultantData(),
-                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-      })
+                showToast(
+                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+              })
           .catchError((onError) {
             emit(ErrorWithUpdateConsultant());
-            showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
-
-      });
+            showToast(
+                message: 'حدث خطأ يرجى إعادة المحاولة',
+                state: ToastStates.ERROR);
+          });
     }
   }
 
@@ -311,71 +316,62 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   bool showWarning = false;
-  void showStudentWarning ({
+  void showStudentWarning({
     required bool isLate,
-  }){
+  }) {
     showWarning = isLate;
     emit(SecurityShowWarningState());
   }
 
-  void refusalAppointment( {required AppointmentModel appoItem}){
+  void refusalAppointment({required AppointmentModel appoItem}) {
     FirebaseFirestore.instance
         .collection('appointments')
         .doc(appoItem.appoId)
-        .update(
-        {
+        .update({
           'accept': false,
         })
         .then((value) => {
-      print('Appointment Unaccepted '),
-    })
+              print('Appointment Unaccepted '),
+            })
         .then((value) {
-
-      getAppoinments();
-      emit(refusalAppointmentSuccessStates());
-      showToast(message: 'تم رفض الطلب بنجاح', state: ToastStates.SUCCESS);
-    })
+          getAppoinments();
+          emit(refusalAppointmentSuccessStates());
+          showToast(message: 'تم رفض الطلب بنجاح', state: ToastStates.SUCCESS);
+        })
         .catchError((error) {
-      print(error);
-      showToast(
-          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
-          state: ToastStates.ERROR);
-      emit(refusalAppointmentErrorStates(error.toString()));
-    });
-
+          print(error);
+          showToast(
+              message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+              state: ToastStates.ERROR);
+          emit(refusalAppointmentErrorStates(error.toString()));
+        });
   }
 
-
-  void acceptAppointment({required String MeetTime, required AppointmentModel appoItem}) {
+  void acceptAppointment(
+      {required String MeetTime, required AppointmentModel appoItem}) {
     FirebaseFirestore.instance
         .collection('appointments')
         .doc(appoItem.appoId)
-        .update(
-        {
+        .update({
           'accept': true,
-          'MeetTime' : MeetTime,
+          'MeetTime': MeetTime,
         })
         .then((value) => {
-      print('Appointment accepted '),
-    })
+              print('Appointment accepted '),
+            })
         .then((value) {
-
-      getAppoinments();
-      emit(AcceptedAppointmentSuccessStates());
-      showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
-    })
+          getAppoinments();
+          emit(AcceptedAppointmentSuccessStates());
+          showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
+        })
         .catchError((error) {
-      print(error);
-      showToast(
-          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
-          state: ToastStates.ERROR);
-      emit(AcceptedAppointmentErrorStates(error.toString()));
-    });
-
-}
-
-
-
+          print(error);
+          showToast(
+              message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+              state: ToastStates.ERROR);
+          emit(AcceptedAppointmentErrorStates(error.toString()));
+        });
+  }
 
   List<MessageModel> messages = [];
 
@@ -401,8 +397,6 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
-
-
   void sendMessage({
     required String receiverId,
     required String dateTime,
@@ -410,7 +404,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }) {
     MessageModel model = MessageModel(
       content: content,
-      senderId: consultantModel?.uid ,
+      senderId: consultantModel?.uid,
       receiverId: receiverId,
       dateTime: dateTime,
     );
@@ -446,9 +440,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
-
   List<UserModel> usersInChat = [];
-
 
   getUsersChat() {
     usersInChat = [];
@@ -467,15 +459,15 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
-  var token ;
- String? getTokenById(String id)  {
-    FirebaseFirestore.instance.collection('users').doc(id).get().then((value)  {
+  var token;
+  String? getTokenById(String id) {
+    FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
       token = value.data()!["token"];
     });
     return token;
- }
+  }
 
-  sendNotfiy(String title , String body , String Token) async {
+  sendNotfiy(String title, String body, String Token) async {
     await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -498,5 +490,53 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         },
       ),
     );
+  }
+  //getRemoteDescription from user
+
+  var remote;
+  List<CallMessageModel> callDetails = [];
+  void getCallDetails({callerid}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(consultantModel!.uid)
+        .collection('callDetails')
+        .doc(callerid)
+        .collection('calls')
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        callDetails.add(CallMessageModel.fromJson(element.data()));
+        remote = callDetails.first.remoteDescription.toString();
+        //print(remote);
+        emit(CallRecevedSucssesfully());
+      });
+    });
+  }
+
+  //set answer and candidate to user
+  void sendAnswer({
+    required String receverId,
+    required String datetime,
+    required String answer,
+    required String candidate,
+  }) {
+    CallMessageModel callerModel = CallMessageModel(
+        senderId: consultantModel!.uid,
+        receiverId: receverId,
+        dateTime: datetime,
+        remoteDescription: answer,
+        candidate: candidate);
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receverId)
+        .collection('callDetails')
+        .doc(consultantModel!.uid)
+        .collection('calls')
+        .add(callerModel.toMap())
+        .then((value) => {emit(AnswerVoiceCallSucsses())})
+        .catchError((error) {
+      emit(ErrorWithanswerCall(error));
+    });
   }
 }

@@ -1,29 +1,37 @@
 import 'dart:convert';
+import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
+import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/models/callerhandshakeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sdp_transform/sdp_transform.dart';
-import 'package:consultme/models/consultantmodel.dart';
 
-class CallScreen extends StatefulWidget {
-  final ConsultantModel consultant;
+class ReceiveCall extends StatefulWidget {
+  final UserModel user;
 
-  CallScreen({Key? key, required this.consultant}) : super(key: key);
+  ReceiveCall({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<CallScreen> createState() => _CallScreenState(consultant);
+  State<ReceiveCall> createState() => _ReceiveCallState(user);
 }
 
-class _CallScreenState extends State<CallScreen> {
+class _ReceiveCallState extends State<ReceiveCall> {
   final RTCVideoRenderer _localVideoRender = RTCVideoRenderer();
   final RTCVideoRenderer _remoteVideoRender = RTCVideoRenderer();
   late MediaStream _localStreem;
-  late RTCPeerConnection _peerConnection;
-  final ConsultantModel consultant;
-  bool _offer = true;
+  RTCPeerConnection? _peerConnection;
+  final UserModel user;
+  List<CallMessageModel> callDetails = [];
+  late var remote;
+  bool _offer = false;
+  bool setcandidate = true;
+  String answer = '';
+  String candidate = '';
 
-  _CallScreenState(this.consultant);
+  _ReceiveCallState(this.user);
 
   // bool offer = false;
 
@@ -31,8 +39,8 @@ class _CallScreenState extends State<CallScreen> {
   void dispose() async {
     await _localVideoRender.dispose();
     await _remoteVideoRender.dispose();
-    _createPeerConnecion();
     _localStreem.dispose();
+    _createPeerConnecion();
     _getUserMidea();
     super.dispose();
   }
@@ -42,7 +50,11 @@ class _CallScreenState extends State<CallScreen> {
     initRender();
     _createPeerConnecion().then((pc) {
       _peerConnection = pc;
-      _createOffer();
+      print('out of cubit');
+      print(remote);
+      // _setRemoteDescription();
+
+      //  print("length offfffffffff ${callDetails.length}");
     });
     // _getUserMidea();
 
@@ -79,6 +91,20 @@ class _CallScreenState extends State<CallScreen> {
           'sdpMid': e.sdpMid.toString(),
           'sdpMlineIndex': e.sdpMLineIndex,
         }));
+        candidate = json.encode({
+          'candidate': e.candidate.toString(),
+          'sdpMid': e.sdpMid.toString(),
+          'sdpMlineIndex': e.sdpMLineIndex,
+        });
+
+        if (setcandidate) {
+          BlocProvider.of<ConsultantCubit>(context).sendAnswer(
+              receverId: user.uid,
+              datetime: DateTime.now().toString(),
+              answer: answer,
+              candidate: candidate);
+          setcandidate = false;
+        }
       }
     };
 
@@ -94,44 +120,28 @@ class _CallScreenState extends State<CallScreen> {
     return pc;
   }
 
-  void _createOffer() async {
-    RTCSessionDescription description =
-        await _peerConnection.createOffer({'offerToReceiveVideo': 1});
-    var session = parse(description.sdp.toString());
-    print(json.encode(session));
-
-    _peerConnection.setLocalDescription(description);
-    BlocProvider.of<UserLayoutCubit>(context).sendOffer(
-        datetime: DateTime.now().toString(),
-        message: json.encode(session),
-        receverId: consultant.uid.toString());
-    print("offffffffffffffffffffffffffffffffffffffffffffffffffer");
-    print(consultant.uid);
-  }
-
-  /* void _setRemoteDescription() async {
-    String jsonString = sdpController.text;
+  void _setRemoteDescription() async {
+    //setting remote description
+    String jsonString = remote.toString();
     dynamic session = await jsonDecode('$jsonString');
 
     String sdp = write(session, null);
 
-    // RTCSessionDescription description =
-    //     new RTCSessionDescription(session['sdp'], session['type']);
     RTCSessionDescription description =
         new RTCSessionDescription(sdp, _offer ? 'answer' : 'offer');
     print(description.toMap());
-
     await _peerConnection!.setRemoteDescription(description);
-  }
+    //creating answer
+    RTCSessionDescription descripion =
+        await _peerConnection!.createAnswer({'offerToReceiveVideo': 1});
+    var sessiion = parse(descripion.sdp.toString());
+    print('data neeeeeeded');
 
-  void _addCandidate() async {
-    String jsonString = sdpController.text;
-    dynamic session = await jsonDecode('$jsonString');
-    print(session['candidate']);
-    dynamic candidate =
-        new RTCIceCandidate(session['candidate'], session['sdpMid'], session['sdpMlineIndex']);
-    await _peerConnection!.addCandidate(candidate);
-  }*/
+    print(json.encode(sessiion));
+    answer = json.encode(sessiion);
+
+    _peerConnection!.setLocalDescription(descripion);
+  }
 
   void initRender() async {
     await _localVideoRender.initialize();
@@ -152,45 +162,17 @@ class _CallScreenState extends State<CallScreen> {
     return streem;
   }
 
-  void _setRemoteDescription(remote) async {
-    //setting remote description
-    String jsonString = remote.toString();
-    dynamic session = await jsonDecode('$jsonString');
-
-    String sdp = write(session, null);
-
-    RTCSessionDescription description =
-        RTCSessionDescription(sdp, _offer ? 'answer' : 'offer');
-    print(description.toMap());
-    await _peerConnection.setRemoteDescription(description);
-    //creating answer
-  }
-
-  void _addCandidate(candi) async {
-    String jsonString = candi.toString();
-    dynamic session = await jsonDecode('$jsonString');
-    print(session['candidate']);
-    dynamic candidate = new RTCIceCandidate(
-        session['candidate'], session['sdpMid'], session['sdpMlineIndex']);
-    await _peerConnection.addCandidate(candidate);
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
     return Builder(builder: (context) {
-      BlocProvider.of<UserLayoutCubit>(context)
-          .getCallDetails(callerid: consultant.uid);
-      return BlocConsumer<UserLayoutCubit, UserLayoutState>(
-        listener: (context, state) {
-          if (state is ReceiveCallSucssesfully) {
-            print('data reeeeeeeeeeecevied');
-            _setRemoteDescription(state.remoteDescription);
-            _addCandidate(state.candidate);
-          }
-        },
+      BlocProvider.of<ConsultantCubit>(context)
+          .getCallDetails(callerid: user.uid);
+      remote = BlocProvider.of<ConsultantCubit>(context).remote;
+      return BlocConsumer<ConsultantCubit, ConsultantStates>(
+        listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -201,10 +183,7 @@ class _CallScreenState extends State<CallScreen> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  _createOffer();
-                },
-                child: Icon(Icons.abc)),
+                onPressed: _setRemoteDescription, child: Icon(Icons.abc)),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

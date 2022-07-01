@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:consultme/models/callerhandshakeModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -108,12 +109,13 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .then((value) => {
                 emit(UpdateUserInfoScusses()),
                 GetUserInfo(),
-                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-      })
+                showToast(
+                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+              })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
-        showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
-
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
       });
     } else {
       userModel = UserModel(
@@ -131,12 +133,13 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
           .then((value) => {
                 emit(UpdateUserInfoScusses()),
                 GetUserInfo(),
-                showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-      })
+                showToast(
+                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+              })
           .catchError((onError) {
         emit(ErrorWithUpdateUser());
-        showToast(message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
-
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
       });
     }
   }
@@ -406,16 +409,15 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
-
-  var token ;
-  String? getTokenById(String id)  {
-    FirebaseFirestore.instance.collection('users').doc(id).get().then((value)  {
+  var token;
+  String? getTokenById(String id) {
+    FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
       token = value.data()!["token"];
     });
     return token;
   }
 
-  sendNotfiy(String title , String body , String Token) async {
+  sendNotfiy(String title, String body, String Token) async {
     await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -438,5 +440,53 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         },
       ),
     );
+  }
+  //init creating voice call
+
+  void sendOffer({
+    required String receverId,
+    required String datetime,
+    required String message,
+  }) {
+    CallMessageModel callerModel = CallMessageModel(
+      senderId: userModel!.uid,
+      receiverId: receverId,
+      dateTime: datetime,
+      remoteDescription: message,
+    );
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receverId)
+        .collection('callDetails')
+        .doc(userModel!.uid)
+        .collection('calls')
+        .add(callerModel.toMap())
+        .then((value) => {emit(CreatingVoiceCallSucsses())})
+        .catchError((error) {
+      emit(ErrorWithCreatingCall(error));
+    });
+  }
+
+//recive answer
+  String candidate = '', remoteDescription = '';
+  List<CallMessageModel> callanswer = [];
+  void getCallDetails({callerid}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uid)
+        .collection('callDetails')
+        .doc(callerid)
+        .collection('calls')
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        callanswer.add(CallMessageModel.fromJson(element.data()));
+        candidate = callanswer.first.candidate!;
+        remoteDescription = callanswer.first.remoteDescription!;
+        print(callanswer.first.dateTime);
+        emit(ReceiveCallSucssesfully(candidate, remoteDescription));
+      });
+    });
   }
 }

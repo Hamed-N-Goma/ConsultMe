@@ -16,18 +16,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 
 
 class AdminHomeScreen extends StatelessWidget {
 
   AdminHomeScreen({Key? key}) : super(key: key);
+  var size, height, width;
+
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (BuildContext context, state) {
-        if(state is delUserSuccessStates ){
+        if (state is delUserSuccessStates) {
           showToast(
               message:
               ' لقد تم حذف المستخدم بنجاح ',
@@ -35,12 +39,17 @@ class AdminHomeScreen extends StatelessWidget {
         }
       },
       builder: (BuildContext context, Object? state) {
-        var cubit =AdminCubit.get(context);
+        var cubit = AdminCubit.get(context);
+        size = MediaQuery
+            .of(context)
+            .size;
+        height = size.height;
+        width = size.width;
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar:
-                dashAppBar(title: 'إدارة الأمن', context: context, pop: false),
+            dashAppBar(title: 'الإدارة ', context: context, pop: false),
             body: RefreshIndicator(
               onRefresh: () async {
                 return cubit.getUserInSecurity();
@@ -49,8 +58,8 @@ class AdminHomeScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Builder(
-                  builder: (context){
-                    if(cubit.adminModel!=null){
+                  builder: (context) {
+                    if (cubit.adminModel != null) {
                       return Container(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
@@ -75,17 +84,20 @@ class AdminHomeScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       cubit.adminModel!.name,
-                                      style: Theme.of(context)
+                                      style: Theme
+                                          .of(context)
                                           .textTheme
                                           .bodyText1!
-                                          .copyWith(fontWeight: FontWeight.bold),
+                                          .copyWith(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(
                                       height: 2.0,
                                     ),
                                     Text(
-                                      cubit.adminModel!.uid.toString(),
-                                      style: Theme.of(context)
+                                      cubit.adminModel!.userType.toString(),
+                                      style: Theme
+                                          .of(context)
                                           .textTheme
                                           .bodyText2!
                                           .copyWith(
@@ -104,66 +116,83 @@ class AdminHomeScreen extends StatelessWidget {
                               onTap: () {
                                 showDialog<void>(
                                   context: context,
-                                  builder: (context) => AlertDialog(
-                                    backgroundColor: ThemeCubit.get(context).darkTheme
-                                        ? mainColors
-                                        : Colors.white,
-                                    content: Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/images/warning.svg',
-                                              width: 25.0,
-                                              height: 25.0,
-                                              alignment: Alignment.center,
+                                  builder: (context) =>
+                                      AlertDialog(
+                                        backgroundColor: ThemeCubit
+                                            .get(context)
+                                            .darkTheme
+                                            ? mainColors
+                                            : Colors.white,
+                                        content: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  'assets/images/warning.svg',
+                                                  width: 25.0,
+                                                  height: 25.0,
+                                                  alignment: Alignment.center,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10.0,
+                                                ),
+                                                Text(
+                                                  'تأكيد الخروج من الحساب ؟',
+                                                  textDirection: TextDirection
+                                                      .rtl,
+                                                  style:
+                                                  Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .subtitle1,
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            Text(
-                                              'تأكيد الخروج من الحساب ؟',
+                                          ),
+                                        ),
+                                        contentPadding: EdgeInsets.zero,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text(
+                                              'الغاء',
                                               textDirection: TextDirection.rtl,
-                                              style:
-                                              Theme.of(context).textTheme.subtitle1,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .bodyText1,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              signOut(context);
+                                            },
+                                            child: Text(
+                                              'تأكيد',
+                                              textDirection: TextDirection.rtl,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .copyWith(color: Colors.red),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    contentPadding: EdgeInsets.zero,
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: Text(
-                                          'الغاء',
-                                          textDirection: TextDirection.rtl,
-                                          style: Theme.of(context).textTheme.bodyText1,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          signOut(context);
-                                        } ,
-                                        child: Text(
-                                          'تأكيد',
-                                          textDirection: TextDirection.rtl,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(color: Colors.red),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 );
                               },
                               child: Text(
                                 'تسجيل خروج',
-                                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    fontWeight: FontWeight.bold, color: Colors.red),
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
                               ),
                             ),
                             const SizedBox(
@@ -186,14 +215,20 @@ class AdminHomeScreen extends StatelessWidget {
                                       child: Text(
                                         'عدد الخبراء المتاحين',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
                                         'عدد الخبراء الغير متاحين',
                                         textAlign: TextAlign.center,
-                                        style:Theme.of(context).textTheme.bodyText1,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                     ),
                                   ],
@@ -202,16 +237,25 @@ class AdminHomeScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        '${cubit.accepted_consultant?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.green)
+                                          '${cubit.accepted_consultant
+                                              ?.length}',
+                                          textAlign: TextAlign.center,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(color: Colors.green)
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
-                                        '${cubit.waiting_consultant?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.red)
+                                          '${cubit.waiting_consultant?.length}',
+                                          textAlign: TextAlign.center,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(color: Colors.red)
                                       ),
                                     ),
                                   ],
@@ -225,14 +269,20 @@ class AdminHomeScreen extends StatelessWidget {
                                       child: Text(
                                         'عدد المستخدمين',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
                                         'عدد المنشورات',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
                                       ),
                                     ),
                                   ],
@@ -243,14 +293,20 @@ class AdminHomeScreen extends StatelessWidget {
                                       child: Text(
                                         '${cubit.users?.length}',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                     ),
                                     Expanded(
                                       child: Text(
                                         '${cubit.posts?.length}',
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context).textTheme.headline6,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
                                     ),
                                   ],
@@ -268,63 +324,40 @@ class AdminHomeScreen extends StatelessWidget {
                             const SizedBox(
                               height: 12.0,
                             ),
+                            buildOthersIten(
+                                name: 'إداره الخبراء',
+                                context: context,
+                                icon: FontAwesomeIcons.userDoctor,
+                                widgetNavigation: const acceptScreen()),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
+                            buildOthersIten(
+                                name: 'اضافة قسم ',
+                                context: context,
+                                icon: FontAwesomeIcons.addressBook,
+                                widgetNavigation:  AddCategoy()),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
+                            buildOthersIten(
+                                name: 'الشكاوي',
+                                context: context,
+                                icon: FontAwesomeIcons.personCircleExclamation,
+                                widgetNavigation:  DashComplimentsScreen()),
 
-                            InkWell(
-                              onTap: () {
-                                navigateTo(context, const acceptScreen());
-                              },
-                              child: defaultDashBoardTitleBox(
-                                  img: 'assets/images/home.png',
-                                  title: 'إداره الخبراء'),
-                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
-                            InkWell(
-                              onTap: () {
-                                navigateTo(context,  AddCategoy());
-                              },
-                              child: defaultDashBoardTitleBox(
-                                  img: 'assets/images/home.png',
-                                  title: 'اضافة قسم '),
-                            ),
+                            buildOthersIten(
+                                name: 'المستخدمين',
+                                context: context,
+                                icon: FontAwesomeIcons.users,
+                                widgetNavigation:   SearchUsers()),
                             const SizedBox(
                               height: 12.0,
                             ),
-                            InkWell(
-                              onTap: (){
-                               // cubit.getAllOrders();
-                                navigateTo(context, DashComplimentsScreen());
-                              },
-                              child: defaultDashBoardTitleBox(
-                                  title: 'الشكاوي',
-                                  svg: true,
-                                  svgImage: 'assets/images/review.svg'
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            InkWell(
-                              onTap: (){
-                                cubit.getUsers();
 
-                                navigateTo(context,
-                                      SearchUsers());
-                              },
-                              child: defaultDashBoardTitleBox(
-                                  title: 'المستخدمين',
-                                  img: 'assets/images/team.png'
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 1.0,
-                              color: separator,
-                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
@@ -332,8 +365,10 @@ class AdminHomeScreen extends StatelessWidget {
                           ],
                         ),
                       );
-                    }else{
-                      return Container( alignment: Alignment.center,margin: const EdgeInsetsDirectional.all(100.0),child: const CircularProgressIndicator(),);
+                    } else {
+                      return Container(alignment: Alignment.center,
+                        margin: const EdgeInsetsDirectional.all(100.0),
+                        child: const CircularProgressIndicator(),);
                     }
                   },
                 ),
@@ -345,7 +380,8 @@ class AdminHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildSecurityCard(context, UserModel model) => Column(
+  Widget buildSecurityCard(context, UserModel model) =>
+      Column(
         children: [
           Container(
             width: double.infinity,
@@ -354,7 +390,9 @@ class AdminHomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 8.0,
               ),
-              color: ThemeCubit.get(context).darkTheme
+              color: ThemeCubit
+                  .get(context)
+                  .darkTheme
                   ? mainColors
                   : containerFollowStudent,
             ),
@@ -365,21 +403,25 @@ class AdminHomeScreen extends StatelessWidget {
                   child: Row(
                     children: [
 
-                        CircleAvatar(
-                          radius: 25.0,
-                          backgroundColor: ThemeCubit.get(context).darkTheme
-                              ? mainTextColor
-                              : mainColors,
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 80.0,
-                            child: Icon(Icons.error,
-                              color: ThemeCubit.get(context).darkTheme
-                                  ? mainColors
-                                  : mainTextColor,
-                            ),
+                      CircleAvatar(
+                        radius: 25.0,
+                        backgroundColor: ThemeCubit
+                            .get(context)
+                            .darkTheme
+                            ? mainTextColor
+                            : mainColors,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 80.0,
+                          child: Icon(Icons.error,
+                            color: ThemeCubit
+                                .get(context)
+                                .darkTheme
+                                ? mainColors
+                                : mainTextColor,
                           ),
                         ),
+                      ),
 
                       const SizedBox(
                         width: 10.0,
@@ -388,9 +430,15 @@ class AdminHomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(model.name,
-                              style: Theme.of(context).textTheme.bodyText2),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText2),
                           Text('${model.email}',
-                              style: Theme.of(context).textTheme.bodyText2),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText2),
                         ],
                       ),
                     ],
@@ -399,13 +447,14 @@ class AdminHomeScreen extends StatelessWidget {
                 const Spacer(),
                 defaultButton2(
                   function: () {
-                   AdminCubit.get(context).delUser(model);
+                    AdminCubit.get(context).delUser(model);
                   },
                   text: 'حذف المستخدم ',
                   width: double.infinity,
                   height: 32.0,
                   btnColor: Colors.red,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .bodyText1!
                       .copyWith(color: Colors.white),
@@ -415,6 +464,63 @@ class AdminHomeScreen extends StatelessWidget {
           )
         ],
       );
+
+
+  Widget buildOthersIten(
+      {required name, context, required icon, required widgetNavigation}) {
+    return InkWell(
+      onTap: () {
+        navigateTo(context, widgetNavigation);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: ThemeCubit
+                .get(context)
+                .darkTheme
+                ? mainColors
+                : Theme
+                .of(context)
+                .scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, 3),
+                  color: HexColor('#404863').withOpacity(0.2),
+                  blurRadius: 10)
+            ]),
+        width: width,
+        height: 80,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(icon,
+                  color: ThemeCubit
+                      .get(context)
+                      .darkTheme
+                      ? Theme
+                      .of(context)
+                      .primaryIconTheme
+                      .color
+                      : Theme
+                      .of(context)
+                      .iconTheme
+                      .color),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(
+                name,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyLarge,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
-
-

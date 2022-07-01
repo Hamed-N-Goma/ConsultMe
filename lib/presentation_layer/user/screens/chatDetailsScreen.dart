@@ -97,7 +97,6 @@ class UserChatDetails extends StatelessWidget {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
-
                                     UserLayoutCubit.get(context).sendMessage(
                                       receiverId: consultant.uid!,
                                       dateTime: DateTime.now().toString(),
@@ -106,8 +105,8 @@ class UserChatDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${consultant.uid!}")!);
-
+                                        cubit.getTokenById(
+                                            "${consultant.uid!}")!);
                                   },
                                   minWidth: 1.0,
                                   child: const Icon(
@@ -157,7 +156,16 @@ class UserChatDetails extends StatelessWidget {
     return [
       IconButton(
         onPressed: () {
-          navigateTo(context, CallScreen());
+          UserLayoutCubit.get(context).sendNotfiy(
+              " لديك مكالمة جديدة  ",
+              " ${ UserLayoutCubit.get(context).userModel!.name} انت على موعد مع  ",
+              UserLayoutCubit.get(context).getTokenById(
+                  "${consultant.uid!}")!);
+          navigateTo(
+              context,
+              CallScreen(
+                consultant: consultant,
+              ));
         },
         icon: FaIcon(
           FontAwesomeIcons.phone,

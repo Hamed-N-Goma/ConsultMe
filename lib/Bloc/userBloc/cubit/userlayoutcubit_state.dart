@@ -132,3 +132,18 @@ class GetAllChatErrorState extends UserLayoutState {
 
   GetAllChatErrorState(this.error);
 }
+
+class CreatingVoiceCallSucsses extends UserLayoutState {}
+
+class ErrorWithCreatingCall extends UserLayoutState {
+  final String error;
+
+  ErrorWithCreatingCall(this.error);
+}
+
+class ReceiveCallSucssesfully extends UserLayoutState {
+  final String candidate;
+  final String remoteDescription;
+
+  ReceiveCallSucssesfully(this.candidate, this.remoteDescription);
+}

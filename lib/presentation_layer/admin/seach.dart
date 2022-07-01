@@ -32,6 +32,7 @@ class _SearchState extends State<SearchUsers> {
   Widget build(BuildContext context) {
     return BlocBuilder<AdminCubit, AdminStates>(
       builder: (context, state) {
+        AdminCubit.get(context).getUsers();
         if (state is GitUsersDataSucsess) {
           allUsers = state.users;
           return buildSearchScreen();

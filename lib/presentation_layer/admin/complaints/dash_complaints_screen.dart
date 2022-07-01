@@ -101,7 +101,7 @@ Widget ComplaintsItem({
         Expanded(
           child: Text(
             item == null ? 'فارغ' :item.name!,
-            style: Theme.of(context).textTheme.headline6 ,
+            style: Theme.of(context).textTheme.bodyText1 ,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -109,7 +109,7 @@ Widget ComplaintsItem({
         Expanded(
           child: Text(
             item == null ? 'فارغ' :item.email!,
-            style :  Theme.of(context).textTheme.headline6,
+            style :  Theme.of(context).textTheme.bodyText1,
             textAlign: TextAlign.center,
 
           ),

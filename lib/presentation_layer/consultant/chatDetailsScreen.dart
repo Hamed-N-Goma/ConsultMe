@@ -1,8 +1,10 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/presentation_layer/consultant/Call.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class ConsultChatDetails extends StatelessWidget {
                   backgroundColor: ColorManager.myBlue.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
-                  actions: actionsAppBar(),
+                  actions: actionsAppBar(context),
                 ),
                 body: ConditionalBuilder(
                   condition: ConsultantCubit.get(context).messages.length >= 0,
@@ -155,10 +157,20 @@ class ConsultChatDetails extends StatelessWidget {
     );
   }
 
-  List<Widget> actionsAppBar() {
+  List<Widget> actionsAppBar(context) {
     return [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          ConsultantCubit.get(context).sendNotfiy(
+              " لديك مكالمة   ",
+              " ${ConsultantCubit.get(context).consultantModel!.name} تلقيت مكالة جديدة من ",
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!);
+          navigateTo(
+              context,
+              ReceiveCall(
+                user: User,
+              ));
+        },
         icon: FaIcon(
           FontAwesomeIcons.phone,
           color: ColorManager.myWhite.withOpacity(0.8),

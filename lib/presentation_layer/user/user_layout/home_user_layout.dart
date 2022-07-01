@@ -1,7 +1,10 @@
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/moduls/signup/signup.dart';
+import 'package:consultme/presentation_layer/user/screens/Call.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
+import 'package:consultme/presentation_layer/user/screens/consultantDetails.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
@@ -30,24 +33,38 @@ class _UserLayoutState extends State<UserLayout> {
     var message = await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
-      navigateTo(context, SignUpScreen);
+
+      print("__________________________________ message _________________________________________");
+      print(message.data);
+      print("__________________________________ message _________________________________________");
+
     }
   }
+
+  getMessage(){
+
+    FirebaseMessaging.onMessage.listen((event) {
+      print("__________________________________ event _________________________________________");
+      print(event.data.values);
+      navigateTo(context,SignUpScreen());
+    });
+  }
+
 
   @override
   void initState() {
     initalMessage();
 
+    getMessage();
+
+    ConsultantModel? cm;
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       //navigateTo(context, UserChat);
     });
 
     FirebaseMessaging.onMessage.listen((event) {
-      print(
-          "================================== Notafecation ================================");
-      print("${event.notification}");
-      print(
-          "================================== Notafecation  ==========================================");
+      navigateTo(
+          context, CallScreen(consultant:cm!));
     });
     super.initState();
   }

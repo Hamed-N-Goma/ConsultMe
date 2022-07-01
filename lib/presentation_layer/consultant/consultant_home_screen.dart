@@ -44,7 +44,8 @@ class ConsultantHomeScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 300.0,
                         child: Center(child: CircularProgressIndicator()));
-                  } else {
+                  }  else
+                  {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
