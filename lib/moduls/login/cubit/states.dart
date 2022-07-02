@@ -69,3 +69,6 @@ class LoginErrorStates extends LoginStates {
 
   LoginErrorStates(this.error);
 }
+
+class sendEmailSecces extends LoginStates{}
+class sendEmailError extends LoginStates{}

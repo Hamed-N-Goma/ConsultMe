@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +20,20 @@ class LoginCubit extends Cubit<LoginStates> {
   IconData suffix = Icons.visibility_outlined;
   bool isPassword = true;
 
+  var auth = FirebaseAuth.instance;
+
   void changePasswordVisibility() {
     isPassword = !isPassword;
     suffix =
-        isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(ChangePasswordVisibilityState());
   }
 
   var buttonController = RoundedLoadingButtonController();
   var loginbutton = RoundedLoadingButtonController();
+  var resetButton = RoundedLoadingButtonController();
+
 
   void rotationPeriod() async {
     Timer(const Duration(milliseconds: 2000), () {
@@ -42,29 +47,30 @@ class LoginCubit extends Cubit<LoginStates> {
   void login({required email, required password}) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
-        .then((reuslt) => {
-              emit(
-                LoginIsAuth(reuslt),
-              ),
-              checkIsUser(
-                uid: reuslt.user!.uid,
-              ),
-            })
+      email: email,
+      password: password,
+    )
+        .then((reuslt) =>
+    {
+      emit(
+        LoginIsAuth(reuslt),
+      ),
+      checkIsUser(
+        uid: reuslt.user!.uid,
+      ),
+    })
         .catchError((error) {
       emit(LoginIsNotAuth(error));
     });
   }
 
-  UserModel? loginModel ;
+  UserModel? loginModel;
 
   ////
   ///check if user of consultent
   ///
   void checkIsUser({required uid}) {
-    loginModel = null ;
+    loginModel = null;
     FirebaseFirestore.instance.collection('users').doc(uid).get().then((user) {
       loginModel = UserModel.fromJson(user.data()!);
       switch (user.get('userType')) {
@@ -92,7 +98,7 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   void checkIsConsultantVirefied({required uid}) {
-    loginModel = null ;
+    loginModel = null;
     FirebaseFirestore.instance.collection('users').doc(uid).get().then((user) {
       loginModel = UserModel.fromJson(user.data()!);
       switch (user.get('accept')) {
@@ -126,7 +132,7 @@ class LoginCubit extends Cubit<LoginStates> {
         'password': password,
       },
     ).then(
-      (value) {
+          (value) {
         // print(value!.data);
         //loginModel = LoginModel.fromJson(value!.data);
         //emit(LoginSuccessStates(loginModel));
@@ -134,6 +140,19 @@ class LoginCubit extends Cubit<LoginStates> {
     ).catchError((error) {
       print(error.toString());
       emit(LoginErrorStates(error.toString()));
+    });
+  }
+
+  Future<void> sendPasswordResetEmail( String email) async {
+    auth.sendPasswordResetEmail(email: email).then((value) =>
+    {
+      emit(sendEmailSecces()),
+      showToast(message: 'لقد تم إرسال رسالة , تحقق من البريد الخاص بك',
+          state: ToastStates.SUCCESS)
+    }).catchError((error) {
+      emit(sendEmailError());
+      showToast(message: 'حدث خطأ يرجى إعادة المحاولة لاحقا ..',
+          state: ToastStates.ERROR);
     });
   }
 }

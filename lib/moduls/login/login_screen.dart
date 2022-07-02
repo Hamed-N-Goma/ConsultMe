@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/moduls/forget_password_screen.dart';
 import 'package:consultme/moduls/signup/signup.dart';
 import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
 import 'package:consultme/presentation_layer/consultant/consultant_home_screen.dart';
@@ -80,6 +81,13 @@ class LoginScreen extends StatelessWidget {
                 message:
                     ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
                 state: ToastStates.WARNING);
+            LoginCubit.get(context).loginbutton.stop();
+          }
+          else if (state is LoginIsNotAuth) {
+            showToast(
+                message:
+                'يرجى التأكد من البيانات',
+                state: ToastStates.ERROR);
             LoginCubit.get(context).loginbutton.stop();
           }
         },
@@ -271,6 +279,34 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'نسيت كلمة السر ؟ ',
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          navigateTo(context, ForgetScreen());
+                                        },
+                                        child: Text(
+                                          'إعادة تعيين ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
                               ],
                             ),
                           ),
