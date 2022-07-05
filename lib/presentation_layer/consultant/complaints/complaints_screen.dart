@@ -41,10 +41,6 @@ class ComplaintsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(18),
                 child: Column(
                   children: [
-                    defaultTitleBox(
-                      img: 'assets/images/review.svg',
-                      title: 'تقديم شكوى',
-                    ),
                     const SizedBox(
                       height: 15.0,
                     ),
@@ -57,7 +53,7 @@ class ComplaintsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 2,
+                      height: 10,
                     ),
                     whiteBoard(context, controller: complaintController),
                     const SizedBox(
@@ -74,7 +70,7 @@ class ComplaintsScreen extends StatelessWidget {
                                 userType : '${consultantModel?.userType}'
                             );
                           },
-                          text: 'تقديم الطلب',
+                          text: 'تقديم الشكوى',
                           radius: 8.0,
                           height: 47,
                           btnColor: mainColors,

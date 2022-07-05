@@ -1,6 +1,10 @@
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
+import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+
+
 
 class PostsDetails extends StatelessWidget {
   final PostModel post;
@@ -41,8 +45,10 @@ class PostsDetails extends StatelessWidget {
                           topRight: Radius.circular(30)),
                       child: Container(
                         clipBehavior: Clip.none,
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
+                        decoration:  BoxDecoration(
+                            color: ThemeCubit.get(context).darkTheme
+                                ? mainColors
+                                : Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
@@ -79,6 +85,19 @@ class PostsDetails extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
+                                        CircleAvatar(
+                                          radius:35 ,
+                                          backgroundColor:
+                                          ThemeCubit.get(context).darkTheme
+                                              ? mainTextColor
+                                              : mainColors,
+                                          backgroundImage: NetworkImage(
+                                            '${post.image}',
+                                          ),
+                                        ),
+                                     Row(
+                                         children: [
+
                                         buildCustomText(
                                             text: 'الناشر:',
                                             style: Theme.of(context)
@@ -92,6 +111,8 @@ class PostsDetails extends StatelessWidget {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyMedium),
+                                         ],
+                                     )
                                       ],
                                     ),
                                     Row(

@@ -123,14 +123,7 @@ class ConsultantHomeScreen extends StatelessWidget {
                         const SizedBox(
                           height: 12.0,
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: 1.0,
-                          color: separator,
-                        ),
-                        const SizedBox(
-                          height: 12.0,
-                        ),
+
 
                         InkWell(
                           onTap: () {
@@ -141,7 +134,7 @@ class ConsultantHomeScreen extends StatelessWidget {
                               name: 'الدردشة',
                               context: context,
                               icon: FontAwesomeIcons.message,
-                              widgetNavigation: ConsultChat()),
+                         ),
                         ),
                         const SizedBox(
                           height: 12.0,
@@ -156,7 +149,7 @@ class ConsultantHomeScreen extends StatelessWidget {
                               name: 'طلبات الإستشارة',
                               context: context,
                               icon: FontAwesomeIcons.phone,
-                              widgetNavigation: RequestAppoinmentScreen()),
+                             ),
                         ),
                         const SizedBox(
                           height: 12.0,
@@ -170,16 +163,21 @@ class ConsultantHomeScreen extends StatelessWidget {
                               name: 'المنشورات',
                               context: context,
                               icon: FontAwesomeIcons.paperPlane,
-                              widgetNavigation: NewsScreen()),
+                         ),
                         ),
                         const SizedBox(
                           height: 12.0,
                         ),
-                        buildOthersIten(
+                        InkWell(
+                          onTap: () {
+                                 navigateTo(context, ComplaintsScreen());
+                           },
+                          child:  buildOthersIten(
                             name: 'تقديم شكوى ',
                             context: context,
                             icon: FontAwesomeIcons.reply,
-                            widgetNavigation: ComplaintsScreen()),
+                          ),
+                     ),
                         const SizedBox(
                           height: 12.0,
                         ),

@@ -58,7 +58,7 @@ class AdminHomeScreen extends StatelessWidget {
                       return Container(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
                               children: [
@@ -103,92 +103,6 @@ class AdminHomeScreen extends StatelessWidget {
                                   ],
                                 ),
                               ],
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (context) =>
-                                      AlertDialog(
-                                        backgroundColor: ThemeCubit
-                                            .get(context)
-                                            .darkTheme
-                                            ? mainColors
-                                            : Colors.white,
-                                        content: Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  'assets/images/warning.svg',
-                                                  width: 25.0,
-                                                  height: 25.0,
-                                                  alignment: Alignment.center,
-                                                ),
-                                                const SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                Text(
-                                                  'تأكيد الخروج من الحساب ؟',
-                                                  textDirection: TextDirection
-                                                      .rtl,
-                                                  style:
-                                                  Theme
-                                                      .of(context)
-                                                      .textTheme
-                                                      .subtitle1,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        contentPadding: EdgeInsets.zero,
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text(
-                                              'الغاء',
-                                              textDirection: TextDirection.rtl,
-                                              style: Theme
-                                                  .of(context)
-                                                  .textTheme
-                                                  .bodyText1,
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              signOut(context);
-                                            },
-                                            child: Text(
-                                              'تأكيد',
-                                              textDirection: TextDirection.rtl,
-                                              style: Theme
-                                                  .of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(color: Colors.red),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                );
-                              },
-                              child: Text(
-                                'تسجيل خروج',
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              ),
                             ),
                             const SizedBox(
                               height: 22.0,
@@ -319,40 +233,125 @@ class AdminHomeScreen extends StatelessWidget {
                             const SizedBox(
                               height: 12.0,
                             ),
-                            buildOthersIten(
+                            InkWell(
+                            onTap: () {
+                                  navigateTo(context, const acceptScreen());
+                                  },
+                             child : buildOthersIten(
                                 name: 'إداره الخبراء',
                                 context: context,
                                 icon: FontAwesomeIcons.userDoctor,
-                                widgetNavigation: const acceptScreen()),
+                              ),
+                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
-                            buildOthersIten(
-                                name: 'اضافة قسم ',
-                                context: context,
-                                icon: FontAwesomeIcons.addressBook,
-                                widgetNavigation: AddCategoy()),
+                            InkWell(
+                              onTap: () {
+                                cubit.getCategorys();
+                                navigateTo(context,  AddCategoy());
+                              },
+                              child: buildOthersIten(
+                                  name: 'اضافة قسم ',
+                                  context: context,
+                                  icon: FontAwesomeIcons.addressBook,
+                        ),
+                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
-                            buildOthersIten(
-                                name: 'الشكاوي',
-                                context: context,
-                                icon: FontAwesomeIcons.personCircleExclamation,
-                                widgetNavigation: DashComplimentsScreen()),
-
+                            InkWell(
+                              onTap: () {
+                                navigateTo(context,  DashComplimentsScreen());
+                              },
+                              child: buildOthersIten(
+                                  name: 'الشكاوي',
+                                  context: context,
+                                  icon: FontAwesomeIcons.personCircleExclamation,
+                                  ),
+                            ),
                             const SizedBox(
                               height: 12.0,
                             ),
-                            buildOthersIten(
-                                name: 'المستخدمين',
-                                context: context,
-                                icon: FontAwesomeIcons.users,
-                                widgetNavigation: SearchUsers()),
-                            const SizedBox(
-                              height: 12.0,
+                            InkWell(
+                              onTap: () {
+                                navigateTo(context,  SearchUsers());
+                              },
+                              child: buildOthersIten(
+                                  name: 'المستخدمين',
+                                  context: context,
+                                  icon: FontAwesomeIcons.users,
+                       ),
                             ),
-
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    backgroundColor: ThemeCubit.get(context).darkTheme
+                                        ? mainColors
+                                        : Colors.white,
+                                    content: Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/images/warning.svg',
+                                              width: 25.0,
+                                              height: 25.0,
+                                              alignment: Alignment.center,
+                                            ),
+                                            const SizedBox(
+                                              width: 10.0,
+                                            ),
+                                            Text(
+                                              'تأكيد الخروج من الحساب ؟',
+                                              textDirection: TextDirection.rtl,
+                                              style:
+                                              Theme.of(context).textTheme.subtitle1,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    contentPadding: EdgeInsets.zero,
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text(
+                                          'الغاء',
+                                          textDirection: TextDirection.rtl,
+                                          style: Theme.of(context).textTheme.bodyText1,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          signOut(context);
+                                        },
+                                        child: Text(
+                                          'تأكيد',
+                                          textDirection: TextDirection.rtl,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'تسجيل خروج',
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    fontWeight: FontWeight.bold, color: Colors.red),
+                              ),
+                            ),
                             const SizedBox(
                               height: 12.0,
                             ),

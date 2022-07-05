@@ -54,39 +54,39 @@ class _SearchState extends State<SearchUsers> {
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          appBar: AppBar(
-            title: buildCustomText(
-                text: "إبحث عن مستخدم",
-                style: Theme.of(context).textTheme.bodyLarge),
-            centerTitle: true,
-            iconTheme: Theme.of(context).iconTheme,
+          appBar: dashAppBar(
+            title: 'إبحث عن مستخدم ',
+            context: context,
           ),
-          body: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              buildSearchField(context),
-              const SizedBox(
-                height: 10,
-              ),
-              ConditionalBuilder(
-                  condition: _isSearching && searchedUsers.isNotEmpty,
-                  builder: (context) => Expanded(
-                        child: SizedBox(
-                          child: ListView.separated(
-                              itemBuilder: ((context, index) => buildUserCard(
-                                  context,
-                                  model: searchedUsers[index])),
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                              itemCount: searchedUsers.length),
+          body: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                buildSearchField(context),
+                const SizedBox(
+                  height: 20,
+                ),
+                ConditionalBuilder(
+                    condition: _isSearching && searchedUsers.isNotEmpty,
+                    builder: (context) => Expanded(
+                          child: SizedBox(
+                            child: ListView.separated(
+                                itemBuilder: ((context, index) => buildUserCard(
+                                    context,
+                                    model: searchedUsers[index])),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                itemCount: searchedUsers.length),
+                          ),
                         ),
-                      ),
-                  fallback: (context) => buildSearchfallback())
-            ],
+                    fallback: (context) => buildSearchfallback())
+              ],
+            ),
           ),
         ));
   }
@@ -231,7 +231,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
                 text: 'حذف المستخدم ',
                 width: double.infinity,
                 height: 32.0,
-                btnColor: Colors.red,
+                btnColor: Colors.redAccent,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!

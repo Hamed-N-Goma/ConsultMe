@@ -1,10 +1,7 @@
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/models/consultantmodel.dart';
-import 'package:consultme/moduls/signup/signup.dart';
-import 'package:consultme/presentation_layer/user/screens/Call.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
-import 'package:consultme/presentation_layer/user/screens/consultantDetails.dart';
+import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
@@ -42,11 +39,8 @@ class _UserLayoutState extends State<UserLayout> {
   }
 
   getMessage(){
-
     FirebaseMessaging.onMessage.listen((event) {
-      print("__________________________________ event _________________________________________");
-      print(event.data.values);
-      navigateTo(context,SignUpScreen());
+         navigateTo(context, const FollowRequestsScreen());
     });
   }
 
@@ -57,15 +51,7 @@ class _UserLayoutState extends State<UserLayout> {
 
     getMessage();
 
-    ConsultantModel? cm;
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      //navigateTo(context, UserChat);
-    });
 
-    FirebaseMessaging.onMessage.listen((event) {
-      navigateTo(
-          context, CallScreen(consultant:cm!));
-    });
     super.initState();
   }
 

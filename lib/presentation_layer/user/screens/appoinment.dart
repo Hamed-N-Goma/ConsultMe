@@ -3,6 +3,7 @@ import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/presentation_layer/consultant/success_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,8 +38,10 @@ class appoinment extends StatelessWidget {
           return Directionality(
               textDirection: ui.TextDirection.rtl,
               child: Scaffold(
-                  appBar: AppBar(
-                    title: buildCustomText(text: 'طلب مقابلة '),
+                  appBar: dashAppBar(
+                    title: 'طلب مقابلة',
+                    context: context,
+                    pop: true,
                   ),
                   body: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -49,13 +52,6 @@ class appoinment extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'طلب موعد',
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .headline6,
-                            ),
                             const SizedBox(height: 20.0,),
                             Text(
                               'تعليمات الإستشارة',
@@ -66,7 +62,7 @@ class appoinment extends StatelessWidget {
                             ),
                             const SizedBox(height: 10.0,),
                             Text(
-                              '..يمكن للمستشير حجز موعد ويدفع بعض الرسوم مقابل الإستشارة ',
+                              '.يمكن للمستخدم طلب إستشارة مع إرفاق السبب , مع إنتظار قبول الطلب  ',
                               style: Theme
                                   .of(context)
                                   .textTheme
@@ -195,7 +191,7 @@ class appoinment extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'يجب مراعاه ان في حاله إخلاء السكن والرغبه في العوده اليه مره أخرى , فعليك اتمام جميع الأجرائات السكنيه من جديد',
+                                      ' يجب ذكر سبب الإستشارة مع وصف بسيط لمشكلتك ',
                                       style:
                                       Theme
                                           .of(context)
@@ -231,7 +227,7 @@ class appoinment extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          'في حاله وجود غرامات ماليه , يتم خصمها من التأمين ',
+                                          'لن تستطيع التواصل مع المستشير الٌا في حالة قبول الطلب .. ',
                                           style: Theme
                                               .of(context)
                                               .textTheme
@@ -247,10 +243,11 @@ class appoinment extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 18.0),
                                     child: InkWell(
                                       onTap: () {
-                                        // navigateTo(context, const FinesScreen());
+                                        UserLayoutCubit.get(context).getAppoinments();
+                                        navigateTo(context, const FollowRequestsScreen());
                                       },
                                       child: Text(
-                                        'تفاصيل الغرامات',
+                                        'متابعة الطلبات',
                                         style:
                                         Theme
                                             .of(context)

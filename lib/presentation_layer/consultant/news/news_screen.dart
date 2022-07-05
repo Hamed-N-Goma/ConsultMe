@@ -56,28 +56,7 @@ class NewsScreen extends StatelessWidget {
                     } else {
                       return Column(
                         children: [
-                          defaultDashBoardTitleBox(
-                              img: 'assets/images/newspaper.png',
-                              title: 'أخر منشوراتي'),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 1.0,
-                            color: separator,
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          defaultButton(
-                            text: 'إضافة خبر جديد',
-                            function: () {
-                                navigateTo(context, AddPostScreen());
-                            },
-                            btnColor: mainColors,
-                            width: double.infinity,
-                          ),
+
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -93,6 +72,25 @@ class NewsScreen extends StatelessWidget {
                               height: 16,
                             ),
                             itemCount: ConsultantCubit.get(context).posts.length,
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 1.0,
+                            color: separator,
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          defaultButton(
+                            text: 'إضافة المنشور جديد',
+                            function: () {
+                              navigateTo(context, AddPostScreen());
+                            },
+                            btnColor: mainColors,
+                            width: double.infinity,
                           ),
                         ],
                       );
@@ -121,7 +119,7 @@ Widget buildNewsItem({
     direction: DismissDirection.startToEnd,
     resizeDuration: const Duration(milliseconds: 200),
     onDismissed: (direction) {
-      cubit.DeletePost(model.uid);
+      cubit.DeletePost(model.postID);
     },
     background: Container(
       decoration: BoxDecoration(

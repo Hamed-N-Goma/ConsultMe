@@ -103,11 +103,12 @@ class UserChatDetails extends StatelessWidget {
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
+
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById(
-                                            "${consultant.uid!}")!);
+                                        cubit.getTokenById("${consultant.uid}")!);
+                                    messageController.clear();
                                   },
                                   minWidth: 1.0,
                                   child: const Icon(

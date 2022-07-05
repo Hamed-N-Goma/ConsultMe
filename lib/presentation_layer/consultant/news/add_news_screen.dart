@@ -38,7 +38,7 @@ class AddPostScreen extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'إضافة خبر جديد',
+              title: 'إضافة المنشور جديد',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -48,7 +48,7 @@ class AddPostScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     dashTextFormField(
-                      hint: 'عنوان الخبر',
+                      hint: 'عنوان المنشور',
                       controller: titleController,
                       context: context,
                       type: TextInputType.text,
@@ -146,7 +146,7 @@ class AddPostScreen extends StatelessWidget {
                                     border: InputBorder.none,
                                     hintStyle: Theme.of(context).textTheme.bodyText1,
                                     contentPadding: const EdgeInsetsDirectional.all(10.0),
-                                    hintText: 'صورة الخبر',
+                                    hintText: 'صورة المنشور',
                                   ),
                                 ),
                               ),
@@ -163,7 +163,7 @@ class AddPostScreen extends StatelessWidget {
                           cubit: cubit,
                         );
                       },
-                      text: 'إضافة الخبر',
+                      text: 'إضافة منشور جديد',
                       width: double.infinity,
                       height: 47.0,
                       btnColor: mainColors,

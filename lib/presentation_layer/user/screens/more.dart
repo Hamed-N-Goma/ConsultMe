@@ -6,6 +6,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TechnicalSupportScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScreen.dart';
+import 'package:consultme/presentation_layer/user/screens/edit_profile.dart';
 import 'package:consultme/presentation_layer/user/screens/favoritescreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/profile.dart';
@@ -36,18 +37,44 @@ class More extends StatelessWidget {
               const SizedBox(
                 height: 12.0,
               ),
-              buildOthersIten(
-                  name: 'الملف الشخصي',
-                  context: context,
-                  icon: FontAwesomeIcons.addressCard,
-                  widgetNavigation: const Profile()),
-              const SizedBox(
-                height: 20.0,
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                   children: [
+                    InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          EditProfile(),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor:
+                        ThemeCubit.get(context).darkTheme
+                            ? mainTextColor
+                            : mainColors,
+                        backgroundImage: NetworkImage(
+                          '${cubit.userModel?.image}',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                        Text(
+                          '${cubit.userModel?.email}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                          ),
+                        ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     InkWell(
                       onTap: () {
                         UserLayoutCubit.get(context).getAppoinments();
@@ -114,40 +141,6 @@ class More extends StatelessWidget {
                               //   context,
                               //    StudentRateScreen(),
                               //  );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Container(
-                        width: double.infinity,
-                        height: 1.0,
-                        color: separator,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        navigateTo(context, AboutAppScreen());
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            'خدماتنا',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              IconBroken.Arrow___Left_2,
-                              color: ThemeCubit.get(context).darkTheme
-                                  ? mainTextColor
-                                  : mainColors,
-                            ),
-                            onPressed: () {
-                              navigateTo(context, AboutAppScreen());
                             },
                           ),
                         ],

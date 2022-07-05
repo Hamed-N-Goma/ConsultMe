@@ -111,7 +111,7 @@ class AddCategoy extends StatelessWidget {
                             );
                           }else{
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 72.0),
+                              padding: const EdgeInsets.only(bottom: 40.0),
                               child: Container(
                                 width: double.infinity,
                                 height: 45.0,

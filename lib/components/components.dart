@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../Bloc/adminBloc/cubit/admin_cubit.dart';
 import '../Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import '../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import '../presentation_layer/presentation_layer_manager/font_manager/fontmanager.dart';
 import '../shard/style/iconly_broken.dart';
 import '../shard/style/theme/cubit/cubit.dart';
+import 'package:flutter/widgets.dart';
 
 Widget buildCustomText(
         {required String text,
@@ -905,12 +905,8 @@ Color chooseStatusColor(StatusStates state) {
 }
 
 Widget buildOthersIten(
-    {required name, context, required icon, required widgetNavigation}) {
-  return InkWell(
-    onTap: () {
-      navigateTo(context, widgetNavigation);
-    },
-    child: Container(
+    {required name, context, required icon}) {
+  return Container(
       decoration: BoxDecoration(
           color: ThemeCubit
               .get(context)
@@ -960,6 +956,6 @@ Widget buildOthersIten(
           ],
         ),
       ),
-    ),
   );
+
 }

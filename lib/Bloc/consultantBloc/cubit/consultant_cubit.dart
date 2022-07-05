@@ -141,13 +141,21 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
       title: title,
       text: text,
       postImage: postImage,
+      postID: null,
     );
 
     FirebaseFirestore.instance
         .collection('posts')
         .add(model.toMap())
-        .then((value) {
-      emit(CreatePostSuccessState());
+        .then((value) => {
+    print("posts ceateted"),
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(value.id)
+        .update({'postID': value.id})
+        .then((value) => {
+      emit(CreatePostSuccessState()),
+    })
     }).catchError((error) {
       emit(CreatePostErrorState(error.toString()));
     });

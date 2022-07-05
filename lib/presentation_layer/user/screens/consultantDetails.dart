@@ -27,8 +27,10 @@ class consultantDetails extends StatelessWidget {
       return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-              appBar: AppBar(
-                title: buildCustomText(text: 'طلب إستشاره'),
+              appBar: dashAppBar(
+                title: 'طلب إستشاره',
+                context: context,
+                pop: true,
               ),
               body: SingleChildScrollView(
                 child: Container(

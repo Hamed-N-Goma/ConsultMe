@@ -374,6 +374,7 @@ class AdminCubit extends Cubit<AdminStates> {
         .collection('Category')
         .add(model.toMap())
         .then((value) {
+      getCategorys();
       emit(CreateCategorySuccessState());
     }).catchError((error) {
       emit(CreateCategoryErrorState(error.toString()));
@@ -408,6 +409,7 @@ class AdminCubit extends Cubit<AdminStates> {
               .delete();
         }
       });
+      getCategorys();
       emit(DeleteCategorySuccessState());
       showToast(message: 'تم حذف القسم بنجاح', state: ToastStates.SUCCESS);
       getCategorys();

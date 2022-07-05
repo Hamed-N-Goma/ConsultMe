@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import '../components/components.dart';
 import '../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'login/cubit/states.dart';
 
@@ -33,6 +34,10 @@ class ForgetScreen extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: SafeArea(
               child: Scaffold(
+                  appBar: dashAppBar(
+                    title: 'إعادة تعيين كلمة المرور',
+                    context: context,
+                  ),
                   body: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 28.0),
                       child: Column(
@@ -50,7 +55,7 @@ class ForgetScreen extends StatelessWidget {
                             const Padding(
                               padding: EdgeInsets.all(8.0),
                               child:  Text(
-                                'Forget password',
+                                '.الرجاء إدخال بريدك الإلكتروني',
                                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -92,7 +97,7 @@ class ForgetScreen extends StatelessWidget {
                                 },
                                 controller: cubit.resetButton,
                                 child: const Text(
-                                  'إعادة تعيين كلمة المرور',
+                                  'إرسال الى البريد',
                                   style: TextStyle(
                                     fontSize: 20.0,
                                   ),
@@ -108,6 +113,4 @@ class ForgetScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

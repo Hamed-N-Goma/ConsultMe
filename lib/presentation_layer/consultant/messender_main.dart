@@ -85,10 +85,7 @@ class ConsultChatitem extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        Text(
-          '${ ConsultantCubit.get(context).messages.last.content}',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
+
       ],
     );
   }

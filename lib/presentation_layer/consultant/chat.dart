@@ -25,13 +25,10 @@ class ConsultChat extends StatelessWidget {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            appBar: AppBar(
-              iconTheme: Theme.of(context).iconTheme,
-              backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-              elevation: 1,
-              foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
-              title: leadingTitle(context),
-              // actions: appBarItems(model?.image),
+            appBar:dashAppBar(
+              title: 'الدردشة',
+              context: context,
+              pop: true,
             ),
             body: ConditionalBuilder(
               condition: ConsultantCubit.get(context).usersInChat.length >= 0,

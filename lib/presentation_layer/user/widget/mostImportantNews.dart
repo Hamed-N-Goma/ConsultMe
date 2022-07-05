@@ -34,7 +34,9 @@ class MostImportnatNews extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-                color: mainColors,
+                color:ThemeCubit.get(context).darkTheme
+                    ? mainColors
+                    : Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
