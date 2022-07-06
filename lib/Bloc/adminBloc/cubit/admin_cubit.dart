@@ -409,7 +409,6 @@ class AdminCubit extends Cubit<AdminStates> {
               .delete();
         }
       });
-      getCategorys();
       emit(DeleteCategorySuccessState());
       showToast(message: 'تم حذف القسم بنجاح', state: ToastStates.SUCCESS);
       getCategorys();
@@ -421,5 +420,28 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+
+  void DeleteUser(UserModel model) {
+    FirebaseFirestore.instance.collection('users').get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['uid'] == model!.uid) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(element.id)
+              .delete();
+        }
+      });
+      getUsers();
+      emit(DeleteUserSuccessState());
+      showToast(message: 'تم حذف المستخدم بنجاح', state: ToastStates.SUCCESS);
+    }).catchError((error) {
+      print(error.toString());
+      emit(DeleteUserErrorState());
+      showToast(message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
+          state: ToastStates.ERROR);
+    });
   }
+
+
+}
 

@@ -87,6 +87,9 @@ class GetCategoryErrorState extends AdminStates{
 class DeleteCategorySuccessState extends AdminStates{}
 class DeleteCategoryErrorState extends AdminStates{}
 
+class DeleteUserSuccessState extends AdminStates{}
+class DeleteUserErrorState extends AdminStates{}
+
 
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}

@@ -168,7 +168,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
       children: [
         Container(
           width: double.infinity,
-          height: 115,
+          height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               8.0,
@@ -215,7 +215,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(model.name,
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyText1),
                         Text('${model.email}',
                             style: Theme.of(context).textTheme.bodyText2),
                       ],
@@ -226,7 +226,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
               const Spacer(),
               defaultButton2(
                 function: () {
-                  // navigateTo(context, EnterStudentDetailsScreen(item: model,));
+                  AdminCubit.get(context).DeleteUser(model);
                 },
                 text: 'حذف المستخدم ',
                 width: double.infinity,
