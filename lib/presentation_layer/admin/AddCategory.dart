@@ -219,8 +219,77 @@ Widget buildCategoryItem({
     direction: DismissDirection.startToEnd,
     resizeDuration: const Duration(milliseconds: 200),
     onDismissed: (direction) {
-      cubit.DeleteCategory(model);
+        showDialog<void>(
+          context: context,
+          builder: (context) =>
+              AlertDialog(
+                backgroundColor: ThemeCubit
+                    .get(context)
+                    .darkTheme
+                    ? mainColors
+                    : Colors.white,
+                content: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/warning.svg',
+                          width: 25.0,
+                          height: 25.0,
+                          alignment: Alignment.center,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          'تأكيد حذف القسم ؟',
+                          textDirection: TextDirection.rtl,
+                          style:
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                contentPadding: EdgeInsets.zero,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'الغاء',
+                      textDirection: TextDirection.rtl,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      cubit.DeleteCategory(model);
+                       Navigator.pop(context);
+                    },
+                    child: Text(
+                      'حذف',
+                      textDirection: TextDirection.rtl,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
+        );
+
     },
+
     background: Container(
       decoration: BoxDecoration(
         color: Colors.red,

@@ -107,21 +107,29 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildSearchField(context) {
-    return defaultFormField(
-        label: 'بحث ',
-        controller: searchController,
-        type: TextInputType.name,
-        validate: () {},
-        prefix: IconBroken.Search,
-        context: context,
-        suffixIcon: FontAwesomeIcons.xmark,
-        isClickable: true,
-        onPressedsufix: () {
-          clearSearching();
-        },
-        onChange: (searchedCon) {
-          addSearchedItemToSearchedList(searchedCon);
-        });
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: SizedBox(
+        width: double.infinity,
+        height : 55.0 ,
+        child: defaultFormField(
+            label: 'بحث ',
+            controller: searchController,
+            type: TextInputType.name,
+            validate: () {},
+            prefix: IconBroken.Search,
+            context: context,
+            suffixIcon: FontAwesomeIcons.xmark,
+            isClickable: true,
+            onPressedsufix: () {
+              clearSearching();
+            },
+            onChange: (searchedCon) {
+              addSearchedItemToSearchedList(searchedCon);
+            }),
+      ),
+    );
+
   }
 
   void addSearchedItemToSearchedList(String searchConsultant) {

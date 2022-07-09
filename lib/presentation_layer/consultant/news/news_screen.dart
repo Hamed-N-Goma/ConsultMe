@@ -8,6 +8,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 
@@ -119,7 +120,69 @@ Widget buildNewsItem({
     direction: DismissDirection.startToEnd,
     resizeDuration: const Duration(milliseconds: 200),
     onDismissed: (direction) {
-      cubit.DeletePost(model.postID);
+      showDialog<void>(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              backgroundColor: ThemeCubit
+                  .get(context)
+                  .darkTheme
+                  ? mainColors
+                  : Colors.white,
+              content: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/warning.svg',
+                        width: 25.0,
+                        height: 25.0,
+                        alignment: Alignment.center,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(
+                        'تأكيد حذف المنشور ؟',
+                        style:
+                        Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle1,
+                      ),
+                    ],
+                  ),
+                ),
+
+              contentPadding: EdgeInsets.zero,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'الغاء',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText1,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    cubit.DeletePost(model.postID);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'حذف',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+      );
     },
     background: Container(
       decoration: BoxDecoration(

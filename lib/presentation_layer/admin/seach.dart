@@ -6,6 +6,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
@@ -116,7 +117,7 @@ class _SearchState extends State<SearchUsers> {
   Widget buildSearchField(context) {
     return SizedBox(
       width: double.infinity,
-      height: 50.0,
+      height: 55.0,
       child: defaultFormField(
         controller: searchController,
         type: TextInputType.text,
@@ -226,7 +227,74 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
               const Spacer(),
               defaultButton2(
                 function: () {
-                  AdminCubit.get(context).DeleteUser(model);
+                  showDialog<void>(
+                    context: context,
+                    builder: (context) =>
+                        AlertDialog(
+                          backgroundColor: ThemeCubit
+                              .get(context)
+                              .darkTheme
+                              ? mainColors
+                              : Colors.white,
+                          content: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/warning.svg',
+                                    width: 25.0,
+                                    height: 25.0,
+                                    alignment: Alignment.center,
+                                  ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text(
+                                    'تأكيد حذف المستخدم ؟',
+                                    textDirection: TextDirection.rtl,
+                                    style:
+                                    Theme
+                                        .of(context)
+                                        .textTheme
+                                        .subtitle1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                'الغاء',
+                                textDirection: TextDirection.rtl,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText1,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                AdminCubit.get(context).DeleteUser(model);
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'حذف',
+                                textDirection: TextDirection.rtl,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                  );
                 },
                 text: 'حذف المستخدم ',
                 width: double.infinity,

@@ -399,6 +399,7 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
+
   void DeleteCategory(CategoryModel model) {
     FirebaseFirestore.instance.collection('Category').get().then((value) {
       value.docs.forEach((element) {
