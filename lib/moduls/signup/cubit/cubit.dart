@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultme/models/ConsultantModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/moduls/signup/cubit/states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import '../../../models/consultantmodel.dart';
 
 
 class SignUpCubit extends Cubit<SignUpStates> {
@@ -239,6 +240,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
       speachalist: spechalist,
       yearsofExperience: yearsOfExperiance,
       imageOfCertificate : imageOfCertificate,
+      bio : "تخصصي هوا ${spechalist} واعمل في مجال ${deapartment} , وأمتلك  ${yearsOfExperiance} من سنين الخبرة ",
     );
     FirebaseFirestore.instance
         .collection('users')

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/main.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class EditProfileScreen extends StatelessWidget {
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
   var depatmentController = TextEditingController();
+  var bioController = TextEditingController();
 
   File? imagePicker;
   @override
@@ -27,6 +29,8 @@ class EditProfileScreen extends StatelessWidget {
           emailController = TextEditingController(text: consultantModel.email);
           phoneController = TextEditingController(text: consultantModel.phone);
           depatmentController = TextEditingController(text: consultantModel.department);
+          bioController = TextEditingController(text: consultantModel.bio);
+
           return Directionality(
             textDirection: TextDirection.rtl,
             child: Scaffold(
@@ -37,14 +41,17 @@ class EditProfileScreen extends StatelessWidget {
             ),
 
               body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    if (state is LoadingUpdateUseInfo) LinearProgressIndicator(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    buildEditableProfile(context, consultantModel, imagePicker)
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      if (state is LoadingUpdateUseInfo) LinearProgressIndicator(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      buildEditableProfile(context, consultantModel, imagePicker)
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -58,11 +65,11 @@ class EditProfileScreen extends StatelessWidget {
 
   Widget buildEditableProfile(context, consultantModel, imagePicker) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           SizedBox(
-            height: 190,
+            height: 100,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -87,62 +94,97 @@ class EditProfileScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          defaultFormField(
-              controller: nameController,
-              type: TextInputType.text,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ الإسم';
-                }
-              },
-              prefix: IconBroken.User,
-              context: context,
-              label: 'الإسم'),
-          const SizedBox(
-            height: 20,
-          ),
-          defaultFormField(
-              controller: emailController,
-              type: TextInputType.emailAddress,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ البريد الالكتروني';
-                }
-              },
-              prefix: IconBroken.Message,
-              context: context,
-              label: 'البريد الالكتروني'),
-          const SizedBox(
-            height: 20,
-          ),
-          defaultFormField(
-              controller: phoneController,
-              type: TextInputType.phone,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ رقم الهاتف';
-                }
-              },
-              prefix: IconBroken.Call,
-              context: context,
-              label: 'المجال '),
-          const SizedBox(
-            height: 20,
-          ),
-          defaultFormField(
-              controller: depatmentController,
-              type: TextInputType.text,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ المجال';
-                }
-              },
-              prefix: IconBroken.Work,
-              context: context,
-              label: 'المجال'),
-          SizedBox(
-            height: 30,
-          ),
+           Column(
+              children: [
+                Text(
+                  'السيرة الذاتية',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleMedium,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                whiteBoard
+                  (
+                    context,
+                    controller: bioController,
+                    height : 100 ,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                SizedBox(
+                  height: 60,
+                  child: defaultFormField(
+                      controller: nameController,
+                      type: TextInputType.text,
+                      validate: (String value) {
+                        if (value.isEmpty) {
+                          return 'يجب ملئ الإسم';
+                        }
+                      },
+                      prefix: IconBroken.User,
+                      context: context,
+                      label: 'الإسم'),
+                ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 60,
+              child: defaultFormField(
+                  controller: emailController,
+                  type: TextInputType.emailAddress,
+                  validate: (String value) {
+                    if (value.isEmpty) {
+                      return 'يجب ملئ البريد الالكتروني';
+                    }
+                  },
+                  prefix: IconBroken.Message,
+                  context: context,
+                  label: 'البريد الالكتروني'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 60,
+              child: defaultFormField(
+                  controller: phoneController,
+                  type: TextInputType.phone,
+                  validate: (String value) {
+                    if (value.isEmpty) {
+                      return 'يجب ملئ رقم الهاتف';
+                    }
+                  },
+                  prefix: IconBroken.Call,
+                  context: context,
+                  label: ' رقم الهاتف '),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 60,
+              child: defaultFormField(
+                  controller: depatmentController,
+                  type: TextInputType.text,
+                  validate: (String value) {
+                    if (value.isEmpty) {
+                      return 'يجب ملئ المجال';
+                    }
+                  },
+                  prefix: IconBroken.Work,
+                  context: context,
+                  label: 'المجال'),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+              ],
+            ),
 
           defaultButton(
             function: () {
@@ -177,7 +219,7 @@ class EditProfileScreen extends StatelessWidget {
           child: CircleAvatar(
             radius: 50.0,
             backgroundImage: imagePicker == null
-                ? NetworkImage(image)
+                ? NetworkImage(image!)
                 : FileImage(imagepicker) as ImageProvider,
           ),
         ),
@@ -220,8 +262,9 @@ class NumbersWidget extends StatelessWidget {
     ],
   );
   Widget buildDivider() => Container(
-    height: 5,
+    width: 5.0,
     color: mainColors,
+
     child: VerticalDivider(),
   );
 

@@ -10,7 +10,9 @@ class ConsultantModel {
   String? yearsofExperience;
   String? image;
   String? imageOfCertificate;
-  ConsultantModel({
+  String? bio;
+
+   ConsultantModel({
     required this.uid,
     required this.name,
     required this.email,
@@ -22,6 +24,7 @@ class ConsultantModel {
     this.yearsofExperience,
     this.image,
     this.imageOfCertificate,
+     this.bio,
   });
 
   ConsultantModel.fromJson(Map<String, dynamic>? json) {
@@ -36,6 +39,7 @@ class ConsultantModel {
     image = json?['image'];
     imageOfCertificate = json?['imageOfCertificate'];
     accept = json?["accept"];
+    bio = json?["bio"];
   }
 
   Map<String, dynamic> toMap() {
@@ -51,6 +55,7 @@ class ConsultantModel {
       "image": image,
       "imageOfCertificate": imageOfCertificate,
       "accept" : accept ,
+      "bio" : bio,
     };
   }
 }
