@@ -66,7 +66,6 @@ class EditProfileScreen extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                buildCover(),
                 buildProfilePic(
                     context: context,
                     image: consultantModel!.image,
@@ -81,6 +80,10 @@ class EditProfileScreen extends StatelessWidget {
             text: consultantModel!.name,
             style: Theme.of(context).textTheme.headline6,
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          NumbersWidget(),
           const SizedBox(
             height: 20,
           ),
@@ -163,23 +166,6 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCover() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: 140,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0)),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://5blh.com/wp-content/uploads/2022/01/performance_1280.png'),
-              fit: BoxFit.cover),
-        ),
-      ),
-    );
-  }
 
   Widget buildProfilePic({context, image, imagepicker}) {
     return Stack(
@@ -220,4 +206,50 @@ class EditProfileScreen extends StatelessWidget {
       ),
     ]);
   }
+}
+class NumbersWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      buildButton(context,  'التقييم', '4.8'),
+      buildDivider(),
+      buildButton(context, 'عدد الطلبات' , '${ConsultantCubit.get(context).appointments!.length}'),
+      buildDivider(),
+      buildButton(context,  'سنين الخبرة','${ConsultantCubit.get(context).consultantModel!.yearsofExperience}'),
+    ],
+  );
+  Widget buildDivider() => Container(
+    height: 5,
+    color: mainColors,
+    child: VerticalDivider(),
+  );
+
+  Widget buildButton(BuildContext context, String value, String text) =>
+      MaterialButton(
+        padding: EdgeInsets.symmetric(vertical: 4),
+        onPressed: () {},
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              value,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText1,
+            ),
+            SizedBox(height: 2),
+            Text(
+              text,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline6,
+            ),
+          ],
+        ),
+      );
 }

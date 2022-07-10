@@ -37,13 +37,13 @@ class ConsultChatitem extends StatelessWidget {
         ),
         child: Container(
           padding: const EdgeInsets.all(16),
-          height: height * 0.14,
+          height: height * 0.12,
           width: width,
           decoration: BoxDecoration(
             color: ThemeCubit.get(context).darkTheme
                 ? mainColors
-                : Theme.of(context).highlightColor.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(20),
+                : Theme.of(context).highlightColor.withOpacity(0.7),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,15 +75,13 @@ class ConsultChatitem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 8,
-        ),
         Text(
           '${User.name}',
           style: Theme.of(context).textTheme.bodyText1,
         ),
-        SizedBox(
-          height: 8,
+        Text(
+          '${User.email}',
+          style: Theme.of(context).textTheme.bodyText1,
         ),
 
       ],
