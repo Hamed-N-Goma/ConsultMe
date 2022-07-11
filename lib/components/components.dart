@@ -499,7 +499,7 @@ Widget waitingDialog({required context}) => AlertDialog(
                   height: 12.0,
                 ),
                 Text(
-                  'برجاء الأنتظار ...',
+                  'الرجاء الأنتظار ...',
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ],

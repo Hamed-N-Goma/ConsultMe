@@ -23,12 +23,6 @@ class AddCategoy extends StatelessWidget {
         if(state is CreateCategorySuccessState ){
           navigateTo(context, const AddingSuccessScreen());
         }
-        if(state is CreateCategoryLoadingState ){
-          showDialog<void>(
-              context: context,
-              builder: (context)=> waitingDialog(context: context)
-          );
-        }
         if (state is CreateCategoryErrorState ){
           Navigator.pop(context);
         }

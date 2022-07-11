@@ -23,17 +23,9 @@ class ViewAll extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 1,
-          centerTitle: true,
-          title: const Text('مواضيع رآئجه',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: FontConst.fontFamily,
-                fontWeight: FontWeightManager.bold,
-              )),
+        appBar:  dashAppBar(
+        title: 'مواضيع رائجة',
+        context: context,
         ),
         body: Center(
           child: ListView.separated(

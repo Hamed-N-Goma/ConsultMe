@@ -91,7 +91,7 @@ class ConsultChatDetails extends StatelessWidget {
                                     controller: messageController,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'type your message here ...',
+                                      hintText: 'قم بكتابة رسالتك هنا ...',
                                     ),
                                   ),
                                 ),

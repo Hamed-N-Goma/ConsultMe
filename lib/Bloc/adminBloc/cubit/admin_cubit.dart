@@ -376,6 +376,8 @@ class AdminCubit extends Cubit<AdminStates> {
         .then((value) {
       getCategorys();
       emit(CreateCategorySuccessState());
+      showToast(message: 'تم إضافة القسم بنجاح', state: ToastStates.SUCCESS);
+
     }).catchError((error) {
       emit(CreateCategoryErrorState(error.toString()));
     });

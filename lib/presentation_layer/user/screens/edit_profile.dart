@@ -33,14 +33,17 @@ class EditProfile extends StatelessWidget {
             pop: true,
         ),
           body: SingleChildScrollView(
-            child: Column(
-              children: [
-                if (state is LoadingUpdateUseInfo) LinearProgressIndicator(),
-                SizedBox(
-                  height: 10,
-                ),
-                buildEditableProfile(context, usermodel, imagePicker)
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  if (state is LoadingUpdateUseInfo) LinearProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  buildEditableProfile(context, usermodel, imagePicker)
+                ],
+              ),
             ),
           ),
         ),
@@ -58,11 +61,10 @@ class EditProfile extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 190,
+            height: 120,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                buildCover(),
                 buildProfilePic(
                     context: context,
                     image: usermodel!.image,
@@ -71,7 +73,7 @@ class EditProfile extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           buildCustomText(
             text: usermodel!.name,
@@ -80,45 +82,54 @@ class EditProfile extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          defaultFormField(
-              controller: nameController,
-              type: TextInputType.name,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ الإسم';
-                }
-              },
-              prefix: IconBroken.User,
-              context: context,
-              label: "الإسم كامل"),
+          SizedBox(
+            height: 60,
+            child: defaultFormField(
+                controller: nameController,
+                type: TextInputType.name,
+                validate: (String value) {
+                  if (value.isEmpty) {
+                    return 'يجب ملئ الإسم';
+                  }
+                },
+                prefix: IconBroken.User,
+                context: context,
+                label: "الإسم كامل"),
+          ),
           const SizedBox(
             height: 20,
           ),
-          defaultFormField(
-              controller: emailController,
-              type: TextInputType.emailAddress,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ البريد الالكتروني';
-                }
-              },
-              prefix: IconBroken.Message,
-              context: context,
-              label:  'البريد الالكتروني'),
+          SizedBox(
+            height: 60,
+            child: defaultFormField(
+                controller: emailController,
+                type: TextInputType.emailAddress,
+                validate: (String value) {
+                  if (value.isEmpty) {
+                    return 'يجب ملئ البريد الالكتروني';
+                  }
+                },
+                prefix: IconBroken.Message,
+                context: context,
+                label:  'البريد الالكتروني'),
+          ),
           const SizedBox(
             height: 20,
           ),
-          defaultFormField(
-              controller: phoneController,
-              type: TextInputType.phone,
-              validate: (String value) {
-                if (value.isEmpty) {
-                  return 'يجب ملئ رقم الهاتف';
-                }
-              },
-              prefix: IconBroken.Call,
-              context: context,
-              label:  'رقم الهاتف'),
+          SizedBox(
+            height: 60,
+            child: defaultFormField(
+                controller: phoneController,
+                type: TextInputType.phone,
+                validate: (String value) {
+                  if (value.isEmpty) {
+                    return 'يجب ملئ رقم الهاتف';
+                  }
+                },
+                prefix: IconBroken.Call,
+                context: context,
+                label:  'رقم الهاتف'),
+          ),
            SizedBox(
             height: 30,
           ),
@@ -144,23 +155,7 @@ class EditProfile extends StatelessWidget {
     );
   }
 
-  Widget buildCover() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: 140,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0)),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://5blh.com/wp-content/uploads/2022/01/performance_1280.png'),
-              fit: BoxFit.cover),
-        ),
-      ),
-    );
-  }
+
 
   Widget buildProfilePic({context, image, imagepicker}) {
     return Stack(

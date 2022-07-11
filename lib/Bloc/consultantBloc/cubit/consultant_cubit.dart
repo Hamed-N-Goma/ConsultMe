@@ -451,6 +451,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   List<UserModel> usersInChat = [];
 
   getUsersChat() {
+    getAppoinments();
     usersInChat = [];
     appointments!.forEach((element) {
       FirebaseFirestore.instance.collection('users').get().then((value) {

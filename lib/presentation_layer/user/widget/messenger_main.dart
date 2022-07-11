@@ -34,9 +34,7 @@ class ChatitemConsult extends StatelessWidget {
           height: height * 0.14,
           width: width,
           decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(

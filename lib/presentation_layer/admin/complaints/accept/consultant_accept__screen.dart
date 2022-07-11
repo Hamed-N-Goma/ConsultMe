@@ -99,7 +99,6 @@ class AcceptedConsultantsScreen extends StatelessWidget {
                             );
                           }
                         }),
-
                   ],
                 ),
               ),
@@ -208,7 +207,7 @@ Widget ConsultantItem({
                               } else {
                                 if(cubit.phoneController.text.length != 11){
                                   showToast(
-                                      message: 'رقم الموبيل غير صحيح',
+                                      message: 'رقم الهاتف غير صحيح',
                                       state: ToastStates.ERROR);
                                   cubit.changeWaitingStudentEditIcon(!cubit.showWaitingStudentEdit);
                                 }
@@ -358,12 +357,6 @@ Widget ConsultantItem({
                             height: 5.0,
                           ),
 
-
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-
-                          //phone
                           Row(
                             children: [
                               Expanded(

@@ -1,13 +1,9 @@
-import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/consultant/chatDetailsScreen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../../const.dart';
-import '../../../models/consultantmodel.dart';
 import '../../../shard/style/theme/cubit/cubit.dart';
 
 class ConsultChatitem extends StatelessWidget {
@@ -37,13 +33,11 @@ class ConsultChatitem extends StatelessWidget {
         ),
         child: Container(
           padding: const EdgeInsets.all(16),
-          height: height * 0.12,
+          height: height * 0.14,
           width: width,
           decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : Theme.of(context).highlightColor.withOpacity(0.7),
-            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +75,7 @@ class ConsultChatitem extends StatelessWidget {
         ),
         Text(
           '${User.email}',
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
 
       ],
