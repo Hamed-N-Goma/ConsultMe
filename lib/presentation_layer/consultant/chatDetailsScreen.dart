@@ -1,16 +1,20 @@
+import 'dart:developer';
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
-import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/UserModel.dart';
-import 'package:consultme/presentation_layer/consultant/Call.dart';
+import 'package:consultme/presentation_layer/consultant/makeCall.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shard/style/iconly_broken.dart';
 
@@ -27,6 +31,11 @@ class ConsultChatDetails extends StatelessWidget {
       ConsultantCubit.get(context).getMessages(
         userId: User.uid,
       );
+      BlocProvider.of<CallCubit>(context).generateToken(
+          BlocProvider.of<ConsultantCubit>(context).consultantModel!.uid,
+          "publisher",
+          "uid",
+          "0");
       return BlocConsumer<ConsultantCubit, ConsultantStates>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -51,22 +60,22 @@ class ConsultChatDetails extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
-                                  ConsultantCubit.get(context).messages[index];
+                              ConsultantCubit.get(context).messages[index];
 
                               if (ConsultantCubit.get(context)
-                                      .consultantModel
-                                      ?.uid ==
+                                  .consultantModel
+                                  ?.uid ==
                                   message.senderId)
                                 return buildMyMessage(message, context);
 
                               return buildMessage(message, context);
                             },
                             separatorBuilder: (context, index) =>
-                                const SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
                             itemCount:
-                                ConsultantCubit.get(context).messages.length,
+                            ConsultantCubit.get(context).messages.length,
                           ),
                         ),
                         Container(
@@ -91,7 +100,7 @@ class ConsultChatDetails extends StatelessWidget {
                                     controller: messageController,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'قم بكتابة رسالتك هنا ...',
+                                      hintText: 'type your message here ...',
                                     ),
                                   ),
                                 ),
@@ -101,7 +110,6 @@ class ConsultChatDetails extends StatelessWidget {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
-
                                     ConsultantCubit.get(context).sendMessage(
                                       receiverId: User.uid,
                                       dateTime: DateTime.now().toString(),
@@ -160,89 +168,102 @@ class ConsultChatDetails extends StatelessWidget {
   List<Widget> actionsAppBar(context) {
     return [
       IconButton(
-        onPressed: () {
+        onPressed: () async {
           ConsultantCubit.get(context).sendNotfiy(
-              " لديك مكالمة   ",
-              " ${ConsultantCubit.get(context).consultantModel!.name} تلقيت مكالة جديدة من ",
+              " لقد تلقيت مكالمة ",
+              " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
               ConsultantCubit.get(context).getTokenById("${User.uid}")!);
-          navigateTo(
+
+          if (token.toString().isNotEmpty) {
+            await handleCameraAndMic(Permission.camera);
+            await handleCameraAndMic(Permission.microphone);
+
+            await Navigator.push(
               context,
-              ReceiveCall(
-                user: User,
-              ));
+              MaterialPageRoute(
+                builder: (context) => MakeCall(
+                  channelName: BlocProvider.of<ConsultantCubit>(context)
+                      .consultantModel!
+                      .uid,
+                  role: ClientRole.Broadcaster,
+                  userId: User.uid,
+                ),
+              ),
+            );
+          }
         },
-        icon: FaIcon(
-          FontAwesomeIcons.phone,
-          color: ColorManager.myWhite.withOpacity(0.8),
-        ),
-      ),
-      IconButton(
-        onPressed: () {},
         icon: FaIcon(
           FontAwesomeIcons.video,
           color: ColorManager.myWhite.withOpacity(0.8),
         ),
       ),
+      SizedBox(
+        width: 10,
+      )
     ];
   }
 
   Widget buildMessage(MessageModel model, context) => Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Container(
-          decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : mainColors.withOpacity(0.4),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomEnd: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
+    alignment: AlignmentDirectional.centerStart,
+    child: Container(
+      decoration: BoxDecoration(
+        color: ThemeCubit.get(context).darkTheme
+            ? mainColors
+            : mainColors.withOpacity(0.4),
+        borderRadius: const BorderRadiusDirectional.only(
+          bottomEnd: Radius.circular(
+            10.0,
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
+          topStart: Radius.circular(
+            10.0,
           ),
-          child: Text(
-            model.content!,
+          topEnd: Radius.circular(
+            10.0,
           ),
         ),
-      );
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 5.0,
+        horizontal: 10.0,
+      ),
+      child: Text(
+        model.content!,
+      ),
+    ),
+  );
 
   Widget buildMyMessage(MessageModel model, context) => Align(
-        alignment: AlignmentDirectional.centerEnd,
-        child: Container(
-          decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? Colors.blueAccent
-                : mainColors.withOpacity(
-                    .2,
-                  ),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomStart: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
+    alignment: AlignmentDirectional.centerEnd,
+    child: Container(
+      decoration: BoxDecoration(
+        color: ThemeCubit.get(context).darkTheme
+            ? Colors.blueAccent
+            : mainColors.withOpacity(
+          .2,
+        ),
+        borderRadius: const BorderRadiusDirectional.only(
+          bottomStart: Radius.circular(
+            10.0,
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
+          topStart: Radius.circular(
+            10.0,
           ),
-          child: Text(
-            model.content!,
+          topEnd: Radius.circular(
+            10.0,
           ),
         ),
-      );
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 5.0,
+        horizontal: 10.0,
+      ),
+      child: Text(
+        model.content!,
+      ),
+    ),
+  );
+  Future<void> handleCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    log(status.toString());
+  }
 }

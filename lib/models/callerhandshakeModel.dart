@@ -2,23 +2,23 @@ class CallMessageModel {
   String? senderId;
   String? receiverId;
   String? dateTime;
-  String? remoteDescription;
-  String? candidate;
+  String? channelName;
+  String? token;
 
   CallMessageModel({
     required this.senderId,
     required this.receiverId,
     required this.dateTime,
-    required this.remoteDescription,
-    this.candidate,
+    required this.channelName,
+    this.token,
   });
 
   CallMessageModel.fromJson(Map<String, dynamic> json) {
     senderId = json['senderId'];
     receiverId = json['receiverId'];
     dateTime = json['dateTime'];
-    remoteDescription = json['remoteDescription'];
-    candidate = json['candidate'];
+    channelName = json['channelName'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toMap() {
@@ -26,8 +26,8 @@ class CallMessageModel {
       'senderId': senderId,
       'receiverId': receiverId,
       'dateTime': dateTime,
-      'remoteDescription': remoteDescription,
-      'candidate': candidate,
+      'channelName': channelName,
+      'token': token,
     };
   }
 }

@@ -40,7 +40,6 @@ class _UserLayoutState extends State<UserLayout> {
 
   getMessage(){
     FirebaseMessaging.onMessage.listen((event) {
-         navigateTo(context, const FollowRequestsScreen());
     });
   }
 

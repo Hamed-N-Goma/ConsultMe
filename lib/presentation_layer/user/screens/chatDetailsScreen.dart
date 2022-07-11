@@ -1,14 +1,21 @@
+import 'dart:developer';
+
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/user/screens/Call.dart';
+import 'package:consultme/presentation_layer/user/screens/acceptingCall.dart';
+import 'package:consultme/presentation_layer/user/screens/reciveCall.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shard/style/iconly_broken.dart';
 
@@ -25,8 +32,28 @@ class UserChatDetails extends StatelessWidget {
       UserLayoutCubit.get(context).getMessages(
         consultId: consultant.uid!,
       );
-      return BlocConsumer<UserLayoutCubit, UserLayoutState>(
-          listener: (context, state) {},
+      BlocProvider.of<CallCubit>(context).getCallDetails(
+          callerid: consultant.uid!,
+          receiverID: UserLayoutCubit.get(context).userModel!.uid);
+
+      return BlocListener<CallCubit, CallState>(
+        listener: (context, state) async {
+          if (state is ReceiveCallSucsses) {
+            token = state.token;
+            if (token.toString().isNotEmpty) {
+              await handleCameraAndMic(Permission.camera);
+              await handleCameraAndMic(Permission.microphone);
+              navigateTo(
+                context,
+                AcceptAndRejectCalld(
+                  Callerimage: consultant.image!,
+                  ConsultatnatName: consultant.name!,
+                ),
+              );
+            }
+          }
+        },
+        child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
           builder: (context, state) {
             var cubit = UserLayoutCubit.get(context);
             return Directionality(
@@ -36,7 +63,8 @@ class UserChatDetails extends StatelessWidget {
                   backgroundColor: ColorManager.myBlue.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
-                  actions: actionsAppBar(context),
+                  actions:
+                  actionsAppBar(context, consultant.image, consultant.name),
                 ),
                 body: ConditionalBuilder(
                   condition: UserLayoutCubit.get(context).messages.length >= 0,
@@ -49,21 +77,21 @@ class UserChatDetails extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
-                                  UserLayoutCubit.get(context).messages[index];
+                              UserLayoutCubit.get(context).messages[index];
 
                               if (UserLayoutCubit.get(context).userModel?.uid ==
                                   message.senderId) {
                                 return buildMyMessage(message);
                               }
 
-                              return buildMessage(message , context);
+                              return buildMessage(message, context);
                             },
                             separatorBuilder: (context, index) =>
-                                const SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
                             itemCount:
-                                UserLayoutCubit.get(context).messages.length,
+                            UserLayoutCubit.get(context).messages.length,
                           ),
                         ),
                         Container(
@@ -107,7 +135,8 @@ class UserChatDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${consultant.uid}")!);
+                                        cubit.getTokenById(
+                                            "${consultant.uid}")!);
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -130,8 +159,15 @@ class UserChatDetails extends StatelessWidget {
                 ),
               ),
             );
-          });
+          },
+        ),
+      );
     });
+  }
+
+  Future<void> handleCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    log(status.toString());
   }
 
   //you must send user Model with Navigation
@@ -154,28 +190,17 @@ class UserChatDetails extends StatelessWidget {
     );
   }
 
-  List<Widget> actionsAppBar(context) {
+  List<Widget> actionsAppBar(context, consultantimg, consultantName) {
     return [
       IconButton(
         onPressed: () {
-          UserLayoutCubit.get(context).sendNotfiy(
-              " لديك مكالمة جديدة  ",
-              " ${ UserLayoutCubit.get(context).userModel!.name} انت على موعد مع  ",
-              UserLayoutCubit.get(context).getTokenById(
-                  "${consultant.uid!}")!);
           navigateTo(
               context,
-              CallScreen(
-                consultant: consultant,
+              AcceptAndRejectCalld(
+                Callerimage: consultantimg,
+                ConsultatnatName: consultantName,
               ));
         },
-        icon: FaIcon(
-          FontAwesomeIcons.phone,
-          color: ColorManager.myWhite.withOpacity(0.8),
-        ),
-      ),
-      IconButton(
-        onPressed: () {},
         icon: FaIcon(
           FontAwesomeIcons.video,
           color: ColorManager.myWhite.withOpacity(0.8),
@@ -184,61 +209,61 @@ class UserChatDetails extends StatelessWidget {
     ];
   }
 
-  Widget buildMessage(MessageModel model , context ) => Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Container(
-          decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : mainColors.withOpacity(0.4),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomEnd: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
+  Widget buildMessage(MessageModel model, context) => Align(
+    alignment: AlignmentDirectional.centerStart,
+    child: Container(
+      decoration: BoxDecoration(
+        color: ThemeCubit.get(context).darkTheme
+            ? mainColors
+            : mainColors.withOpacity(0.4),
+        borderRadius: const BorderRadiusDirectional.only(
+          bottomEnd: Radius.circular(
+            10.0,
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
+          topStart: Radius.circular(
+            10.0,
           ),
-          child: Text(
-            model.content!,
+          topEnd: Radius.circular(
+            10.0,
           ),
         ),
-      );
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 5.0,
+        horizontal: 10.0,
+      ),
+      child: Text(
+        model.content!,
+      ),
+    ),
+  );
 
   Widget buildMyMessage(MessageModel model) => Align(
-        alignment: AlignmentDirectional.centerEnd,
-        child: Container(
-          decoration: BoxDecoration(
-            color: mainColors.withOpacity(
-              .2,
-            ),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomStart: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
+    alignment: AlignmentDirectional.centerEnd,
+    child: Container(
+      decoration: BoxDecoration(
+        color: mainColors.withOpacity(
+          .2,
+        ),
+        borderRadius: const BorderRadiusDirectional.only(
+          bottomStart: Radius.circular(
+            10.0,
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
+          topStart: Radius.circular(
+            10.0,
           ),
-          child: Text(
-            model.content!,
+          topEnd: Radius.circular(
+            10.0,
           ),
         ),
-      );
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 5.0,
+        horizontal: 10.0,
+      ),
+      child: Text(
+        model.content!,
+      ),
+    ),
+  );
 }

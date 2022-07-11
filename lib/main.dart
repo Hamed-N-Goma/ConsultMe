@@ -1,3 +1,4 @@
+import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
@@ -88,6 +89,9 @@ class MyApp extends StatelessWidget {
               ..getConsultChat()
               ..getAppoinments()
               ..getConsultChat()),
+        BlocProvider(
+          create: (BuildContext context) => CallCubit(),
+        )
       ],
       child: BlocConsumer<ThemeCubit, ThemeStates>(
           listener: (BuildContext context, state) {},

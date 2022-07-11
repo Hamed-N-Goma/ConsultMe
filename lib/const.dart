@@ -13,6 +13,10 @@ const profileImageUri =
 
 const serverToken = "AAAA75XQmLE:APA91bFZCWhIxRk1IZUFkx9Ni7UyubXF6bXJHwJlpNvUqyEHa7A2WPUzsxR6qW_xYSlbeSWrXzHmiE1O1cKzTNWQDJt_FPNBRa12huRVBJqBGqKnORZ3duRQkbG82pjtDLclMmMAHv-g";
 
+var token;
+
+const appId = "dc1ae831884844359d056b423b793e83";
+
 Future<void> signOut(context) async {
   await FirebaseAuth.instance.signOut();
   CacheHelper.removeData(key: 'uId');
