@@ -23,3 +23,7 @@ class ReceiveCallSucsses extends CallState {
 
   ReceiveCallSucsses(this.cahnnelName, this.token);
 }
+
+class DeleteCalldetailsSucssesfully extends CallState {}
+
+class CallEnded extends CallState {}

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/models/UserModel.dart';
+import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/moduls/signup/cubit/states.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 import '../../../models/consultantmodel.dart';
 
 
@@ -39,30 +38,6 @@ class SignUpCubit extends Cubit<SignUpStates> {
     });
   }
 
-//  late LoginModel loginModel;
-
-  void userLogin({
-    required int id,
-    required String password,
-  }) {
-    emit(signUpLoadingStates());
-
-    /*DioHelper.postData(
-      url: USERS_LOGIN,
-      data: {
-        'id': id,
-        'password': password,
-      },
-    ).then((value) {
-      // print(value!.data);
-     // loginModel = LoginModel.fromJson(value!.data);
-   //   emit(signUpSuccessStates(loginModel));
-    },
-    ).catchError((error) {
-      print(error.toString());
-      emit(signUpErrorStates(error.toString()));
-    });*/
-  }
 
   bool isConsultant = true;
 
@@ -92,6 +67,18 @@ class SignUpCubit extends Cubit<SignUpStates> {
     emit(imageRemoveSuccessState());
   }
 
+  List<CategoryModel> categorys = [];
+
+  void getCategorys() {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference.get().then((value) {
+          categorys!.add(CategoryModel.fromJson(element.data()));
+        }).catchError((error) {});
+      });
+    });
+  }
+
   List<SelectDept> dept = [
     SelectDept(name: 'تقنية المعلومات', index: 1),
     SelectDept(name: 'هندسة', index: 2),
@@ -105,7 +92,6 @@ class SignUpCubit extends Cubit<SignUpStates> {
   void changeDept(int currentNum, String currentDept) {
     currVal = currentNum;
     currText = currentDept;
-    // getFloorAndRooms(5);
     emit(ChangetDeptState());
   }
 
@@ -240,6 +226,8 @@ class SignUpCubit extends Cubit<SignUpStates> {
       speachalist: spechalist,
       yearsofExperience: yearsOfExperiance,
       imageOfCertificate : imageOfCertificate,
+      rating: 0,
+      image: "https://img.freepik.com/free-icon/businessman_318-1548.jpg?t=st=1657668103~exp=1657668703~hmac=fc788cc07810041e394f21af0c41ceb8997be4f8868bd0b0c7e715c1f1f3b4f3&w=740",
       bio : "تخصصي هوا ${spechalist} واعمل في مجال ${deapartment} , وأمتلك  ${yearsOfExperiance} من سنين الخبرة ",
     );
     FirebaseFirestore.instance

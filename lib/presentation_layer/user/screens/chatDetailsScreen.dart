@@ -14,26 +14,33 @@ import 'package:consultme/presentation_layer/user/screens/reciveCall.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shard/style/iconly_broken.dart';
 
-class UserChatDetails extends StatelessWidget {
+class UserChatDetails extends StatefulWidget {
   UserChatDetails({Key? key, required ConsultantModel this.consultant})
       : super(key: key);
 
   ConsultantModel consultant;
+
+  @override
+  State<UserChatDetails> createState() => _UserChatDetailsState();
+}
+
+class _UserChatDetailsState extends State<UserChatDetails> {
   var messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (BuildContext context) {
       UserLayoutCubit.get(context).getMessages(
-        consultId: consultant.uid!,
+        consultId: widget.consultant.uid!,
       );
       BlocProvider.of<CallCubit>(context).getCallDetails(
-          callerid: consultant.uid!,
+          callerid: widget.consultant.uid!,
           receiverID: UserLayoutCubit.get(context).userModel!.uid);
 
       return BlocListener<CallCubit, CallState>(
@@ -46,16 +53,19 @@ class UserChatDetails extends StatelessWidget {
               navigateTo(
                 context,
                 AcceptAndRejectCalld(
-                  Callerimage: consultant.image!,
-                  ConsultatnatName: consultant.name!,
+                  Callerimage: widget.consultant.image!,
+                  ConsultatnatName: widget.consultant.name!,
                 ),
               );
+            } else if (state is CallEnded) {
+              showRating();
             }
           }
         },
         child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
           builder: (context, state) {
             var cubit = UserLayoutCubit.get(context);
+
             return Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
@@ -63,8 +73,8 @@ class UserChatDetails extends StatelessWidget {
                   backgroundColor: ColorManager.myBlue.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
-                  actions:
-                  actionsAppBar(context, consultant.image, consultant.name),
+                  actions: actionsAppBar(
+                      context, widget.consultant.image, widget.consultant.name),
                 ),
                 body: ConditionalBuilder(
                   condition: UserLayoutCubit.get(context).messages.length >= 0,
@@ -126,8 +136,11 @@ class UserChatDetails extends StatelessWidget {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
+                                    if (cubit.messages.length > 8) {
+                                      showRating();
+                                    }
                                     UserLayoutCubit.get(context).sendMessage(
-                                      receiverId: consultant.uid!,
+                                      receiverId: widget.consultant.uid!,
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
@@ -136,7 +149,7 @@ class UserChatDetails extends StatelessWidget {
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById(
-                                            "${consultant.uid}")!);
+                                            "${widget.consultant.uid}")!);
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -171,19 +184,18 @@ class UserChatDetails extends StatelessWidget {
   }
 
   //you must send user Model with Navigation
-
   Widget buildAppbarTitle(context) {
     return Row(
       children: [
         CircleAvatar(
           radius: 20.0,
-          backgroundImage: NetworkImage(consultant.image!),
+          backgroundImage: NetworkImage(widget.consultant.image!),
         ),
         const SizedBox(
           width: 15.0,
         ),
         Text(
-          consultant.name!,
+          widget.consultant.name!,
           style: Theme.of(context).textTheme.bodyText1,
         )
       ],
@@ -192,20 +204,7 @@ class UserChatDetails extends StatelessWidget {
 
   List<Widget> actionsAppBar(context, consultantimg, consultantName) {
     return [
-      IconButton(
-        onPressed: () {
-          navigateTo(
-              context,
-              AcceptAndRejectCalld(
-                Callerimage: consultantimg,
-                ConsultatnatName: consultantName,
-              ));
-        },
-        icon: FaIcon(
-          FontAwesomeIcons.video,
-          color: ColorManager.myWhite.withOpacity(0.8),
-        ),
-      ),
+      IconButton(onPressed: showRating, icon: Icon(Icons.shuffle_on_sharp))
     ];
   }
 
@@ -266,4 +265,52 @@ class UserChatDetails extends StatelessWidget {
       ),
     ),
   );
+  double rating = 0;
+  Widget buildRating() {
+    return RatingBar.builder(
+        itemSize: 40,
+        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
+        onRatingUpdate: (rating) {
+          setState(() {
+            this.rating = rating;
+          });
+        },
+        minRating: 1,
+        maxRating: 5);
+  }
+
+  void showRating() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "قيم المستشار",
+          style: TextStyle(fontSize: 20),
+        ),
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              BlocProvider.of<UserLayoutCubit>(context).sendRating(
+                rating: rating,
+                sender:
+                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
+                recever: widget.consultant.uid!,
+              );
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "تأكيد",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+        ],
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildRating(),
+          ],
+        ),
+      ),
+    );
+  }
 }

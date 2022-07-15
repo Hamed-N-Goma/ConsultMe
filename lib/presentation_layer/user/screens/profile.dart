@@ -51,7 +51,6 @@ class Profile extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                buildCover(),
                 buildProfilePic(context: context, image: usermodel!.image),
               ],
             ),
@@ -93,23 +92,6 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget buildCover() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: 140,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0)),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://5blh.com/wp-content/uploads/2022/01/performance_1280.png'),
-              fit: BoxFit.cover),
-        ),
-      ),
-    );
-  }
 
   Widget buildProfilePic({context, image}) {
     return CircleAvatar(

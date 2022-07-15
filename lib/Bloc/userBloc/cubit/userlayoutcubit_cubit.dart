@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:consultme/models/callerhandshakeModel.dart';
+import 'package:consultme/models/ratingModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -440,6 +441,62 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         },
       ),
     );
+  }
+
+  var rating ;
+  var ratingNumber;
+  var sum;
+
+  getrating(ConsultId) {
+    rating = 0;
+    ratingNumber = 0;
+    sum = 0;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(ConsultId)
+        .collection('rating')
+        .get().then((value) {
+      value.docs.forEach((user) {
+        sum = sum + user.data()['rating'];
+        ratingNumber++;
+      });
+      rating = (sum/ratingNumber);
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(ConsultId).update({
+        'rating': rating,
+      });
+      emit(GetRatingSucsses());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetRatingError());
+    });
+
+  }
+
+  //send rating
+
+  sendRating({
+    required double rating,
+    required String sender,
+    required String recever,
+  }) {
+    RatingModel ratingModel =
+    RatingModel(rating: rating, sender: sender, recever: recever);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(recever)
+        .collection('rating')
+        .doc(sender)
+        .set(ratingModel.tomap())
+        .then((value) => {
+      emit(SendRatingSucssesfuly()),
+      getrating(recever),
+
+    })
+        .catchError((error) {
+      emit(SendRatingError(error.toString()));
+    });
   }
 
 }

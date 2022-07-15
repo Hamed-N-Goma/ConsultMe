@@ -104,7 +104,7 @@ class Toprated extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
               image: NetworkImage(
-                profileImageUri,
+                '${consultant.image!}',
               ),
               fit: BoxFit.fill)),
     );
@@ -118,7 +118,7 @@ class Toprated extends StatelessWidget {
           Row(
             children: [
               Text(
-                '4.8',
+                consultant.rating!.toString(),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(

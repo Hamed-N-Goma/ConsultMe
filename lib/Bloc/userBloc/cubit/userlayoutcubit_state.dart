@@ -147,3 +147,17 @@ class ReceiveCallSucssesfully extends UserLayoutState {
 
   ReceiveCallSucssesfully(this.candidate, this.remoteDescription);
 }
+
+class SendRatingSucssesfuly extends UserLayoutState {}
+
+class SendRatingError extends UserLayoutState {
+  final String error;
+
+  SendRatingError(this.error);
+}
+
+class GetRatingSucsses extends UserLayoutState {
+}
+
+class GetRatingError extends UserLayoutState {
+}

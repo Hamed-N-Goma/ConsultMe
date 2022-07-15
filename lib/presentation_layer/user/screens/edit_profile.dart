@@ -139,7 +139,8 @@ class EditProfile extends StatelessWidget {
               UserLayoutCubit.get(context).upDateUser(
                   name: nameController.text,
                   phone: phoneController.text,
-                  email: emailController.text);
+                  email: emailController.text,
+              );
             },
             text: 'تعديل ',
             fontSize: 18,
@@ -154,7 +155,6 @@ class EditProfile extends StatelessWidget {
       ),
     );
   }
-
 
 
   Widget buildProfilePic({context, image, imagepicker}) {

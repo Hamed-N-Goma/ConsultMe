@@ -58,19 +58,12 @@ class consultantDetails extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            for (var i = 0; i < 5; i++)
+                            for (var i = 0; i < consultant.rating!.toInt(); i++)
                               const Icon(
                                 Icons.star_rounded,
                                 color: Colors.indigoAccent,
                                 size: 30,
                               ),
-                            if (5 - 4 > 0)
-                              for (var i = 0; i < 4 - 4; i++)
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.black12,
-                                  size: 30,
-                                ),
                           ],
                         ),
                         const SizedBox(
