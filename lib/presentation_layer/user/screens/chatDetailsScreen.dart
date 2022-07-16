@@ -53,8 +53,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               navigateTo(
                 context,
                 AcceptAndRejectCalld(
-                  Callerimage: widget.consultant.image!,
-                  ConsultatnatName: widget.consultant.name!,
+                  consultant: widget.consultant,
                 ),
               );
             } else if (state is CallEnded) {
