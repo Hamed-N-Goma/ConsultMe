@@ -118,7 +118,7 @@ class ConsultChatDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${User.uid}")!);
+                                        cubit.getTokenById("${User.uid}")!,"message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -172,7 +172,7 @@ class ConsultChatDetails extends StatelessWidget {
           ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!);
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

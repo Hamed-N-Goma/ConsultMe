@@ -476,7 +476,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     return token;
   }
 
-  sendNotfiy(String title, String body, String Token) async {
+  sendNotfiy(String title, String body, String Token , String type ) async {
     await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -487,13 +487,14 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         <String, dynamic>{
           'notification': <String, dynamic>{
             'body': body.toString(),
-            'title': title.toString()
+            'title': title.toString(),
           },
           'priority': 'high',
           'data': <String, dynamic>{
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'id': '1',
-            'status': 'done'
+            'status': 'done',
+            'type' : type,
           },
           'to': Token,
         },

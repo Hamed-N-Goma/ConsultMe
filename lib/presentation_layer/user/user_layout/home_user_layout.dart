@@ -31,25 +31,50 @@ class _UserLayoutState extends State<UserLayout> {
 
     if (message != null) {
 
-      print("__________________________________ message _________________________________________");
-      print(message.data);
-      print("__________________________________ message _________________________________________");
+      if(message.data['type'] == 1 ){
+        BlocProvider.of<UserLayoutCubit>(context).getConsultChat();
+        navigateTo(context, UserChat());
+      }
+      else if(message.data['type'] == 2 ){
+        BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
+        navigateTo(context, FollowRequestsScreen());
+      }
+
+
 
     }
   }
 
   getMessage(){
     FirebaseMessaging.onMessage.listen((event) {
+
+      if(event.data['type'] == "message" ){
+        navigateTo(context, Material(child: UserChat()));
+      }
+      else if(event.data['type'] == "appointment" ){
+        BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
+        navigateTo(context, FollowRequestsScreen());
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      if(event.data['type'] == "message" ){
+        navigateTo(context, Material(child: UserChat()));
+      }
+      else if(event.data['type'] == "appointment" ){
+        BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
+        navigateTo(context, FollowRequestsScreen());
+      }
     });
   }
 
 
   @override
   void initState() {
+
     initalMessage();
 
     getMessage();
-
 
     super.initState();
   }

@@ -277,7 +277,7 @@ class appoinment extends StatelessWidget {
                                 cubit.sendNotfiy(
                                     " لديك طلب إستشارة جديد ",
                                     " ${cubit.userModel!.name} تلقيت طلب أستشارة من ",
-                                    cubit.getTokenById("${cm.uid}")!);
+                                    cubit.getTokenById("${cm.uid}")!,"appointment");
                               }
                               ,
                               text: 'تقديم الطلب',

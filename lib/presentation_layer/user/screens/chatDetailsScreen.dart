@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
@@ -148,7 +147,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById(
-                                            "${widget.consultant.uid}")!);
+                                            "${widget.consultant.uid}")!,"message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
