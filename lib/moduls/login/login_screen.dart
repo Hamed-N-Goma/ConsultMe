@@ -34,7 +34,8 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, state) async {
           if (state is UserAuthFoundedSuccess) {
-            var token = await FirebaseMessaging.instance.getToken();
+            //  var token = await FirebaseMessaging.instance.getToken();
+            //هنا الايرور اول مايدير لوقن يوقف الابلكيشن من السطر هذا
             FirebaseFirestore.instance
                 .collection('users')
                 .doc(state.loginModel.uid)
@@ -82,12 +83,9 @@ class LoginScreen extends StatelessWidget {
                     ' لم يتم قبولك بعد في خبراء إستشرني الرجاء الانتظار والمحاولة لاحقا ',
                 state: ToastStates.WARNING);
             LoginCubit.get(context).loginbutton.stop();
-          }
-          else if (state is LoginIsNotAuth) {
+          } else if (state is LoginIsNotAuth) {
             showToast(
-                message:
-                'يرجى التأكد من البيانات',
-                state: ToastStates.ERROR);
+                message: 'يرجى التأكد من البيانات', state: ToastStates.ERROR);
             LoginCubit.get(context).loginbutton.stop();
           }
         },
@@ -301,9 +299,9 @@ class LoginScreen extends StatelessWidget {
                                               .textTheme
                                               .bodyText1!
                                               .copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0,
-                                          ),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.0,
+                                              ),
                                         ),
                                       ),
                                     ]),

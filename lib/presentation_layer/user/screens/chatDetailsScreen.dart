@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
@@ -8,7 +9,6 @@ import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/user/screens/acceptingCall.dart';
 import 'package:consultme/presentation_layer/user/screens/reciveCall.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,18 @@ class UserChatDetails extends StatefulWidget {
 }
 
 class _UserChatDetailsState extends State<UserChatDetails> {
+  bool iscalling = false;
   var messageController = TextEditingController();
+  AssetsAudioPlayer player = AssetsAudioPlayer();
+  @override
+  void initState() {
+    player.open(
+      Audio("assets/sound/callingvoice.mp3"),
+      autoStart: false,
+    );
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +55,14 @@ class _UserChatDetailsState extends State<UserChatDetails> {
 
       return BlocListener<CallCubit, CallState>(
         listener: (context, state) async {
-          if (state is ReceiveCallSucsses) {
+          if (state is ReceiveCallSucsses && iscalling == false) {
+            iscalling = true;
             token = state.token;
             if (token.toString().isNotEmpty) {
               await handleCameraAndMic(Permission.camera);
               await handleCameraAndMic(Permission.microphone);
-              navigateTo(
-                context,
-                AcceptAndRejectCalld(
-                  consultant: widget.consultant,
-                ),
-              );
+              acceptgOrRejectCall();
+              player.play();
             } else if (state is CallEnded) {
               showRating();
             }
@@ -85,7 +93,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
-                              UserLayoutCubit.get(context).messages[index];
+                                  UserLayoutCubit.get(context).messages[index];
 
                               if (UserLayoutCubit.get(context).userModel?.uid ==
                                   message.senderId) {
@@ -95,11 +103,11 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                               return buildMessage(message, context);
                             },
                             separatorBuilder: (context, index) =>
-                            const SizedBox(
+                                const SizedBox(
                               height: 15.0,
                             ),
                             itemCount:
-                            UserLayoutCubit.get(context).messages.length,
+                                UserLayoutCubit.get(context).messages.length,
                           ),
                         ),
                         Container(
@@ -130,7 +138,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                 ),
                               ),
                               Container(
-                                height: 50.0,
+                                height: 60.0,
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
@@ -147,13 +155,14 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById(
-                                            "${widget.consultant.uid}")!,"message");
+                                            "${widget.consultant.uid}")!,
+                                        "message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
                                   child: const Icon(
                                     IconBroken.Send,
-                                    size: 16.0,
+                                    size: 18.0,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -202,67 +211,70 @@ class _UserChatDetailsState extends State<UserChatDetails> {
 
   List<Widget> actionsAppBar(context, consultantimg, consultantName) {
     return [
-      IconButton(onPressed: showRating, icon: Icon(Icons.shuffle_on_sharp))
+      IconButton(
+        onPressed: acceptgOrRejectCall,
+        icon: Icon(Icons.shuffle_on_sharp),
+      )
     ];
   }
 
   Widget buildMessage(MessageModel model, context) => Align(
-    alignment: AlignmentDirectional.centerStart,
-    child: Container(
-      decoration: BoxDecoration(
-        color: ThemeCubit.get(context).darkTheme
-            ? mainColors
-            : mainColors.withOpacity(0.4),
-        borderRadius: const BorderRadiusDirectional.only(
-          bottomEnd: Radius.circular(
-            10.0,
+        alignment: AlignmentDirectional.centerStart,
+        child: Container(
+          decoration: BoxDecoration(
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : mainColors.withOpacity(0.4),
+            borderRadius: const BorderRadiusDirectional.only(
+              bottomEnd: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
           ),
-          topStart: Radius.circular(
-            10.0,
+          padding: const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
           ),
-          topEnd: Radius.circular(
-            10.0,
+          child: Text(
+            model.content!,
           ),
         ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Text(
-        model.content!,
-      ),
-    ),
-  );
+      );
 
   Widget buildMyMessage(MessageModel model) => Align(
-    alignment: AlignmentDirectional.centerEnd,
-    child: Container(
-      decoration: BoxDecoration(
-        color: mainColors.withOpacity(
-          .2,
+        alignment: AlignmentDirectional.centerEnd,
+        child: Container(
+          decoration: BoxDecoration(
+            color: mainColors.withOpacity(
+              .2,
+            ),
+            borderRadius: const BorderRadiusDirectional.only(
+              bottomStart: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Text(
+            model.content!,
+          ),
         ),
-        borderRadius: const BorderRadiusDirectional.only(
-          bottomStart: Radius.circular(
-            10.0,
-          ),
-          topStart: Radius.circular(
-            10.0,
-          ),
-          topEnd: Radius.circular(
-            10.0,
-          ),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Text(
-        model.content!,
-      ),
-    ),
-  );
+      );
   double rating = 0;
   Widget buildRating() {
     return RatingBar.builder(
@@ -275,6 +287,132 @@ class _UserChatDetailsState extends State<UserChatDetails> {
         },
         minRating: 1,
         maxRating: 5);
+  }
+
+  void acceptgOrRejectCall() {
+    showGeneralDialog(
+        context: context,
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          return Scaffold(
+            body: Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.consultant.image!),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.8),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              widget.consultant.image!,
+                            ),
+                            maxRadius: 45,
+                          ),
+                          Text(
+                            widget.consultant.name!,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Text(
+                            " ....يتصل بك",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                          ),
+                          Align(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 48),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  RawMaterialButton(
+                                    onPressed: () async {
+                                      iscalling = false;
+                                      player.stop();
+                                      player.dispose();
+                                      BlocProvider.of<CallCubit>(context)
+                                          .deleteCallinfo(
+                                        widget.consultant.uid!,
+                                        BlocProvider.of<UserLayoutCubit>(
+                                                context)
+                                            .userModel
+                                            ?.uid,
+                                      );
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Icon(
+                                      Icons.call_end,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                    shape: const CircleBorder(),
+                                    elevation: 2.0,
+                                    fillColor: Colors.redAccent,
+                                    padding: const EdgeInsets.all(12),
+                                  ),
+                                  RawMaterialButton(
+                                    onPressed: () async {
+                                      iscalling = false;
+                                      player.stop();
+                                      player.dispose();
+                                      BlocProvider.of<CallCubit>(context)
+                                          .deleteCallinfo(
+                                        widget.consultant.uid!,
+                                        BlocProvider.of<UserLayoutCubit>(
+                                                context)
+                                            .userModel
+                                            ?.uid,
+                                      );
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ReciveCll(
+                                            channelName:
+                                                BlocProvider.of<CallCubit>(
+                                                        context)
+                                                    .channelName,
+                                            role: ClientRole.Broadcaster,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Icon(
+                                      Icons.call_rounded,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                    shape: const CircleBorder(),
+                                    elevation: 2.0,
+                                    fillColor: Colors.green,
+                                    padding: const EdgeInsets.all(12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   void showRating() {
@@ -291,7 +429,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               BlocProvider.of<UserLayoutCubit>(context).sendRating(
                 rating: rating,
                 sender:
-                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
+                    BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
                 recever: widget.consultant.uid!,
               );
               Navigator.pop(context);

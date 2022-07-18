@@ -60,22 +60,22 @@ class ConsultChatDetails extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               var message =
-                              ConsultantCubit.get(context).messages[index];
+                                  ConsultantCubit.get(context).messages[index];
 
                               if (ConsultantCubit.get(context)
-                                  .consultantModel
-                                  ?.uid ==
+                                      .consultantModel
+                                      ?.uid ==
                                   message.senderId)
                                 return buildMyMessage(message, context);
 
                               return buildMessage(message, context);
                             },
                             separatorBuilder: (context, index) =>
-                            const SizedBox(
+                                const SizedBox(
                               height: 15.0,
                             ),
                             itemCount:
-                            ConsultantCubit.get(context).messages.length,
+                                ConsultantCubit.get(context).messages.length,
                           ),
                         ),
                         Container(
@@ -118,7 +118,8 @@ class ConsultChatDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${User.uid}")!,"message");
+                                        cubit.getTokenById("${User.uid}")!,
+                                        "message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -169,10 +170,10 @@ class ConsultChatDetails extends StatelessWidget {
     return [
       IconButton(
         onPressed: () async {
-          ConsultantCubit.get(context).sendNotfiy(
+          /* ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");*/
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);
@@ -204,64 +205,64 @@ class ConsultChatDetails extends StatelessWidget {
   }
 
   Widget buildMessage(MessageModel model, context) => Align(
-    alignment: AlignmentDirectional.centerStart,
-    child: Container(
-      decoration: BoxDecoration(
-        color: ThemeCubit.get(context).darkTheme
-            ? mainColors
-            : mainColors.withOpacity(0.4),
-        borderRadius: const BorderRadiusDirectional.only(
-          bottomEnd: Radius.circular(
-            10.0,
+        alignment: AlignmentDirectional.centerStart,
+        child: Container(
+          decoration: BoxDecoration(
+            color: ThemeCubit.get(context).darkTheme
+                ? mainColors
+                : mainColors.withOpacity(0.4),
+            borderRadius: const BorderRadiusDirectional.only(
+              bottomEnd: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
           ),
-          topStart: Radius.circular(
-            10.0,
+          padding: const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
           ),
-          topEnd: Radius.circular(
-            10.0,
+          child: Text(
+            model.content!,
           ),
         ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Text(
-        model.content!,
-      ),
-    ),
-  );
+      );
 
   Widget buildMyMessage(MessageModel model, context) => Align(
-    alignment: AlignmentDirectional.centerEnd,
-    child: Container(
-      decoration: BoxDecoration(
-        color: ThemeCubit.get(context).darkTheme
-            ? Colors.blueAccent
-            : mainColors.withOpacity(
-          .2,
+        alignment: AlignmentDirectional.centerEnd,
+        child: Container(
+          decoration: BoxDecoration(
+            color: ThemeCubit.get(context).darkTheme
+                ? Colors.blueAccent
+                : mainColors.withOpacity(
+                    .2,
+                  ),
+            borderRadius: const BorderRadiusDirectional.only(
+              bottomStart: Radius.circular(
+                10.0,
+              ),
+              topStart: Radius.circular(
+                10.0,
+              ),
+              topEnd: Radius.circular(
+                10.0,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 10.0,
+          ),
+          child: Text(
+            model.content!,
+          ),
         ),
-        borderRadius: const BorderRadiusDirectional.only(
-          bottomStart: Radius.circular(
-            10.0,
-          ),
-          topStart: Radius.circular(
-            10.0,
-          ),
-          topEnd: Radius.circular(
-            10.0,
-          ),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 10.0,
-      ),
-      child: Text(
-        model.content!,
-      ),
-    ),
-  );
+      );
   Future<void> handleCameraAndMic(Permission permission) async {
     final status = await permission.request();
     log(status.toString());

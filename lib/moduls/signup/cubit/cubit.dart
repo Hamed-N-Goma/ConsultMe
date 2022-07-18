@@ -72,7 +72,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
       value.docs.forEach((element) {
         element.reference.get().then((value) {
-          categorys!.add(CategoryModel.fromJson(element.data()));
+          categorys.add(CategoryModel.fromJson(element.data()));
         }).catchError((error) {});
       });
     });

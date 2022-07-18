@@ -202,10 +202,9 @@ class AdminCubit extends Cubit<AdminStates> {
         .collection('users')
         .doc(uid)
         .update(consultantModel.toMap())
-        .then((value) =>
-    {
-      print('consultant created '),
-    })
+        .then((value) => {
+              print('consultant created '),
+            })
         .then((value) {
       emit(PutConsultantSuccessStates());
     }).catchError((error) {
@@ -224,22 +223,21 @@ class AdminCubit extends Cubit<AdminStates> {
         .collection('users')
         .doc(uid)
         .update({'accept': true})
-        .then((value) =>
-    {
-      print('consultant accepted '),
-    })
+        .then((value) => {
+              print('consultant accepted '),
+            })
         .then((value) {
-      getUserInSecurity();
-      emit(AcceptedConsultantSuccessStates());
-      showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
-    })
+          getUserInSecurity();
+          emit(AcceptedConsultantSuccessStates());
+          showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
+        })
         .catchError((error) {
-      print(error);
-      showToast(
-          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
-          state: ToastStates.ERROR);
-      emit(AcceptedConsultantErrorStates(error.toString()));
-    });
+          print(error);
+          showToast(
+              message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+              state: ToastStates.ERROR);
+          emit(AcceptedConsultantErrorStates(error.toString()));
+        });
   }
 
   void UnAcceptConsultant({
@@ -249,22 +247,21 @@ class AdminCubit extends Cubit<AdminStates> {
         .collection('users')
         .doc(uid)
         .update({'accept': false})
-        .then((value) =>
-    {
-      print('consultant accepted '),
-    })
+        .then((value) => {
+              print('consultant accepted '),
+            })
         .then((value) {
-      emit(AcceptedConsultantSuccessStates());
-      getUserInSecurity();
-      showToast(message: 'تم التقييد بنجاح', state: ToastStates.SUCCESS);
-    })
+          emit(AcceptedConsultantSuccessStates());
+          getUserInSecurity();
+          showToast(message: 'تم التقييد بنجاح', state: ToastStates.SUCCESS);
+        })
         .catchError((error) {
-      print(error);
-      showToast(
-          message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
-          state: ToastStates.ERROR);
-      emit(AcceptedConsultantErrorStates(error.toString()));
-    });
+          print(error);
+          showToast(
+              message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
+              state: ToastStates.ERROR);
+          emit(AcceptedConsultantErrorStates(error.toString()));
+        });
   }
 
   void deleteConsultant(id) {
@@ -290,21 +287,19 @@ class AdminCubit extends Cubit<AdminStates> {
   void getUsers() async {
     CollectionReference user = FirebaseFirestore.instance.collection('users');
     await user.where('userType', isEqualTo: 'user').get().then(
-          (user) =>
-      {
-        Users = user.docs
-            .map(
-                (e) => UserModel.fromJson(e.data() as Map<String, dynamic>))
-            .toList(),
-        emit(GitUsersDataSucsess(Users)),
-        user.docs.forEach((element) {
-          print(element.data());
-          print("++++============================");
-        })
-      },
-    );
+          (user) => {
+            Users = user.docs
+                .map(
+                    (e) => UserModel.fromJson(e.data() as Map<String, dynamic>))
+                .toList(),
+            emit(GitUsersDataSucsess(Users)),
+            user.docs.forEach((element) {
+              print(element.data());
+              print("++++============================");
+            })
+          },
+        );
   }
-
 
   var picker = ImagePicker();
   File? categImage;
@@ -335,10 +330,7 @@ class AdminCubit extends Cubit<AdminStates> {
 
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('Category/${Uri
-        .file(categImage!.path)
-        .pathSegments
-        .last}')
+        .child('Category/${Uri.file(categImage!.path).pathSegments.last}')
         .putFile(categImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -359,7 +351,6 @@ class AdminCubit extends Cubit<AdminStates> {
   CategoryModel? categoryModel;
 
   void AddCategory({
-
     required String name,
     String? categImage,
   }) {
@@ -377,12 +368,10 @@ class AdminCubit extends Cubit<AdminStates> {
       getCategorys();
       emit(CreateCategorySuccessState());
       showToast(message: 'تم إضافة القسم بنجاح', state: ToastStates.SUCCESS);
-
     }).catchError((error) {
       emit(CreateCategoryErrorState(error.toString()));
     });
   }
-
 
   List<CategoryModel> categorys = [];
   List<String> postsId = [];
@@ -392,8 +381,7 @@ class AdminCubit extends Cubit<AdminStates> {
       categorys = [];
       value.docs.forEach((element) {
         categorys.add(CategoryModel.fromJson(element.data()));
-      }
-      );
+      });
       emit(GetCategorySuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -401,11 +389,10 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
-
   void DeleteCategory(CategoryModel model) {
     FirebaseFirestore.instance.collection('Category').get().then((value) {
       value.docs.forEach((element) {
-        if (element.data()['name'] == model!.name) {
+        if (element.data()['name'] == model.name) {
           FirebaseFirestore.instance
               .collection('Category')
               .doc(element.id)
@@ -418,16 +405,16 @@ class AdminCubit extends Cubit<AdminStates> {
     }).catchError((error) {
       print(error.toString());
       emit(DeleteCategoryErrorState());
-      showToast(message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
           state: ToastStates.ERROR);
     });
   }
 
-
   void DeleteUser(UserModel model) {
     FirebaseFirestore.instance.collection('users').get().then((value) {
       value.docs.forEach((element) {
-        if (element.data()['uid'] == model!.uid) {
+        if (element.data()['uid'] == model.uid) {
           FirebaseFirestore.instance
               .collection('users')
               .doc(element.id)
@@ -440,11 +427,9 @@ class AdminCubit extends Cubit<AdminStates> {
     }).catchError((error) {
       print(error.toString());
       emit(DeleteUserErrorState());
-      showToast(message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
           state: ToastStates.ERROR);
     });
   }
-
-
 }
-
