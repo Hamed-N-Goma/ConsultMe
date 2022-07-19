@@ -1,3 +1,5 @@
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
 import 'package:consultme/const.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +9,15 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'dart:async';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 class ReciveCll extends StatefulWidget {
   final String? channelName;
   final ClientRole? role;
-  ReciveCll({Key? key, this.channelName, this.role}) : super(key: key);
+  final String? consultantId;
+  ReciveCll({Key? key, this.channelName, this.role, this.consultantId})
+      : super(key: key);
 
   @override
   State<ReciveCll> createState() => _ReciveCllState();
@@ -29,6 +36,7 @@ class _ReciveCllState extends State<ReciveCll> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();

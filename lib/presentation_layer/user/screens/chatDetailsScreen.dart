@@ -31,6 +31,8 @@ class UserChatDetails extends StatefulWidget {
 
 class _UserChatDetailsState extends State<UserChatDetails> {
   bool iscalling = false;
+  bool isCallingdone = false;
+  // دير متغير اول ماتتغير قيمته لما يرجع يفتح الريتنغ
   var messageController = TextEditingController();
   AssetsAudioPlayer player = AssetsAudioPlayer();
   @override
@@ -39,8 +41,15 @@ class _UserChatDetailsState extends State<UserChatDetails> {
       Audio("assets/sound/callingvoice.mp3"),
       autoStart: false,
     );
-    // TODO: implement initState
+    isCallgdone();
     super.initState();
+  }
+
+  void isCallgdone() {
+    if (isCallingdone) {
+      showRating();
+      isCallingdone = false;
+    }
   }
 
   @override
@@ -368,6 +377,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                   ),
                                   RawMaterialButton(
                                     onPressed: () async {
+                                      isCallingdone = true;
                                       iscalling = false;
                                       player.stop();
                                       player.dispose();
@@ -388,6 +398,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                                         context)
                                                     .channelName,
                                             role: ClientRole.Broadcaster,
+                                            consultantId: widget.consultant.uid,
                                           ),
                                         ),
                                       );

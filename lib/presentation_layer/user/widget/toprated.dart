@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sdp_transform/sdp_transform.dart';
 
 import '../../../const.dart';
 
@@ -118,7 +119,7 @@ class Toprated extends StatelessWidget {
           Row(
             children: [
               Text(
-                consultant.rating!.toString(),
+                double.parse(consultant.rating!.toStringAsFixed(2)).toString(),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(
