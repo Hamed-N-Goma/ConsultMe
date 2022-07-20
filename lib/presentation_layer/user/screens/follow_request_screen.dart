@@ -226,7 +226,7 @@ Widget buildOrderScreen(context) => Column(
                 SizedBox(
                   height: UserLayoutCubit.get(context).appointments!.length == 1
                       ? 105
-                      : 210,
+                      : MediaQuery.of(context).size.height,
                   child: ListView.separated(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -240,7 +240,7 @@ Widget buildOrderScreen(context) => Column(
                   ),
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 40.0,
                 ),
               ],
             );
@@ -253,7 +253,7 @@ Widget buildGuestItem(context, AppointmentModel model) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: buildEnquiry(
         context,
-        height: 100.0,
+        height: 115.0,
         state: model.MeetTime != null
             ? model.accept == true
                 ? StatusStates.ACCEPT
