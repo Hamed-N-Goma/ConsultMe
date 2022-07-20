@@ -4,7 +4,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
-import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
@@ -14,7 +13,6 @@ import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shard/style/iconly_broken.dart';
@@ -31,8 +29,6 @@ class UserChatDetails extends StatefulWidget {
 
 class _UserChatDetailsState extends State<UserChatDetails> {
   bool iscalling = false;
-  bool isCallingdone = false;
-  // دير متغير اول ماتتغير قيمته لما يرجع يفتح الريتنغ
   var messageController = TextEditingController();
   AssetsAudioPlayer player = AssetsAudioPlayer();
   @override
@@ -41,15 +37,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
       Audio("assets/sound/callingvoice.mp3"),
       autoStart: false,
     );
-    isCallgdone();
     super.initState();
-  }
-
-  void isCallgdone() {
-    if (isCallingdone) {
-      showRating();
-      isCallingdone = false;
-    }
   }
 
   @override
@@ -58,6 +46,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
       UserLayoutCubit.get(context).getMessages(
         consultId: widget.consultant.uid!,
       );
+
       BlocProvider.of<CallCubit>(context).getCallDetails(
           callerid: widget.consultant.uid!,
           receiverID: UserLayoutCubit.get(context).userModel!.uid);
@@ -72,9 +61,9 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               await handleCameraAndMic(Permission.microphone);
               acceptgOrRejectCall();
               player.play();
-            } else if (state is CallEnded) {
-              showRating();
             }
+          } else if (state is EndCall) {
+            showRating();
           }
         },
         child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
@@ -151,7 +140,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                 color: mainColors,
                                 child: MaterialButton(
                                   onPressed: () {
-                                    if (cubit.messages.length > 8) {
+                                    if (cubit.messages.length > 80) {
                                       showRating();
                                     }
                                     UserLayoutCubit.get(context).sendMessage(
@@ -160,12 +149,12 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                       content: messageController.text,
                                     );
 
-                                    cubit.sendNotfiy(
+                                    /*    cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById(
                                             "${widget.consultant.uid}")!,
-                                        "message");
+                                        "message");*/
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -219,12 +208,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
   }
 
   List<Widget> actionsAppBar(context, consultantimg, consultantName) {
-    return [
-      IconButton(
-        onPressed: acceptgOrRejectCall,
-        icon: Icon(Icons.shuffle_on_sharp),
-      )
-    ];
+    return [];
   }
 
   Widget buildMessage(MessageModel model, context) => Align(
@@ -377,7 +361,6 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                   ),
                                   RawMaterialButton(
                                     onPressed: () async {
-                                      isCallingdone = true;
                                       iscalling = false;
                                       player.stop();
                                       player.dispose();

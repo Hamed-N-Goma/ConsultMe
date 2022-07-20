@@ -69,19 +69,22 @@ class CallCubit extends Cubit<CallState> {
     });
   }
 
-  deleteCallinfo(callerID , receiverID) {
+  deleteCallinfo(callerID, receiverID) {
     FirebaseFirestore.instance
         .collection("users")
         .doc(receiverID)
         .collection("callDetails")
         .doc(callerID)
         .collection("calls")
-        .snapshots().forEach((querySnapshot) {
+        .snapshots()
+        .forEach((querySnapshot) {
       for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
         docSnapshot.reference.delete();
       }
-    }).then((value) =>
-     emit(DeleteCalldetailsSucssesfully())
-    );
+    }).then((value) => emit(DeleteCalldetailsSucssesfully()));
+  }
+
+  endCall() {
+    emit(EndCall());
   }
 }

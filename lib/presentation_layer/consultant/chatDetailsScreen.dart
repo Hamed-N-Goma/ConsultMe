@@ -115,11 +115,11 @@ class ConsultChatDetails extends StatelessWidget {
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
-                                    cubit.sendNotfiy(
+                                    /*  cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById("${User.uid}")!,
-                                        "message");
+                                        "message");*/
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,

@@ -1,3 +1,4 @@
+import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,6 @@ class _ReciveCllState extends State<ReciveCll> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
     _users.clear();
     _engine.leaveChannel();
     _engine.destroy();
@@ -102,11 +102,12 @@ class _ReciveCllState extends State<ReciveCll> {
           });
         },
         userOffline: (uid, elepse) {
-          final info = 'Joind user: $uid ';
+          final info = 'offline user: $uid ';
           infoString.add(info);
           _users.remove(uid);
           _engine.leaveChannel();
           Navigator.pop(context);
+          BlocProvider.of<CallCubit>(context).endCall();
         },
         firstRemoteVideoFrame: (uid, height, width, elepse) {
           setState(
@@ -174,6 +175,7 @@ class _ReciveCllState extends State<ReciveCll> {
             onPressed: () {
               _engine.leaveChannel();
               Navigator.pop(context);
+              BlocProvider.of<CallCubit>(context).endCall();
             },
             child: const Icon(
               Icons.call_end,

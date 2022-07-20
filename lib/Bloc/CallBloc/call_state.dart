@@ -27,3 +27,4 @@ class ReceiveCallSucsses extends CallState {
 class DeleteCalldetailsSucssesfully extends CallState {}
 
 class CallEnded extends CallState {}
+class EndCall extends CallState{}
