@@ -500,4 +500,11 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     });
   }
 
+  ConsultantModel? consult;
+  getConsultById(consultId){
+    conslutants.forEach((element) {
+      if (element.uid == consultId)
+        consult = element ;
+    });
+  }
 }

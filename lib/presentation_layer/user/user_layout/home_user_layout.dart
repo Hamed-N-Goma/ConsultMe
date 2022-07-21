@@ -1,6 +1,8 @@
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
+import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
@@ -24,6 +26,7 @@ class UserLayout extends StatefulWidget {
 class _UserLayoutState extends State<UserLayout> {
   List<Widget> screens = [Home(), Search(), UserChat(), More()];
   int _selectedIndex = 0;
+  late ConsultantModel consult;
 
 
   initalMessage() async {
@@ -49,7 +52,15 @@ class _UserLayoutState extends State<UserLayout> {
     FirebaseMessaging.onMessage.listen((event) {
 
       if(event.data['type'] == "message" ){
-        navigateTo(context, Material(child: UserChat()));
+       // navigateTo(context, Material(child: UserChat()));
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+
+        print("=====================================consultId==========================================");
+        print(event.data['consultId'] );
+
+        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+        navigateTo(context, UserChatDetails(consultant: consult));
+
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
@@ -59,7 +70,14 @@ class _UserLayoutState extends State<UserLayout> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if(event.data['type'] == "message" ){
-        navigateTo(context, Material(child: UserChat()));
+       // navigateTo(context, Material(child: UserChat()));
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+
+        print("=====================================consultId==========================================");
+        print(event.data['consultId'] );
+
+        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+        navigateTo(context, UserChatDetails(consultant: consult));
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();

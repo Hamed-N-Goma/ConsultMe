@@ -207,8 +207,8 @@ class ConsultChatDetails extends StatelessWidget {
         onPressed: () async {
            ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
-              " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
+              "${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message" );
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

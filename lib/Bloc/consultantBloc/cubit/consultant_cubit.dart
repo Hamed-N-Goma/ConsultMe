@@ -497,6 +497,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             'id': '1',
             'status': 'done',
             'type' : type,
+            'consultId' : consultantModel!.uid,
           },
           'to': Token,
         },
