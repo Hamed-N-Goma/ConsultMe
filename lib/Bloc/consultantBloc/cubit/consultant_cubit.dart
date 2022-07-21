@@ -241,7 +241,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   void upDateConsultant(
-      {required name, required phone, required email, required depatment}) {
+      {required name, required phone, required email, required depatment, required bio}) {
     emit(LoadingUpdateConsultantInfo());
     if (profileImageUrl != null) {
       FirebaseFirestore.instance
@@ -251,7 +251,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             'email': email,
             'name': name,
             'phone': phone,
-            'department': depatment
+            'department': depatment,
+            'bio' : bio
           })
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
@@ -273,8 +274,9 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             'email': email,
             'name': name,
             'phone': phone,
-            'department': depatment
-          })
+            'department': depatment,
+            'bio' : bio
+      })
           .then((value) => {
                 emit(UpdateConsultantInfoScusses()),
                 getConsultantData(),

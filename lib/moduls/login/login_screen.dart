@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, state) async {
           if (state is UserAuthFoundedSuccess) {
-            //  var token = await FirebaseMessaging.instance.getToken();
+              var token = await FirebaseMessaging.instance.getToken();
             //هنا الايرور اول مايدير لوقن يوقف الابلكيشن من السطر هذا
             FirebaseFirestore.instance
                 .collection('users')

@@ -38,6 +38,7 @@ class Home extends StatelessWidget {
         }
         if (state is GetConsultanatDataSucsses) {
           allConsultants = state.consultants;
+          allConsultants.sort((a, b) => b.rating!.compareTo(a.rating!));
         }
         if (state is GetConsultantToFavoriteSucssesfuly) {
           favorite = state.favoriteConsultant;

@@ -192,7 +192,8 @@ class EditProfileScreen extends StatelessWidget {
                   name: nameController.text,
                   phone: phoneController.text,
                   email: emailController.text,
-                  depatment : depatmentController.text);
+                  depatment : depatmentController.text,
+                  bio : bioController.text);
             },
             text: 'تعديل ',
             fontSize: 18,
@@ -254,9 +255,9 @@ class NumbersWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      buildButton(context,  'التقييم', '4.8'),
+      buildButton(context,  'التقييم', '${ConsultantCubit.get(context).consultantModel!.rating}'),
       buildDivider(),
-      buildButton(context, 'عدد الطلبات' , '${ConsultantCubit.get(context).appointments!.length}'),
+      buildButton(context, ' الطلبات' , '${ConsultantCubit.get(context).appointments!.length}'),
       buildDivider(),
       buildButton(context,  'سنين الخبرة','${ConsultantCubit.get(context).consultantModel!.yearsofExperience}'),
     ],

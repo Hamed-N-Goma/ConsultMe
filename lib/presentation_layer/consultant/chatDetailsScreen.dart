@@ -115,11 +115,11 @@ class ConsultChatDetails extends StatelessWidget {
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
-                                    /*  cubit.sendNotfiy(
+                                      cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById("${User.uid}")!,
-                                        "message");*/
+                                        "message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
@@ -170,10 +170,10 @@ class ConsultChatDetails extends StatelessWidget {
     return [
       IconButton(
         onPressed: () async {
-          /* ConsultantCubit.get(context).sendNotfiy(
+           ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");*/
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);
@@ -205,10 +205,10 @@ class ConsultChatDetails extends StatelessWidget {
       ),
       IconButton(
         onPressed: () async {
-          /* ConsultantCubit.get(context).sendNotfiy(
+           ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");*/
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

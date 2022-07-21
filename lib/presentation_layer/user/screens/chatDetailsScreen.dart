@@ -150,12 +150,12 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                       content: messageController.text,
                                     );
 
-                                    /*    cubit.sendNotfiy(
+                                        cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
                                         cubit.getTokenById(
                                             "${widget.consultant.uid}")!,
-                                        "message");*/
+                                        "message");
                                     messageController.clear();
                                   },
                                   minWidth: 1.0,
