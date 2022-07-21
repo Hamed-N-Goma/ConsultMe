@@ -188,6 +188,8 @@ class ConsultChatDetails extends StatelessWidget {
                       .uid,
                   role: ClientRole.Broadcaster,
                   userId: User.uid,
+                  callType: "Video",
+                  userinfo: User,
                 ),
               ),
             );
@@ -200,7 +202,39 @@ class ConsultChatDetails extends StatelessWidget {
       ),
       SizedBox(
         width: 10,
-      )
+      ),
+      IconButton(
+        onPressed: () async {
+          /* ConsultantCubit.get(context).sendNotfiy(
+              " لقد تلقيت مكالمة ",
+              " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");*/
+
+          if (token.toString().isNotEmpty) {
+            await handleCameraAndMic(Permission.camera);
+            await handleCameraAndMic(Permission.microphone);
+
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MakeCall(
+                  channelName: BlocProvider.of<ConsultantCubit>(context)
+                      .consultantModel!
+                      .uid,
+                  role: ClientRole.Broadcaster,
+                  userId: User.uid,
+                  callType: "Audio",
+                  userinfo: User,
+                ),
+              ),
+            );
+          }
+        },
+        icon: FaIcon(
+          FontAwesomeIcons.phone,
+          color: ColorManager.myWhite.withOpacity(0.8),
+        ),
+      ),
     ];
   }
 

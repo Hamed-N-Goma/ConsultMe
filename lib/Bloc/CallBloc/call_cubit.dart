@@ -14,7 +14,6 @@ class CallCubit extends Cubit<CallState> {
     gToken.createToken(channelName, role, tokenType, uid).then(
       (value) {
         token = value["rtcToken"];
-        print(token);
         emit(GetTokenSucsses());
       },
     ).catchError((error) {
@@ -22,19 +21,21 @@ class CallCubit extends Cubit<CallState> {
     });
   }
 
-  sendCallinfo({
-    required String senderId,
-    required String receverId,
-    required String datetime,
-    required String channelName,
-    required String token,
-  }) {
+  sendCallinfo(
+      {required String senderId,
+      required String receverId,
+      required String datetime,
+      required String channelName,
+      required String token,
+      required String callType}) {
     CallMessageModel callerModel = CallMessageModel(
-        senderId: senderId,
-        receiverId: receverId,
-        dateTime: datetime,
-        channelName: channelName,
-        token: token);
+      senderId: senderId,
+      receiverId: receverId,
+      dateTime: datetime,
+      channelName: channelName,
+      token: token,
+      callType: callType,
+    );
 
     FirebaseFirestore.instance
         .collection('users')
@@ -50,6 +51,7 @@ class CallCubit extends Cubit<CallState> {
   }
 
   String channelName = '';
+  String callType = "";
   List<CallMessageModel> callanswer = [];
   void getCallDetails({callerid, receiverID}) {
     FirebaseFirestore.instance
@@ -60,12 +62,15 @@ class CallCubit extends Cubit<CallState> {
         .collection('calls')
         .snapshots()
         .listen((event) {
-      event.docs.forEach((element) {
+      callanswer = [];
+      for (var element in event.docs) {
         callanswer.add(CallMessageModel.fromJson(element.data()));
+        callType = callanswer.first.callType!;
         channelName = callanswer.first.channelName!;
         token = callanswer.first.token!;
-        emit(ReceiveCallSucsses(channelName, token));
-      });
+
+        emit(ReceiveCallSucsses(channelName, token, callType));
+      }
     });
   }
 

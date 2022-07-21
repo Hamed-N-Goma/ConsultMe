@@ -20,11 +20,13 @@ class ErrorWithMakeingCall extends CallState {
 class ReceiveCallSucsses extends CallState {
   final String cahnnelName;
   final String token;
+  final String CallType;
 
-  ReceiveCallSucsses(this.cahnnelName, this.token);
+  ReceiveCallSucsses(this.cahnnelName, this.token, this.CallType);
 }
 
 class DeleteCalldetailsSucssesfully extends CallState {}
 
 class CallEnded extends CallState {}
-class EndCall extends CallState{}
+
+class EndCall extends CallState {}

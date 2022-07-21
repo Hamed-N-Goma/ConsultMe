@@ -4,6 +4,7 @@ class CallMessageModel {
   String? dateTime;
   String? channelName;
   String? token;
+  String? callType;
 
   CallMessageModel({
     required this.senderId,
@@ -11,6 +12,7 @@ class CallMessageModel {
     required this.dateTime,
     required this.channelName,
     this.token,
+    required this.callType,
   });
 
   CallMessageModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class CallMessageModel {
     dateTime = json['dateTime'];
     channelName = json['channelName'];
     token = json['token'];
+    callType = json['callType'];
   }
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,7 @@ class CallMessageModel {
       'dateTime': dateTime,
       'channelName': channelName,
       'token': token,
+      'callType': callType,
     };
   }
 }

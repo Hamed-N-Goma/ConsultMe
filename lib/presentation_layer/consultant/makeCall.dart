@@ -7,14 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'dart:async';
+import 'package:consultme/models/UserModel.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeCall extends StatefulWidget {
+  final UserModel userinfo;
   final String? channelName;
   final ClientRole? role;
   final String? userId;
-  MakeCall({Key? key, this.channelName, this.role, this.userId})
+  final String? callType;
+  MakeCall(
+      {Key? key,
+      this.channelName,
+      this.role,
+      this.userId,
+      this.callType,
+      required this.userinfo})
       : super(key: key);
 
   @override
@@ -57,16 +66,35 @@ class _MakeCallState extends State<MakeCall> {
         receverId: widget.userId!,
         channelName: widget.channelName!,
         datetime: DateTime.now().toString(),
-        token: token);
+        token: token,
+        callType: widget.callType!);
     _engine = await RtcEngine.create(appId);
-    await _engine.enableVideo();
-    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(widget.role!);
-    _addAgoraEventHandler();
-    VideoEncoderConfiguration config = VideoEncoderConfiguration();
-    config.dimensions = VideoDimensions(width: 640, height: 360);
-    await _engine.setVideoEncoderConfiguration(config);
-    await _engine.joinChannel(token, widget.channelName!, null, 0);
+    switch (widget.callType) {
+      case "Audio":
+        {
+          _engine.disableVideo();
+          await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
+          await _engine.setClientRole(widget.role!);
+          _addAgoraEventHandler();
+          await _engine.joinChannel(token, widget.channelName!, null, 0);
+        }
+
+        break;
+
+      case "Video":
+        {
+          await _engine.enableVideo();
+          await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
+          await _engine.setClientRole(widget.role!);
+          _addAgoraEventHandler();
+          VideoEncoderConfiguration config = VideoEncoderConfiguration();
+          config.dimensions = VideoDimensions(width: 640, height: 360);
+          await _engine.setVideoEncoderConfiguration(config);
+          await _engine.joinChannel(token, widget.channelName!, null, 0);
+        }
+        break;
+      default:
+    }
   }
 
   void _addAgoraEventHandler() {
@@ -205,6 +233,54 @@ class _MakeCallState extends State<MakeCall> {
     );
   }
 
+  Widget voiceToolBar() {
+    if (widget.role == ClientRole.Audience) {
+      return const SizedBox();
+    }
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          RawMaterialButton(
+            onPressed: () {
+              _engine.leaveChannel();
+              Navigator.pop(context);
+              BlocProvider.of<CallCubit>(context).endCall();
+            },
+            child: const Icon(
+              Icons.call_end,
+              color: Colors.white,
+              size: 50,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(12),
+          ),
+          RawMaterialButton(
+            onPressed: () {
+              setState(() {
+                mute = !mute;
+              });
+              _engine.muteLocalAudioStream(mute);
+            },
+            child: Icon(
+              mute ? Icons.mic_off : Icons.mic,
+              color: mute ? Colors.white : Colors.blueAccent,
+              size: 50,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: mute ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget panel() {
     return Visibility(
       visible: viewPanel,
@@ -261,16 +337,60 @@ class _MakeCallState extends State<MakeCall> {
     return Builder(builder: (context) {
       return Scaffold(
         backgroundColor: Colors.black,
-        body: Center(
-          child: Stack(
-            children: [
-              viewRow(),
-              panel(),
-              toolbar(),
-            ],
-          ),
-        ),
+        body: widget.callType == "Video"
+            ? Center(
+                child: Stack(
+                  children: [
+                    viewRow(),
+                    panel(),
+                    toolbar(),
+                  ],
+                ),
+              )
+            : audioCall(),
       );
     });
+  }
+
+  Widget audioCall() {
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(widget.userinfo.image!),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Container(
+            color: Colors.black.withOpacity(0.8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    widget.userinfo.image!,
+                  ),
+                  maxRadius: 45,
+                ),
+                Text(
+                  widget.userinfo.name,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                ),
+                voiceToolBar()
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

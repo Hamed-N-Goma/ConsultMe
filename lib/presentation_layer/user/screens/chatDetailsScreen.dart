@@ -13,6 +13,7 @@ import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../shard/style/iconly_broken.dart';
@@ -59,7 +60,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
             if (token.toString().isNotEmpty) {
               await handleCameraAndMic(Permission.camera);
               await handleCameraAndMic(Permission.microphone);
-              acceptgOrRejectCall();
+              acceptgOrRejectCall(state.CallType);
               player.play();
             }
           } else if (state is EndCall) {
@@ -282,7 +283,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
         maxRating: 5);
   }
 
-  void acceptgOrRejectCall() {
+  void acceptgOrRejectCall(calltype) {
     showGeneralDialog(
         context: context,
         pageBuilder: (BuildContext context, Animation animation,
@@ -382,15 +383,28 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                                     .channelName,
                                             role: ClientRole.Broadcaster,
                                             consultantId: widget.consultant.uid,
+                                            callType: calltype,
+                                            consultantinfo: widget.consultant,
                                           ),
                                         ),
                                       );
+                                      const Icon(
+                                        Icons.call_rounded,
+                                        color: Colors.white,
+                                        size: 40,
+                                      );
                                     },
-                                    child: const Icon(
-                                      Icons.call_rounded,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ),
+                                    child: calltype == "Audio"
+                                        ? const Icon(
+                                            Icons.call_rounded,
+                                            color: Colors.white,
+                                            size: 40,
+                                          )
+                                        : const Icon(
+                                            FontAwesomeIcons.video,
+                                            color: Colors.white,
+                                            size: 40,
+                                          ),
                                     shape: const CircleBorder(),
                                     elevation: 2.0,
                                     fillColor: Colors.green,
