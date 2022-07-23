@@ -1,6 +1,9 @@
+import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/models/consultantmodel.dart';
+import 'package:consultme/presentation_layer/user/screens/Call.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
@@ -27,6 +30,7 @@ class _UserLayoutState extends State<UserLayout> {
   List<Widget> screens = [Home(), Search(), UserChat(), More()];
   int _selectedIndex = 0;
   late ConsultantModel consult;
+  late String RTCtoken;
 
 
   initalMessage() async {
@@ -51,39 +55,48 @@ class _UserLayoutState extends State<UserLayout> {
   getMessage(){
     FirebaseMessaging.onMessage.listen((event) {
 
-      if(event.data['type'] == "message" ){
-       // navigateTo(context, Material(child: UserChat()));
+      if(event.data['type'] == "call" ){
+        BlocProvider.of<CallCubit>(context).getCallDetails(
+            callerid: event.data['consultId'],
+            receiverID: UserLayoutCubit.get(context).userModel!.uid);
         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
-
-        print("=====================================consultId==========================================");
-        print(event.data['consultId'] );
-
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
-        navigateTo(context, UserChatDetails(consultant: consult));
+        RTCtoken = event.data['RTCtoken'];
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
 
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
         navigateTo(context, FollowRequestsScreen());
+      }
+      else if(event.data['type'] == "message" ){
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+        navigateTo(context, UserChatDetails(consultant: consult,));
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      if(event.data['type'] == "message" ){
-       // navigateTo(context, Material(child: UserChat()));
+      if(event.data['type'] == "call" ){
+        BlocProvider.of<CallCubit>(context).getCallDetails(
+            callerid: event.data['consultId'],
+            receiverID: UserLayoutCubit.get(context).userModel!.uid);
         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
-
-        print("=====================================consultId==========================================");
-        print(event.data['consultId'] );
-
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
-        navigateTo(context, UserChatDetails(consultant: consult));
+        RTCtoken = event.data['RTCtoken'];
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
         navigateTo(context, FollowRequestsScreen());
       }
-    });
+      else if(event.data['type'] == "message" ){
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+        navigateTo(context, UserChatDetails(consultant: consult,));
+      }
+
+      });
   }
 
 
@@ -190,4 +203,5 @@ class _UserLayoutState extends State<UserLayout> {
       },
     );
   }
+  
 }

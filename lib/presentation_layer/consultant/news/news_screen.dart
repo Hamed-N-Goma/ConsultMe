@@ -77,14 +77,6 @@ class NewsScreen extends StatelessWidget {
                           const SizedBox(
                             height: 20.0,
                           ),
-                          Container(
-                            width: double.infinity,
-                            height: 1.0,
-                            color: separator,
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
                           defaultButton(
                             text: 'إضافة المنشور جديد',
                             function: () {

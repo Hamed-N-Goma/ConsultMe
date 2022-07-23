@@ -120,7 +120,7 @@ Widget ConsultantItem({
 
   return Builder(
       builder: (context){
-        if(cubit.showWaitingStudent_details==true){
+        if(cubit.showWaitingConsultant_details==true){
           return Card(
             color: ThemeCubit.get(context).darkTheme ? backGroundDark : backGround,
             elevation: 0.0,
@@ -143,16 +143,16 @@ Widget ConsultantItem({
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    if (cubit.showWaitingStudent_details == false ||
-                        cubit.currentWaitingStudentIndex != index)
+                    if (cubit.showWaitingConsultant_details == false ||
+                        cubit.currentWaitingConsultantIndex != index)
                       SizedBox(
                         width: 30.0,
                         height: 30.0,
                         child: IconButton(
                           onPressed: () {
-                            cubit.currentWaitingStudentIndex = index;
-                            cubit.showWaitingStudentDetails(
-                                !cubit.showWaitingStudent_details, index);
+                            cubit.currentWaitingConsultantIndex = index;
+                            cubit.showWaitingConsultantDetails(
+                                !cubit.showWaitingConsultant_details, index);
                           },
                           icon: Icon(
                             Icons.keyboard_arrow_down,
@@ -162,14 +162,14 @@ Widget ConsultantItem({
                           ),
                         ),
                       ),
-                    if (cubit.showWaitingStudent_details == true &&
-                        cubit.currentWaitingStudentIndex == index)
+                    if (cubit.showWaitingConsultant_details == true &&
+                        cubit.currentWaitingConsultantIndex == index)
                       SizedBox(
                         width: 30.0,
                         height: 30.0,
                         child: IconButton(
                           onPressed: () {
-                            cubit.showWaitingStudentDetails(!cubit.showWaitingStudent_details, index);
+                            cubit.showWaitingConsultantDetails(!cubit.showWaitingConsultant_details, index);
                             if(cubit.showWaitingStudentEdit) {
                               cubit.changeWaitingStudentEditIcon(!cubit.showWaitingStudentEdit);
                             }
@@ -183,60 +183,15 @@ Widget ConsultantItem({
                           ),
                         ),
                       ),
-                    if (cubit.showWaitingStudent_details == true &&
-                        cubit.currentWaitingStudentIndex == index)
-                      SizedBox(
-                        width: 50.0,
-                        height: 30.0,
-                        child: IconButton(
-                          onPressed: () {
-                            if (cubit.showWaitingStudentEdit == true) {
-                              if (cubit.phoneController.text.length == 10 ) {
-                                cubit.putConsultant(
-                                  email:cubit.emailController.text,
-                                  department: cubit.departmentController.text,
-                                  accept: cubit.acceptController.text == 'true' ? true : false ,
-                                  speachalist:cubit.speachalistController.text,
-                                  name: cubit.nameController.text,
-                                  uid:cubit.idController.text,
-                                  yearsofExperience:cubit.yearsofExperienceController.text,
-                                  phone:cubit.phoneController.text,
-                                  imageOfCertificate : '',
-
-                                );
-                              } else {
-                                if(cubit.phoneController.text.length != 11){
-                                  showToast(
-                                      message: 'رقم الهاتف غير صحيح',
-                                      state: ToastStates.ERROR);
-                                  cubit.changeWaitingStudentEditIcon(!cubit.showWaitingStudentEdit);
-                                }
-                              }
-                            }
-                            cubit.changeWaitingStudentEditIcon(!cubit.showWaitingStudentEdit);
-                          },
-                          icon: Icon(
-                            cubit.showWaitingStudentEdit == false ? Icons.edit : Icons.done,
-                            size: 20.0,
-                            color: ThemeCubit.get(context).darkTheme
-                                ? mainTextColor
-                                : mainColors,
-                          ),
-                          alignment: AlignmentDirectional.center,
-                        ),
-                      ),
                   ],
                 ),
-                if (cubit.showWaitingStudent_details == true &&
-                    cubit.currentWaitingStudentIndex == index)
+
                   const SizedBox(
                     height: 10.0,
                   ),
-                if (cubit.showWaitingStudent_details == true &&
-                    cubit.currentWaitingStudentIndex == index)
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 120),
-                    height: cubit.animatedWaitingStudentHeight,
+                    height: cubit.animatedWaitingConsultantHeight,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
@@ -255,10 +210,23 @@ Widget ConsultantItem({
                         children: [
 
                           const SizedBox(
-                            height: 5.0,
+                            height: 20.0,
+                          ),
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundColor:
+                            ThemeCubit.get(context).darkTheme
+                                ? mainTextColor
+                                : mainColors,
+                            backgroundImage: NetworkImage(
+                              '${item.image}',
+
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20.0,
                           ),
 
-                          // name
                           Row(
                             children: [
                               Expanded(
@@ -278,7 +246,6 @@ Widget ConsultantItem({
                             height: 5.0,
                           ),
 
-                          //address
                           Row(
                             children: [
                               Expanded(
@@ -438,9 +405,9 @@ Widget ConsultantItem({
         else{
           return InkWell(
             onTap: (){
-              cubit.currentWaitingStudentIndex = index;
-              cubit.showWaitingStudentDetails(
-                  !cubit.showWaitingStudent_details, index);
+              cubit.currentWaitingConsultantIndex = index;
+              cubit.showWaitingConsultantDetails(
+                  !cubit.showWaitingConsultant_details, index);
               cubit.inputData(item);
             },
             child: Dismissible(
@@ -484,9 +451,9 @@ Widget ConsultantItem({
                     height: 30.0,
                     child: IconButton(
                       onPressed: () {
-                        cubit.currentWaitingStudentIndex = index;
-                        cubit.showWaitingStudentDetails(
-                            !cubit.showWaitingStudent_details, index);
+                        cubit.currentWaitingConsultantIndex = index;
+                        cubit.showWaitingConsultantDetails(
+                            !cubit.showWaitingConsultant_details, index);
                         cubit.inputData(item);
                       },
                       icon: Icon(

@@ -29,7 +29,6 @@ class UserChatDetails extends StatefulWidget {
 }
 
 class _UserChatDetailsState extends State<UserChatDetails> {
-  bool iscalling = false;
   var messageController = TextEditingController();
   AssetsAudioPlayer player = AssetsAudioPlayer();
   @override

@@ -1,5 +1,6 @@
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -203,7 +204,18 @@ class _MakeCallState extends State<MakeCall> {
             padding: const EdgeInsets.all(12),
           ),
           RawMaterialButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              iscalling = false;
+              BlocProvider.of<CallCubit>(context)
+                  .deleteCallinfo(
+                BlocProvider.of<ConsultantCubit>(context).uId,
+                BlocProvider.of<UserLayoutCubit>(
+                    context)
+                    .userModel
+                    ?.uid,
+              );
+                 Navigator.pop(context);
+            },
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
@@ -246,6 +258,15 @@ class _MakeCallState extends State<MakeCall> {
           RawMaterialButton(
             onPressed: () {
               _engine.leaveChannel();
+              iscalling = false;
+              BlocProvider.of<CallCubit>(context)
+                  .deleteCallinfo(
+                BlocProvider.of<ConsultantCubit>(context).uId,
+                BlocProvider.of<UserLayoutCubit>(
+                    context)
+                    .userModel
+                    ?.uid,
+              );
               Navigator.pop(context);
               BlocProvider.of<CallCubit>(context).endCall();
             },

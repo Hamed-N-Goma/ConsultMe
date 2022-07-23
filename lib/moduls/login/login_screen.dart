@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/const.dart';
@@ -10,6 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
@@ -41,6 +44,8 @@ class LoginScreen extends StatelessWidget {
                 .doc(state.loginModel.uid)
                 .update({'token': token});
             CacheHelper.saveData(key: 'type', value: state.loginModel.userType);
+              await handleCameraAndMic(Permission.camera);
+              await handleCameraAndMic(Permission.microphone);
             CacheHelper.saveData(
               key: 'uId',
               value: state.loginModel.uid,
@@ -68,6 +73,8 @@ class LoginScreen extends StatelessWidget {
                 .doc(state.loginModel.uid)
                 .update({'token': token});
             CacheHelper.saveData(key: 'type', value: state.loginModel.userType);
+            await handleCameraAndMic(Permission.camera);
+            await handleCameraAndMic(Permission.microphone);
             CacheHelper.saveData(
               key: 'uId',
               value: state.loginModel.uid,
@@ -319,5 +326,9 @@ class LoginScreen extends StatelessWidget {
         },
       ),
     );
+  }
+  Future<void> handleCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    log(status.toString());
   }
 }

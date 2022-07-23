@@ -170,12 +170,14 @@ class ConsultChatDetails extends StatelessWidget {
     return [
       IconButton(
         onPressed: () async {
-           ConsultantCubit.get(context).sendNotfiy(
-              " لقد تلقيت مكالمة ",
-              " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message");
 
           if (token.toString().isNotEmpty) {
+
+            ConsultantCubit.get(context).sendNotfiy(
+                " لقد تلقيت مكالمة ",
+                " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
+                ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call",token.toString());
+
             await handleCameraAndMic(Permission.camera);
             await handleCameraAndMic(Permission.microphone);
 
@@ -208,7 +210,7 @@ class ConsultChatDetails extends StatelessWidget {
            ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               "${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"message" );
+              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call" ,token.toString());
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

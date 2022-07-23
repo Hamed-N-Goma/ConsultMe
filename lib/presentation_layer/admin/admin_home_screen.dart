@@ -63,8 +63,10 @@ class AdminHomeScreen extends StatelessWidget {
                             Row(
                               children: [
                                 CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.white,
+                                  radius: 40,
+                                  backgroundColor: ThemeCubit.get(context).darkTheme
+                                      ? mainTextColor
+                                      : mainColors,
                                   child: Image.asset(
                                     'assets/images/logo.png',
                                     width: 80.0,
@@ -122,7 +124,7 @@ class AdminHomeScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'عدد الخبراء المتاحين',
+                                        ' الخبراء المتاحين',
                                         textAlign: TextAlign.center,
                                         style: Theme
                                             .of(context)
@@ -132,7 +134,7 @@ class AdminHomeScreen extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        'عدد الخبراء الغير متاحين',
+                                        ' الخبراء الغير متاحين',
                                         textAlign: TextAlign.center,
                                         style: Theme
                                             .of(context)
@@ -176,7 +178,7 @@ class AdminHomeScreen extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'عدد المستخدمين',
+                                        ' المستخدمين',
                                         textAlign: TextAlign.center,
                                         style: Theme
                                             .of(context)
@@ -186,7 +188,7 @@ class AdminHomeScreen extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        'عدد المنشورات',
+                                        ' المنشورات',
                                         textAlign: TextAlign.center,
                                         style: Theme
                                             .of(context)

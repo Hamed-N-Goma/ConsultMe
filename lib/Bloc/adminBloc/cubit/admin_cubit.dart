@@ -116,16 +116,16 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
-  double animatedWaitingStudentHeight = 0.0;
-  bool showWaitingStudent_details = false;
-  int currentWaitingStudentIndex = -1;
+  double animatedWaitingConsultantHeight = 0.0;
+  bool showWaitingConsultant_details = false;
+  int currentWaitingConsultantIndex = -1;
 
-  void showWaitingStudentDetails(bool show, int index) {
-    if (currentWaitingStudentIndex == index) {
-      showWaitingStudent_details = show;
-      animatedWaitingStudentHeight == 0.0
-          ? animatedWaitingStudentHeight = 1000.0
-          : animatedWaitingStudentHeight = 0.0;
+  void showWaitingConsultantDetails(bool show, int index) {
+    if (currentWaitingConsultantIndex == index) {
+      showWaitingConsultant_details = show;
+      animatedWaitingConsultantHeight == 0.0
+          ? animatedWaitingConsultantHeight = 1000.0
+          : animatedWaitingConsultantHeight = 0.0;
 
       emit(ShowConsultantDetails());
     }

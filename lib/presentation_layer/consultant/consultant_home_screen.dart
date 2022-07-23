@@ -123,8 +123,6 @@ class ConsultantHomeScreen extends StatelessWidget {
                         const SizedBox(
                           height: 12.0,
                         ),
-
-
                         InkWell(
                           onTap: () {
                             ConsultantCubit.get(context).getUsersChat();

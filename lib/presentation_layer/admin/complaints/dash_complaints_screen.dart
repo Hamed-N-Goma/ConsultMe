@@ -66,6 +66,20 @@ class DashComplimentsScreen extends StatelessWidget {
                         itemCount: cubit.complaints!.length,
                       ),
                     ),
+
+                    const SizedBox(height: 40.0,),
+
+                    CircleAvatar(
+                      radius: 70,
+                      backgroundColor: ThemeCubit.get(context).darkTheme
+                          ? mainTextColor
+                          : mainTextColor,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 200.0,
+                        height: 200.0,
+                      ),
+                    ),
                   ],
                 ),
               ),

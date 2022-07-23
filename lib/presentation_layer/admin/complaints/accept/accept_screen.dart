@@ -3,6 +3,8 @@ import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/presentation_layer/admin/complaints/accept/consultant_accept__screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/accept/waiting_consultant_accept__screen.dart';
+import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,6 +57,19 @@ class acceptScreen extends StatelessWidget {
                                   title: 'قيد الإنتظار',
                                   svg: true,
                                   svgImage: 'assets/images/warn.svg'
+                              ),
+                            ),
+                            const SizedBox(height: 50.0,),
+
+                            CircleAvatar(
+                              radius: 120,
+                              backgroundColor: ThemeCubit.get(context).darkTheme
+                                  ? mainTextColor
+                                  : mainTextColor,
+                              child: Image.asset(
+                                'assets/images/logo.png',
+                                width: 200.0,
+                                height: 200.0,
                               ),
                             ),
 

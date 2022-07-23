@@ -478,7 +478,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     return token;
   }
 
-  sendNotfiy(String title, String body, String Token , String type ) async {
+  sendNotfiy(String title, String body, String Token , String type ,[String? RTCtoken]) async {
     await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -498,6 +498,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             'status': 'done',
             'type' : type,
             'consultId' : consultantModel!.uid,
+            'RTCtoken' : RTCtoken,
           },
           'to': Token,
         },

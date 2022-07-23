@@ -249,6 +249,15 @@ class _ReciveCllState extends State<ReciveCll> {
           RawMaterialButton(
             onPressed: () {
               _engine.leaveChannel();
+              iscalling = false;
+              BlocProvider.of<CallCubit>(context)
+                  .deleteCallinfo(
+                widget.consultantId!,
+                BlocProvider.of<UserLayoutCubit>(
+                    context)
+                    .userModel
+                    ?.uid,
+              );
               Navigator.pop(context);
               BlocProvider.of<CallCubit>(context).endCall();
             },

@@ -15,6 +15,8 @@ const serverToken = "AAAA75XQmLE:APA91bFZCWhIxRk1IZUFkx9Ni7UyubXF6bXJHwJlpNvUqyE
 
 var token;
 
+bool iscalling = false;
+
 const appId = "dc1ae831884844359d056b423b793e83";
 
 Future<void> signOut(context) async {
