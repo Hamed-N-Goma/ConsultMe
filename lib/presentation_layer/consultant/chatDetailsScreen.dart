@@ -44,7 +44,7 @@ class ConsultChatDetails extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  backgroundColor: ColorManager.myBlue.withOpacity(0.5),
+                  backgroundColor: mainColors.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
                   actions: actionsAppBar(context),
@@ -58,6 +58,8 @@ class ConsultChatDetails extends StatelessWidget {
                         Expanded(
                           child: ListView.separated(
                             physics: BouncingScrollPhysics(),
+                            reverse: true,
+
                             itemBuilder: (context, index) {
                               var message =
                                   ConsultantCubit.get(context).messages[index];
@@ -66,9 +68,9 @@ class ConsultChatDetails extends StatelessWidget {
                                       .consultantModel
                                       ?.uid ==
                                   message.senderId)
-                                return buildMyMessage(message, context);
+                                return buildMessage(message, context);
 
-                              return buildMessage(message, context);
+                              return buildMyMessage(message, context);
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
@@ -76,7 +78,11 @@ class ConsultChatDetails extends StatelessWidget {
                             ),
                             itemCount:
                                 ConsultantCubit.get(context).messages.length,
+
                           ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -91,6 +97,7 @@ class ConsultChatDetails extends StatelessWidget {
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: Row(
                             children: [
+
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(

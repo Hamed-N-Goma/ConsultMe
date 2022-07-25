@@ -2,6 +2,7 @@ import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
+import 'package:consultme/presentation_layer/consultant/complaints/complaints_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/AboutAppScreen.dart';
 import 'package:consultme/presentation_layer/user/screens/TechnicalSupportScreen.dart';
@@ -177,6 +178,41 @@ class More extends StatelessWidget {
                               onPressed: () {
                                 navigateTo(
                                     context, const TechnicalSupportScreen());
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 1.0,
+                          color: separator,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          navigateTo(context, ComplaintsScreen());
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'تقديم شكوى',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              icon: Icon(
+                                IconBroken.Arrow___Left_2,
+                                color: ThemeCubit.get(context).darkTheme
+                                    ? mainTextColor
+                                    : mainColors,
+                              ),
+                              onPressed: () {
+                                navigateTo(
+                                    context, ComplaintsScreen());
                               },
                             ),
                           ],

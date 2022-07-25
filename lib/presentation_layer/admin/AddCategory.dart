@@ -238,7 +238,7 @@ Widget buildCategoryItem({
                           width: 10.0,
                         ),
                         Text(
-                          'تأكيد حذف القسم ؟',
+                          'تأكيد حذف قسم ${model.name} ؟',
                           textDirection: TextDirection.rtl,
                           style:
                           Theme

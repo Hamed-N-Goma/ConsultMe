@@ -3,8 +3,10 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
+import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/consultant/chat.dart';
+import 'package:consultme/presentation_layer/consultant/chatDetailsScreen.dart';
 import 'package:consultme/presentation_layer/consultant/complaints/complaints_screen.dart';
 import 'package:consultme/presentation_layer/consultant/edit_profile.dart';
 import 'package:consultme/presentation_layer/consultant/news/news_screen.dart';
@@ -24,10 +26,54 @@ import '../../moduls/signup/signup.dart';
 class ConsultantHomeScreen extends StatelessWidget {
   const ConsultantHomeScreen({Key? key}) : super(key: key);
 
-  @override
+  initalMessage() async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (message != null) {
+    }
+  }
+
+  getMessage(context) {
+
+    late UserModel user;
+
+    FirebaseMessaging.onMessage.listen((event) {
+
+      if(event.data['type'] == "appointment" ){
+        BlocProvider.of<ConsultantCubit>(context).getAppoinments();
+        navigateTo(context, RequestAppoinmentScreen());
+      }
+      else if(event.data['type'] == "message" ){
+        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        user = BlocProvider.of<ConsultantCubit>(context).user!;
+        navigateTo(context, ConsultChatDetails( User: user));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+
+      if(event.data['type'] == "appointment" ){
+        BlocProvider.of<ConsultantCubit>(context).getAppoinments();
+        navigateTo(context, RequestAppoinmentScreen());
+      }
+      else if(event.data['type'] == "message" ){
+        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        user = BlocProvider.of<ConsultantCubit>(context).user!;
+        navigateTo(context, ConsultChatDetails( User: user));
+      }
+    });
+
+
+  }
+    @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
-      listener: (BuildContext context, state) {},
+      listener: (BuildContext context, state) {
+        if  (state is ConsultantInitialState) {
+          initalMessage();
+          getMessage(context);
+        }
+      },
       builder: (BuildContext context, state) {
         var consultantModel = ConsultantCubit.get(context).consultantModel;
         return Directionality(
@@ -45,7 +91,8 @@ class ConsultantHomeScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 300.0,
                         child: Center(child: CircularProgressIndicator()));
-                  }  else
+                  }
+                  else
                   {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,

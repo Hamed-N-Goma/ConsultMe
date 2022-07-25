@@ -89,7 +89,7 @@ class DashComplimentsDetailsScreen extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  'البريد الإلكتروني :',
+                                  'البريد  :',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),

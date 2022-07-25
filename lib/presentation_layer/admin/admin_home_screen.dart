@@ -222,6 +222,23 @@ class AdminHomeScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 20.0,),
+                                Text(
+                                  ' الشكاوي',
+                                  textAlign: TextAlign.center,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .bodyText1,
+                                ),
+                                Text(
+                                  '${cubit.complaints?.length}',
+                                  textAlign: TextAlign.center,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .headline6,
+                                ),
                               ],
                             ),
                             const SizedBox(
@@ -242,7 +259,7 @@ class AdminHomeScreen extends StatelessWidget {
                              child : buildOthersIten(
                                 name: 'إداره الخبراء',
                                 context: context,
-                                icon: FontAwesomeIcons.userDoctor,
+                                icon: FontAwesomeIcons.addressCard,
                               ),
                             ),
                             const SizedBox(
@@ -256,7 +273,7 @@ class AdminHomeScreen extends StatelessWidget {
                               child: buildOthersIten(
                                   name: 'اضافة قسم ',
                                   context: context,
-                                  icon: FontAwesomeIcons.addressBook,
+                                  icon: FontAwesomeIcons.section,
                         ),
                             ),
                             const SizedBox(

@@ -53,7 +53,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    'للتواصل مع السكن',
+                    'للتواصل مع المطورين',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -68,7 +68,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: SelectableText(
-                    '0554363862',
+                    '092-5733263',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -76,23 +76,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: SelectableText(
-                    '0554363864',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: SelectableText(
-                    '0554363596',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: SelectableText(
-                    '0554362493',
+                    '091-0610980',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -100,7 +84,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    'للتواصل مع النقل',
+                    'للتواصل مع المشرف',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -115,7 +99,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: SelectableText(
-                    '01001902862',
+                    '011111111111',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -123,7 +107,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: SelectableText(
-                    '01012236657',
+                    '011111111111',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -131,7 +115,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    'للتواصل مع شئون الطلاب',
+                    'للتواصل مع إدارة القسم',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -146,7 +130,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: LinkText(
-                    'http://www.hti.edu.eg/ar/page.aspx?id=1013',
+                    'http://uot.edu.ly/SoftwareEng',
                     onLinkTap: (url){
                      // navigateTo(context, WebViewScreen(url));
                     },

@@ -186,6 +186,7 @@ class _ReciveCllState extends State<ReciveCll> {
             onPressed: () {
               _engine.leaveChannel();
               Navigator.pop(context);
+              showRating();
               BlocProvider.of<CallCubit>(context).endCall();
             },
             child: const Icon(
@@ -259,6 +260,7 @@ class _ReciveCllState extends State<ReciveCll> {
                     ?.uid,
               );
               Navigator.pop(context);
+              showRating();
               BlocProvider.of<CallCubit>(context).endCall();
             },
             child: const Icon(
@@ -399,6 +401,58 @@ class _ReciveCllState extends State<ReciveCll> {
           ),
         ),
       ],
+    );
+  }
+
+
+  double rating = 0;
+  Widget buildRating() {
+    return RatingBar.builder(
+        itemSize: 40,
+        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
+        onRatingUpdate: (rating) {
+          setState(() {
+            this.rating = rating;
+          });
+        },
+        minRating: 1,
+        maxRating: 5);
+  }
+
+  void showRating() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Center(
+          child: Text(
+            "قيم المستشار",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              BlocProvider.of<UserLayoutCubit>(context).sendRating(
+                rating: rating,
+                sender:
+                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
+                recever: widget.consultantId!,
+              );
+              Navigator.pop(context);
+            },
+            child:  Text(
+              "تأكيد",
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        ],
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildRating(),
+          ],
+        ),
+      ),
     );
   }
 }

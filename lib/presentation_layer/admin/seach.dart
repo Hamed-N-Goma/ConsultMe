@@ -252,7 +252,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
                                     width: 10.0,
                                   ),
                                   Text(
-                                    'تأكيد حذف المستخدم ؟',
+                                    'تأكيد حذف المستخدم ${model.name} ؟',
                                     textDirection: TextDirection.rtl,
                                     style:
                                     Theme

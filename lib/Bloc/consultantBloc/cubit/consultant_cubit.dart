@@ -293,7 +293,6 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   List<AppointmentModel>? appointments = [];
-  List<UserModel>? users;
 
   void getAppoinments() {
     FirebaseFirestore.instance.collection('appointments').get().then((value) {
@@ -403,6 +402,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         messages.add(MessageModel.fromJson(element.data()));
       });
 
+      messages = messages .reversed.toList();
       emit(GetMessagesSuccessState());
     });
   }
@@ -504,5 +504,12 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         },
       ),
     );
+  }
+
+  UserModel? user;
+  getUserById(userId){
+    FirebaseFirestore.instance.collection('users').doc(userId).get().then((value) {
+      user = UserModel.fromJson(value.data());
+    });
   }
 }

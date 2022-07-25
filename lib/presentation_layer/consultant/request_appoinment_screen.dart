@@ -33,9 +33,9 @@ class RequestAppoinmentScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     smallDashBoardTitleBox(
-                        svgImage:'assets/images/research.svg',
+                        svgImage:'assets/images/call.svg',
                         svg: true,
-                        title: 'طلبات الاتصال '),
+                        title: 'طلبات الأستشارة '),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -89,7 +89,7 @@ Widget AppoinmentsItem({
           appoItem: item,
         ));
       }else{
-        showToast(message: 'لا يوجد تفاصيل حاليا!!', state: ToastStates.WARNING);
+        showToast(message: 'لا يوجد طلبات حاليا!!', state: ToastStates.WARNING);
       }
     },
     child: Row(

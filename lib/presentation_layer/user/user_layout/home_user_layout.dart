@@ -47,8 +47,6 @@ class _UserLayoutState extends State<UserLayout> {
         navigateTo(context, FollowRequestsScreen());
       }
 
-
-
     }
   }
 

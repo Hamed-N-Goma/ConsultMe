@@ -37,10 +37,17 @@ class _CallState extends State<Call> {
   void initState() {
     player.open(
       Audio("assets/sound/callingvoice.mp3"),
-      autoStart: false,
+      autoStart: true,
     );
 
     super.initState();
+  }
+
+  @override
+  dispose(){
+
+    player.dispose();
+
   }
 
   @override
@@ -200,55 +207,5 @@ class _CallState extends State<Call> {
   Future<void> handleCameraAndMic(Permission permission) async {
     final status = await permission.request();
     log(status.toString());
-  }
-
-
-  double rating = 0;
-  Widget buildRating() {
-    return RatingBar.builder(
-        itemSize: 40,
-        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
-        onRatingUpdate: (rating) {
-          setState(() {
-            this.rating = rating;
-          });
-        },
-        minRating: 1,
-        maxRating: 5);
-  }
-
-  void showRating() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "قيم المستشار",
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              BlocProvider.of<UserLayoutCubit>(context).sendRating(
-                rating: rating,
-                sender:
-                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
-                recever: widget.consultant.uid!,
-              );
-              Navigator.pop(context);
-            },
-            child: const Text(
-              "تأكيد",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildRating(),
-          ],
-        ),
-      ),
-    );
   }
 }

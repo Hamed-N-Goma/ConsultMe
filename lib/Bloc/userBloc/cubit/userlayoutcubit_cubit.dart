@@ -275,7 +275,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
       event.docs.forEach((element) {
         messages.add(MessageModel.fromJson(element.data()));
       });
-
+      messages = messages .reversed.toList();
       emit(GetMessagesSuccessState());
     });
   }
@@ -437,6 +437,8 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
             'id': '1',
             'status': 'done',
             'type' : type,
+            'userId' : userModel!.uid,
+
           },
           'to': Token,
         },

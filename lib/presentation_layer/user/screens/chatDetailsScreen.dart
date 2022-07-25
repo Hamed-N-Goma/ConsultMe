@@ -74,7 +74,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  backgroundColor: ColorManager.myBlue.withOpacity(0.5),
+                  backgroundColor: mainColors.withOpacity(0.5),
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
                   actions: actionsAppBar(
@@ -89,16 +89,17 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                         Expanded(
                           child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
+                            reverse: true,
                             itemBuilder: (context, index) {
                               var message =
                                   UserLayoutCubit.get(context).messages[index];
 
                               if (UserLayoutCubit.get(context).userModel?.uid ==
                                   message.senderId) {
-                                return buildMyMessage(message);
+                                return buildMessage(message, context);
                               }
 
-                              return buildMessage(message, context);
+                              return buildMyMessage(message);
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
@@ -107,6 +108,9 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                             itemCount:
                                 UserLayoutCubit.get(context).messages.length,
                           ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -141,7 +145,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                 child: MaterialButton(
                                   onPressed: () {
                                     if (cubit.messages.length > 80) {
-                                      showRating();
+                                   //   showRating();
                                     }
                                     UserLayoutCubit.get(context).sendMessage(
                                       receiverId: widget.consultant.uid!,
@@ -428,7 +432,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
       builder: (context) => AlertDialog(
         title: Text(
           "قيم المستشار",
-          style: TextStyle(fontSize: 20),
+          style: Theme.of(context).textTheme.bodyText1,
         ),
         actions: [
           MaterialButton(
@@ -441,9 +445,9 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               );
               Navigator.pop(context);
             },
-            child: const Text(
+            child: Text(
               "تأكيد",
-              style: TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
         ],

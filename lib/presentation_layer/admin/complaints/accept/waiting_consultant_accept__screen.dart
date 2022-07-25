@@ -9,6 +9,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class WaitingConsultantsScreen extends StatelessWidget {
@@ -418,7 +419,74 @@ Widget ConsultantItem({
               direction: DismissDirection.startToEnd,
               resizeDuration: const Duration(milliseconds: 200),
               onDismissed: (direction) {
-                cubit.deleteConsultant(item.uid);
+                showDialog<void>(
+                  context: context,
+                  builder: (context) =>
+                      AlertDialog(
+                        backgroundColor: ThemeCubit
+                            .get(context)
+                            .darkTheme
+                            ? mainColors
+                            : Colors.white,
+                        content: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/warning.svg',
+                                  width: 25.0,
+                                  height: 25.0,
+                                  alignment: Alignment.center,
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  'تأكيد حذف الإستشاري ${item.name} ؟',
+                                  textDirection: TextDirection.rtl,
+                                  style:
+                                  Theme
+                                      .of(context)
+                                      .textTheme
+                                      .subtitle1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              'الغاء',
+                              textDirection: TextDirection.rtl,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              cubit.deleteConsultant(item.uid);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'حذف',
+                              textDirection: TextDirection.rtl,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                );
               },
               background: Container(
                 decoration: BoxDecoration(
