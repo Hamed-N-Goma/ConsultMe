@@ -33,7 +33,7 @@ class AddingSuccessScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
             child: defaultButton(
                 function: () {
-                  navigateTo(context, ConsultantHomeScreen());
+                  navigateTo(context, AdminHomeScreen());
                 },
                 text: 'العودة ',
                 btnColor: mainColors),

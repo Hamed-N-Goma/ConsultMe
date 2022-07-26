@@ -26,9 +26,6 @@ class AcceptedConsultantsScreen extends StatelessWidget {
               context: context,
               builder: (context)=> waitingDialog(context: context)
           );
-        }else if(state is PutStudentSuccessStates ){
-          Navigator.pop(context);
-          showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS);
         }else if(state is DeleteStudentSuccess){
           Navigator.pop(context);
           showToast(message: 'تم الحذف بنجاح', state: ToastStates.SUCCESS);
@@ -40,7 +37,7 @@ class AcceptedConsultantsScreen extends StatelessWidget {
           textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'إدارة الخبراء',
+              title: 'إدارة المستشارين',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -94,7 +91,7 @@ class AcceptedConsultantsScreen extends StatelessWidget {
                                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                                 width: double.infinity,
                                 height: 1.0,
-                                color: separator,
+                                color: mainColors,
                               ),
                               itemCount: cubit.accepted_consultant!.length,
                             );
@@ -186,16 +183,16 @@ Widget ConsultantItem({
                       ),
                   ],
                 ),
-
-                  const SizedBox(
-                    height: 10.0,
-                  ),
+                if (cubit.showWaitingConsultant_details == true &&
+                    cubit.currentWaitingConsultantIndex == index)
                   AnimatedContainer(
+                    margin: EdgeInsets.only(top: 20.0),
                     duration: const Duration(milliseconds: 120),
                     height: cubit.animatedWaitingConsultantHeight,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(color: mainColors.withOpacity(0.5), width: 2),
+                      borderRadius: BorderRadius.circular(20.0),
                       color: cubit.showWaitingStudentEdit == true
                           ? ThemeCubit.get(context).darkTheme
                           ? mainColors
@@ -209,7 +206,6 @@ Widget ConsultantItem({
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                       child: Column(
                         children: [
-
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -227,7 +223,6 @@ Widget ConsultantItem({
                           const SizedBox(
                             height: 20.0,
                           ),
-
                           Row(
                             children: [
                               Expanded(
@@ -247,6 +242,7 @@ Widget ConsultantItem({
                             height: 5.0,
                           ),
 
+                          //address
                           Row(
                             children: [
                               Expanded(
@@ -322,7 +318,7 @@ Widget ConsultantItem({
                             ],
                           ),
                           const SizedBox(
-                            height: 5.0,
+                            height: 10.0,
                           ),
 
                           Row(
@@ -389,77 +385,10 @@ Widget ConsultantItem({
                           ),
                           defaultButton(
                             function: (){
-                              showDialog<void>(
-                                context: context,
-                                builder: (context) =>
-                                    AlertDialog(
-                                      backgroundColor: ThemeCubit
-                                          .get(context)
-                                          .darkTheme
-                                          ? mainColors
-                                          : Colors.white,
-                                      content: Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/images/warning.svg',
-                                                width: 25.0,
-                                                height: 25.0,
-                                                alignment: Alignment.center,
-                                              ),
-                                              const SizedBox(
-                                                width: 10.0,
-                                              ),
-                                              Text(
-                                                'تأكيد تقييد الإستشاري ${item.name} ؟',
-                                                textDirection: TextDirection.rtl,
-                                                style:
-                                                Theme
-                                                    .of(context)
-                                                    .textTheme
-                                                    .subtitle1,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      contentPadding: EdgeInsets.zero,
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: Text(
-                                            'الغاء',
-                                            textDirection: TextDirection.rtl,
-                                            style: Theme
-                                                .of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            cubit.UnAcceptConsultant(uid: item.uid!);
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'تقييد',
-                                            textDirection: TextDirection.rtl,
-                                            style: Theme
-                                                .of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .copyWith(color: Colors.red),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                              );
+                              cubit.UnAcceptConsultant(uid: item.uid!);
                             },
                             text: 'تقييد',
-                            btnColor: Colors.red ,
+                            btnColor: Colors.red,
                             width: double.infinity,
                           ),
                         ],
@@ -483,74 +412,74 @@ Widget ConsultantItem({
               resizeDuration: const Duration(milliseconds: 200),
               onDismissed: (direction) {
                 showDialog<void>(
-                    context: context,
-                    builder: (context) =>
-                    AlertDialog(
-                      backgroundColor: ThemeCubit
-                          .get(context)
-                          .darkTheme
-                          ? mainColors
-                          : Colors.white,
-                      content: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/warning.svg',
-                                width: 25.0,
-                                height: 25.0,
-                                alignment: Alignment.center,
-                              ),
-                              const SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(
-                                'تأكيد حذف الإستشاري ${item.name} ؟',
-                                textDirection: TextDirection.rtl,
-                                style:
-                                Theme
-                                    .of(context)
-                                    .textTheme
-                                    .subtitle1,
-                              ),
-                            ],
+                  context: context,
+                  builder: (context) =>
+                      AlertDialog(
+                        backgroundColor: ThemeCubit
+                            .get(context)
+                            .darkTheme
+                            ? mainColors
+                            : Colors.white,
+                        content: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/warning.svg',
+                                  width: 25.0,
+                                  height: 25.0,
+                                  alignment: Alignment.center,
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  'تأكيد حذف الإستشاري ${item.name} ؟',
+                                  textDirection: TextDirection.rtl,
+                                  style:
+                                  Theme
+                                      .of(context)
+                                      .textTheme
+                                      .subtitle1,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        contentPadding: EdgeInsets.zero,
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              'الغاء',
+                              textDirection: TextDirection.rtl,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              cubit.deleteConsultant(item.uid);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'حذف',
+                              textDirection: TextDirection.rtl,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(color: Colors.red),
+                            ),
+                          ),
+                        ],
                       ),
-                      contentPadding: EdgeInsets.zero,
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text(
-                            'الغاء',
-                            textDirection: TextDirection.rtl,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            cubit.deleteConsultant(item.uid);
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'حذف',
-                            textDirection: TextDirection.rtl,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
                 );
-                },
+              },
               background: Container(
                 decoration: BoxDecoration(
                   color: Colors.red,

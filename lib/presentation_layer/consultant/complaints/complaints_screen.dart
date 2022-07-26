@@ -19,6 +19,13 @@ class ComplaintsScreen extends StatelessWidget {
           showToast(message: 'تم رفع الشكوى بنجاح', state: ToastStates.SUCCESS);
           complaintController.text = '';
           ConsultantCubit.get(context).getConsultantData();
+          Navigator.pop(context);
+
+        }else if (state is PostComplaintsLoadingStates){
+          showDialog<void>(
+              context: context,
+              builder: (context) => waitingDialog(context: context));
+
         }else if(state is PostComplaintsErrorStates){
           showToast(message: 'لم يتم رفع الشكوى, الرجاء المحاولة في وقت لاحق', state: ToastStates.ERROR);
           ConsultantCubit.get(context).getConsultantData();

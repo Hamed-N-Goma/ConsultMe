@@ -106,192 +106,18 @@ class AdminHomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
+
+
                             const SizedBox(
                               height: 22.0,
                             ),
 
-                            Container(
-                              width: double.infinity,
-                              height: 1.0,
-                              color: separator,
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        ' الخبراء المتاحين',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        ' الخبراء الغير متاحين',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                          '${cubit.accepted_consultant
-                                              ?.length}',
-                                          textAlign: TextAlign.center,
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .copyWith(color: Colors.green)
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                          '${cubit.waiting_consultant?.length}',
-                                          textAlign: TextAlign.center,
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .copyWith(color: Colors.red)
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 20.0,),
-
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        ' المستخدمين',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        ' المنشورات',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        '${cubit.users?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '${cubit.posts?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20.0,),
-
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        ' الشكاوي',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        ' الأقسام',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        '${cubit.complaints?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '${cubit.category?.length}',
-                                        textAlign: TextAlign.center,
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 1.0,
-                              color: separator,
-                            ),
-                            const SizedBox(
-                              height: 12.0,
-                            ),
                             InkWell(
-                            onTap: () {
-                                  navigateTo(context, const acceptScreen());
-                                  },
-                             child : buildOthersIten(
-                                name: 'إداره الخبراء',
+                              onTap: () {
+                                navigateTo(context, const acceptScreen());
+                              },
+                              child : buildOthersIten(
+                                name: 'إداره المستشارين',
                                 context: context,
                                 icon: FontAwesomeIcons.addressCard,
                               ),
@@ -305,10 +131,10 @@ class AdminHomeScreen extends StatelessWidget {
                                 navigateTo(context,  AddCategoy());
                               },
                               child: buildOthersIten(
-                                  name: 'اضافة قسم ',
-                                  context: context,
-                                  icon: FontAwesomeIcons.section,
-                        ),
+                                name: 'ادارة التخصصات ',
+                                context: context,
+                                icon: FontAwesomeIcons.section,
+                              ),
                             ),
                             const SizedBox(
                               height: 12.0,
@@ -318,10 +144,10 @@ class AdminHomeScreen extends StatelessWidget {
                                 navigateTo(context,  DashComplimentsScreen());
                               },
                               child: buildOthersIten(
-                                  name: 'الشكاوي',
-                                  context: context,
-                                  icon: FontAwesomeIcons.personCircleExclamation,
-                                  ),
+                                name: 'الشكاوي',
+                                context: context,
+                                icon: FontAwesomeIcons.personCircleExclamation,
+                              ),
                             ),
                             const SizedBox(
                               height: 12.0,
@@ -331,14 +157,191 @@ class AdminHomeScreen extends StatelessWidget {
                                 navigateTo(context,  SearchUsers());
                               },
                               child: buildOthersIten(
-                                  name: 'المستخدمين',
-                                  context: context,
-                                  icon: FontAwesomeIcons.users,
-                       ),
+                                name: 'المستخدمين',
+                                context: context,
+                                icon: FontAwesomeIcons.users,
+                              ),
                             ),
                             const SizedBox(
                               height: 20.0,
                             ),
+                            const SizedBox(
+                              height: 12.0,
+                            ),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
+                                border: Border.all(color: mainColors.withOpacity(0.5), width: 2),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            ' الخبراء المتاحين',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            ' الخبراء الغير متاحين',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                              '${cubit.accepted_consultant
+                                                  ?.length}',
+                                              textAlign: TextAlign.center,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(color: Colors.green)
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                              '${cubit.waiting_consultant?.length}',
+                                              textAlign: TextAlign.center,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(color: Colors.red)
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    const SizedBox(height: 20.0,),
+
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            ' المستخدمين',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            ' المنشورات',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${cubit.users?.length}',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            '${cubit.posts?.length}',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20.0,),
+
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            ' الشكاوي',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            ' الأقسام',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${cubit.complaints?.length}',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            '${cubit.category?.length}',
+                                            textAlign: TextAlign.center,
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+
+
                             InkWell(
                               onTap: () {
                                 showDialog<void>(

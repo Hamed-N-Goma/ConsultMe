@@ -3,6 +3,7 @@ import 'package:consultme/models/favoriteModel.dart';
 import 'package:consultme/presentation_layer/user/widget/toprated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:consultme/models/consultantmodel.dart';
 
@@ -83,7 +84,6 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-
   Widget buildSearchfallback() {
     return Expanded(
       child: SizedBox(
@@ -91,14 +91,19 @@ class _SearchState extends State<Search> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              IconBroken.Search,
-              color: Colors.grey[400],
-              size: 150,
+            SizedBox(
+              width: double.infinity,
+              child: SvgPicture.asset(
+                'assets/images/search.svg',
+                height: 150.0,
+              ),
+            ),
+            SizedBox(
+                height: 10.0,
             ),
             Text(
-              'إبحث عن مستشار',
-              style: Theme.of(context).textTheme.bodyLarge,
+              'إبحث عن مستشارك المطلوب',
+              style: Theme.of(context).textTheme.headline6,
             )
           ],
         ),

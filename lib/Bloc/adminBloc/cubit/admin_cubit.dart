@@ -65,6 +65,7 @@ class AdminCubit extends Cubit<AdminStates> {
         }
       });
     }).catchError((error) {
+      getData();
       print('-----------user security-----------${error.toString()}');
       emit(GetUserSecurityErrorStates(error.toString()));
     });
@@ -245,6 +246,7 @@ class AdminCubit extends Cubit<AdminStates> {
         })
         .catchError((error) {
           print(error);
+          getUserInSecurity();
           showToast(
               message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
               state: ToastStates.ERROR);
@@ -269,6 +271,7 @@ class AdminCubit extends Cubit<AdminStates> {
         })
         .catchError((error) {
           print(error);
+          getUserInSecurity();
           showToast(
               message: 'حدث خطأ ما, برجاء المحاوله في وقت لاحق',
               state: ToastStates.ERROR);
@@ -286,8 +289,8 @@ class AdminCubit extends Cubit<AdminStates> {
       showToast(message: 'تم الحذف بنجاح', state: ToastStates.SUCCESS);
     }).catchError((error) {
       print(error.toString());
-
       emit(DeleteConsultantError(error.toString()));
+      getUserInSecurity();
       showToast(
           message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
           state: ToastStates.ERROR);
@@ -405,6 +408,7 @@ class AdminCubit extends Cubit<AdminStates> {
   }
 
   void DeleteCategory(CategoryModel model) {
+    emit(DeleteCategoryLoadingState());
     FirebaseFirestore.instance.collection('Category').get().then((value) {
       value.docs.forEach((element) {
         if (element.data()['name'] == model.name) {

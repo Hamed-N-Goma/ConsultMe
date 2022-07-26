@@ -22,16 +22,13 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
       listener: (context, state) {
-        if (state is DelNewsSuccessStates) {
+        if (state is DeletePostSuccessState) {
           Navigator.pop(context);
         }
-        if (state is DelNewsLoadingStates) {
+        if (state is DelPostLoadingStates) {
           showDialog<void>(
               context: context,
               builder: (context) => waitingDialog(context: context));
-        }
-        if (state is DelNewsErrorStates) {
-          Navigator.pop(context);
         }
       },
       builder: (context, state) {
@@ -74,22 +71,22 @@ class NewsScreen extends StatelessWidget {
                             ),
                             itemCount: ConsultantCubit.get(context).posts.length,
                           ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          defaultButton(
-                            text: 'إضافة المنشور جديد',
-                            function: () {
-                              navigateTo(context, AddPostScreen());
-                            },
-                            btnColor: mainColors,
-                            width: double.infinity,
-                          ),
                         ],
                       );
                     }
                   },
                 ),
+              ),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FloatingActionButton(
+                child: Icon(Icons.add_card),
+                backgroundColor: mainColors,
+                onPressed: () {
+                  navigateTo(context, AddPostScreen());
+                },
               ),
             ),
           ),
@@ -176,24 +173,27 @@ Widget buildNewsItem({
             ),
       );
     },
-    background: Container(
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadiusDirectional.circular(8.0),
-      ),
-      padding: const EdgeInsets.all(5.0),
-      alignment: AlignmentDirectional.centerStart,
-      child: const Icon(
-        Icons.delete_forever,
-        color: Colors.white,
+    background: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadiusDirectional.circular(8.0),
+        ),
+        padding: const EdgeInsets.all(5.0),
+        alignment: AlignmentDirectional.centerStart,
+        child: const Icon(
+          Icons.delete_forever,
+          color: Colors.white,
+        ),
       ),
     ),
     key: UniqueKey(),
     child: Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 1),
+        border: Border.all(color: mainColors.withOpacity(0.5), width: 2),
         borderRadius: BorderRadius.circular(
-          8.0,
+          10.0,
         ),
       ),
       child: Row(
@@ -233,7 +233,7 @@ Widget buildNewsItem({
                         '${model.title}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                     Row(
@@ -242,9 +242,9 @@ Widget buildNewsItem({
                           alignment: Alignment.bottomRight,
                           child: Text(
                             date,
-                            style: TextStyle(
-                              color: separator,
-                              fontSize: 10.0,
+                            style:  Theme.of(context).textTheme.bodyText1?.copyWith
+                              (
+                              fontSize: 12.0,
                             ),
                           ),
                         ),
@@ -253,7 +253,7 @@ Widget buildNewsItem({
                           alignment: Alignment.bottomLeft,
                           child: InkWell(
                             child: Text(
-                              'عرض المزيد',
+                              'عرض المنشور',
                               style:
                                   Theme.of(context).textTheme.bodyText2!.copyWith(
                                         decoration: TextDecoration.underline,

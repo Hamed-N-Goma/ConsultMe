@@ -26,9 +26,6 @@ class WaitingConsultantsScreen extends StatelessWidget {
               context: context,
               builder: (context)=> waitingDialog(context: context)
           );
-        }else if(state is PutStudentSuccessStates ){
-          Navigator.pop(context);
-          showToast(message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS);
         }else if(state is DeleteStudentSuccess){
           Navigator.pop(context);
           showToast(message: 'تم الحذف بنجاح', state: ToastStates.SUCCESS);
@@ -40,7 +37,7 @@ class WaitingConsultantsScreen extends StatelessWidget {
           textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'إدارة الخبراء',
+              title: 'إدارة المستشارين',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -190,11 +187,13 @@ Widget ConsultantItem({
                 if (cubit.showWaitingConsultant_details == true &&
                     cubit.currentWaitingConsultantIndex == index)
                   AnimatedContainer(
+                    margin: EdgeInsets.only(top: 20.0),
                     duration: const Duration(milliseconds: 120),
                     height: cubit.animatedWaitingConsultantHeight,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(color: mainColors.withOpacity(0.5), width: 2),
+                      borderRadius: BorderRadius.circular(20.0),
                       color: cubit.showWaitingStudentEdit == true
                           ? ThemeCubit.get(context).darkTheme
                           ? mainColors
@@ -308,7 +307,7 @@ Widget ConsultantItem({
                             children: [
                               Expanded(
                                 child: Text(
-                                  '- الموبيل :',
+                                  '- رقم الهاتف :',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
@@ -320,20 +319,14 @@ Widget ConsultantItem({
                             ],
                           ),
                           const SizedBox(
-                            height: 5.0,
+                            height: 10.0,
                           ),
 
-
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-
-                          //phone
                           Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  '- عدد سنين الخبرة :',
+                                  '-  سنين الخبرة :',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),

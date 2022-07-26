@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
@@ -22,6 +23,10 @@ class NewsDashDetailsScreen extends StatelessWidget {
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
+            appBar: dashAppBar(
+              title:  '${model.title}',
+              context: context,
+            ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -43,24 +48,6 @@ class NewsDashDetailsScreen extends StatelessWidget {
                                   color: ThemeCubit.get(context).darkTheme
                                       ? mainTextColor
                                       : mainColors,),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 42,left: 18),
-                            child: InkWell(
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 14.0,
-                                    backgroundColor: backGround,
-                                  ),
-                                  SvgPicture.asset('assets/images/back_arrow.svg'),
-                                ],
-                              ),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
                             ),
                           ),
                         ],
@@ -89,8 +76,8 @@ class NewsDashDetailsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      '${model.name}',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      '${model.title}',
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -100,7 +87,7 @@ class NewsDashDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       '${model.text}',
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 14.0,
                       ),
                     ),

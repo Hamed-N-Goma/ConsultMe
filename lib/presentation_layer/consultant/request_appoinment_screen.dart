@@ -45,7 +45,7 @@ class RequestAppoinmentScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(
                           8.0,
                         ),
-                        border: Border.all(color: Colors.grey, width: 1),
+                        border: Border.all(color: mainColors, width: 2),
                       ),
                       child: ListView.separated(
                         padding: const EdgeInsetsDirectional.all(10.0),

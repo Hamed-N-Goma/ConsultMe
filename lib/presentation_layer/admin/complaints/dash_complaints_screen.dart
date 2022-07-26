@@ -45,7 +45,7 @@ class DashComplimentsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(
                           8.0,
                         ),
-                        border: Border.all(color: Colors.grey, width: 1),
+                        border: Border.all(color: mainColors.withOpacity(0.6), width: 2),
                       ),
                       child: ListView.separated(
                         padding: const EdgeInsetsDirectional.all(10.0),
@@ -61,7 +61,7 @@ class DashComplimentsScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
                           width: double.infinity,
                           height: 1.0,
-                          color: separator,
+                          color: mainColors,
                         ),
                         itemCount: cubit.complaints!.length,
                       ),

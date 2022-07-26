@@ -23,6 +23,7 @@ class ConsultChatDetails extends StatelessWidget {
       : super(key: key);
 
   UserModel User;
+  String? notifyToken ;
   var messageController = TextEditingController();
 
   @override
@@ -116,18 +117,19 @@ class ConsultChatDetails extends StatelessWidget {
                                 height: 60.0,
                                 color: mainColors,
                                 child: MaterialButton(
-                                  onPressed: () {
+                                  onPressed: ()  {
                                     ConsultantCubit.get(context).sendMessage(
                                       receiverId: User.uid,
                                       dateTime: DateTime.now().toString(),
                                       content: messageController.text,
                                     );
+
                                       cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById("${User.uid}")!,
+                                           cubit.getTokenById("${User.uid}")!,
                                         "message");
-                                    messageController.clear();
+                                        messageController.clear();
                                   },
                                   minWidth: 1.0,
                                   child: const Icon(
@@ -177,17 +179,15 @@ class ConsultChatDetails extends StatelessWidget {
     return [
       IconButton(
         onPressed: () async {
-
           if (token.toString().isNotEmpty) {
 
             ConsultantCubit.get(context).sendNotfiy(
                 " لقد تلقيت مكالمة ",
                 " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-                ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call",token.toString());
+                 ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call",token.toString());
 
             await handleCameraAndMic(Permission.camera);
             await handleCameraAndMic(Permission.microphone);
-
             await Navigator.push(
               context,
               MaterialPageRoute(
@@ -214,15 +214,15 @@ class ConsultChatDetails extends StatelessWidget {
       ),
       IconButton(
         onPressed: () async {
-           ConsultantCubit.get(context).sendNotfiy(
+
+          ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               "${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-              ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call" ,token.toString());
+               ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call" ,token.toString());
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);
             await handleCameraAndMic(Permission.microphone);
-
             await Navigator.push(
               context,
               MaterialPageRoute(

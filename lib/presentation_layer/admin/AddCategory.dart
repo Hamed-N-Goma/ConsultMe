@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/categorymodel.dart';
-import 'package:consultme/presentation_layer/consultant/success_screen.dart';
+import 'package:consultme/presentation_layer/admin/success_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,24 @@ class AddCategoy extends StatelessWidget {
           nameController.clear();
           navigateTo(context, const AddingSuccessScreen());
         }
-        if (state is CreateCategoryErrorState ){
+        else if (state is CreateCategoryLoadingState){
+          showDialog<void>(
+              context: context,
+              builder: (context)=> waitingDialog(context: context)
+          );
+        }
+        else if (state is DeleteCategoryLoadingState){
+          showDialog<void>(
+              context: context,
+              builder: (context)=> waitingDialog(context: context)
+          );
+        }
+        else if (state is CreateCategoryErrorState ){
           Navigator.pop(context);
+        }
+        else if (state is DeleteCategorySuccessState){
+          Navigator.pop(context);
+
         }
       },
       builder: (context, state) {
@@ -35,7 +52,7 @@ class AddCategoy extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title: 'إضافة قسم جديد',
+              title: 'إضافة تخصص جديد',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -45,7 +62,7 @@ class AddCategoy extends StatelessWidget {
                 child: Column(
                   children: [
                     dashTextFormField(
-                      hint: 'اسم القسم ',
+                      hint: 'اسم التخصص ',
                       controller: nameController,
                       context: context,
                       type: TextInputType.text,
@@ -137,7 +154,7 @@ class AddCategoy extends StatelessWidget {
                                     border: InputBorder.none,
                                     hintStyle: Theme.of(context).textTheme.bodyText1,
                                     contentPadding: const EdgeInsetsDirectional.all(10.0),
-                                    hintText: 'صورة ترمز للقسم',
+                                    hintText: 'صورة ترمز للتخصص',
                                   ),
                                 ),
                               ),
@@ -175,7 +192,18 @@ class AddCategoy extends StatelessWidget {
                       ),
                       itemCount: AdminCubit.get(context).categorys.length,
                     ),
-
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      'ملاحظة : اسحب القسم لحذفه',
+                      textDirection: TextDirection.rtl,
+                      style:
+                      Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1,
+                    ),
                   ],
                 ),
               ),
@@ -289,56 +317,59 @@ Widget buildCategoryItem({
 
     },
 
-    background: Container(
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadiusDirectional.circular(8.0),
-      ),
-      padding: const EdgeInsets.all(5.0),
-      alignment: AlignmentDirectional.centerStart,
-      child: const Icon(
-        Icons.delete_forever,
-        color: Colors.white,
+    background: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadiusDirectional.circular(8.0),
+        ),
+        padding: const EdgeInsets.all(5.0),
+        alignment: AlignmentDirectional.centerStart,
+        child: const Icon(
+          Icons.delete_forever,
+          color: Colors.white,
+        ),
       ),
     ),
     key: UniqueKey(),
     child: Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 1),
+        border: Border.all(color: mainColors.withOpacity(0.2), width: 3),
         borderRadius: BorderRadius.circular(
-          8.0,
+          20.0,
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120.0,
-            height: 100.0,
+            width: 100.0,
+            height: 90.0,
             child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: CachedNetworkImage(
-                imageUrl: '${model.image}',
-                placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) =>  Container(
-                  alignment: Alignment.center,
-                  height: 80.0,
-                  child: Icon(Icons.error,
-                    color: ThemeCubit.get(context).darkTheme
-                        ? mainTextColor
-                        : mainColors,),
-                ),
-                fit:BoxFit.cover,
+                child: CachedNetworkImage(
+                  imageUrl: '${model.image}',
+                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) =>  Container(
+                    alignment: Alignment.center,
+                    height: 80.0,
+                    child: Icon(Icons.error,
+                      color: ThemeCubit.get(context).darkTheme
+                          ? mainTextColor
+                          : mainColors,),
+                  ),
+                  fit:BoxFit.cover,
               ),
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(10.0),
               child: SizedBox(
                 height: 80.0,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
@@ -346,7 +377,7 @@ Widget buildCategoryItem({
                         '${model.name}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
                   ],

@@ -23,6 +23,7 @@ class UserChatDetails extends StatefulWidget {
       : super(key: key);
 
   ConsultantModel consultant;
+  String? notifyToken ;
 
   @override
   State<UserChatDetails> createState() => _UserChatDetailsState();
@@ -143,7 +144,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                 height: 60.0,
                                 color: mainColors,
                                 child: MaterialButton(
-                                  onPressed: () {
+                                  onPressed: ()  {
                                     if (cubit.messages.length > 80) {
                                    //   showRating();
                                     }
@@ -156,8 +157,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                         cubit.sendNotfiy(
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
-                                        cubit.getTokenById(
-                                            "${widget.consultant.uid}")!,
+                                             cubit.getTokenById("${widget.consultant.uid}")!,
                                         "message");
                                     messageController.clear();
                                   },

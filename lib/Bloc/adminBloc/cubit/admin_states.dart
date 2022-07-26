@@ -84,6 +84,7 @@ class GetCategoryErrorState extends AdminStates{
   GetCategoryErrorState(this.error);
 }
 
+class DeleteCategoryLoadingState extends AdminStates{}
 class DeleteCategorySuccessState extends AdminStates{}
 class DeleteCategoryErrorState extends AdminStates{}
 

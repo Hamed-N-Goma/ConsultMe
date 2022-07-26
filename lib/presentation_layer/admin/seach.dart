@@ -32,6 +32,7 @@ class _SearchState extends State<SearchUsers> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AdminCubit, AdminStates>(
+
       builder: (context, state) {
         AdminCubit.get(context).getUsers();
         if (state is GitUsersDataSucsess) {
@@ -74,17 +75,32 @@ class _SearchState extends State<SearchUsers> {
                     condition: _isSearching && searchedUsers.isNotEmpty,
                     builder: (context) => Expanded(
                           child: SizedBox(
-                            child: ListView.separated(
-                                itemBuilder: ((context, index) => buildUserCard(
-                                    context,
-                                    model: searchedUsers[index])),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                itemCount: searchedUsers.length),
+                            child: Container(
+                              height: 350.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
+                                border: Border.all(color: mainColors, width: 1),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                              child: ListView.separated(
+                                  itemBuilder: ((context, index) => buildUserCard(
+                                      context,
+                                      model: searchedUsers[index])),
+                                  separatorBuilder: (context, index) =>
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(vertical: 10.0),
+                                        width: double.infinity,
+                                        height: 1.0,
+                                        color: mainColors,
+                                      ),
+                                  itemCount: searchedUsers.length),
+                            ),
                           ),
                         ),
+                    ),
                     fallback: (context) => buildSearchfallback())
               ],
             ),
@@ -100,13 +116,28 @@ class _SearchState extends State<SearchUsers> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, index) =>
-                      buildUserCard(context, model: allUsers[index]),
-                  separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
+              child: Container(
+                height: 350.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    8.0,
+                  ),
+                  border: Border.all(color: mainColors, width: 1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ListView.separated(
+                      itemBuilder: (context, index) =>
+                          buildUserCard(context, model: allUsers[index]),
+                      separatorBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
+                        width: double.infinity,
+                        height: 1.0,
+                        color: mainColors,
                       ),
-                  itemCount: allUsers.length),
+                      itemCount: allUsers.length),
+                ),
+              ),
             )
           ],
         ),

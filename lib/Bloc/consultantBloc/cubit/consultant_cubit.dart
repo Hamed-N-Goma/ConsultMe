@@ -182,6 +182,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   void DeletePost(id) {
+    emit(DelPostLoadingStates());
     FirebaseFirestore.instance
         .collection('posts')
         .doc(id)
@@ -477,6 +478,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
     return token;
   }
+
 
   sendNotfiy(String title, String body, String Token , String type ,[String? RTCtoken]) async {
     await http.post(

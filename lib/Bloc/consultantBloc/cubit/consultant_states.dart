@@ -47,7 +47,7 @@ class GetPostsErrorState extends ConsultantStates {
   GetPostsErrorState(this.error);
 }
 
-class DeletePostLoadingState extends ConsultantStates {}
+class DelPostLoadingStates extends ConsultantStates {}
 
 class DeletePostSuccessState extends ConsultantStates {}
 

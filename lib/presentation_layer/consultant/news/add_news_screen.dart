@@ -20,6 +20,10 @@ class AddPostScreen extends StatelessWidget {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
       listener: (context, state) {
         if(state is CreatePostSuccessState ){
+          bodyController.clear();
+          titleController.clear();
+          ConsultantCubit.get(context).postImage = null;
+          ConsultantCubit.get(context).removePostImage();
           navigateTo(context, const AddingSuccessScreen());
         }
         if(state is CreatePostLoadingState ){
@@ -56,7 +60,7 @@ class AddPostScreen extends StatelessWidget {
                     const SizedBox(height: 12.0,),
                     whiteBoard(
                         context,
-                        hint: 'الموضوع ...',
+                        hint: 'المحنوى ...',
                         controller: bodyController,
                     ),
                     const SizedBox(height: 12.0,),
@@ -163,7 +167,7 @@ class AddPostScreen extends StatelessWidget {
                           cubit: cubit,
                         );
                       },
-                      text: 'إضافة منشور جديد',
+                      text: 'نشر',
                       width: double.infinity,
                       height: 47.0,
                       btnColor: mainColors,

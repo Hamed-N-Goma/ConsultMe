@@ -418,6 +418,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     return token;
   }
 
+
   sendNotfiy(String title, String body, String Token , String type) async {
     await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),

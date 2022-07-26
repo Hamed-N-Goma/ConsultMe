@@ -20,6 +20,7 @@ class appoinment extends StatelessWidget {
 
   var reassonController = TextEditingController();
   var descController = TextEditingController();
+  String? notifyToken ;
 
 
 
@@ -265,8 +266,7 @@ class appoinment extends StatelessWidget {
                             ),
                             const SizedBox(height: 20.0),
                             defaultButton(
-                              function: () {
-
+                              function: ()  {
                                 cubit.createAppoinment(
                                     consultId: cm.uid!,
                                     consultName : cm.name!,
@@ -277,7 +277,7 @@ class appoinment extends StatelessWidget {
                                 cubit.sendNotfiy(
                                     " لديك طلب إستشارة جديد ",
                                     " ${cubit.userModel!.name} تلقيت طلب أستشارة من ",
-                                    cubit.getTokenById("${cm.uid}")!,"appointment");
+                                     cubit.getTokenById("${cm.uid}")!,"appointment");
                               }
                               ,
                               text: 'تقديم الطلب',

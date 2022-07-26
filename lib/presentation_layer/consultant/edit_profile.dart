@@ -87,6 +87,17 @@ class EditProfileScreen extends StatelessWidget {
             text: consultantModel!.name,
             style: Theme.of(context).textTheme.headline6,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (var i = 0; i < consultantModel.rating!.toInt(); i++)
+                const Icon(
+                  Icons.star_rounded,
+                  color: Colors.indigoAccent,
+                  size: 30,
+                ),
+            ],
+          ),
           const SizedBox(
             height: 15,
           ),
@@ -101,7 +112,7 @@ class EditProfileScreen extends StatelessWidget {
                   style: Theme
                       .of(context)
                       .textTheme
-                      .titleMedium,
+                      .headline6,
                 ),
                 SizedBox(
                   height: 15,
@@ -252,15 +263,23 @@ class EditProfileScreen extends StatelessWidget {
 }
 class NumbersWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      buildButton(context,  'التقييم', '${ConsultantCubit.get(context).consultantModel!.rating}'),
-      buildDivider(),
-      buildButton(context, ' الطلبات' , '${ConsultantCubit.get(context).appointments!.length}'),
-      buildDivider(),
-      buildButton(context,  'سنين الخبرة','${ConsultantCubit.get(context).consultantModel!.yearsofExperience}'),
-    ],
+  Widget build(BuildContext context) =>  Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(
+        150.0,
+      ),
+      border: Border.all(color: mainColors.withOpacity(0.4), width:6),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        buildButton(context,  'التقييم', '${ConsultantCubit.get(context).consultantModel!.rating}'),
+        buildDivider(),
+        buildButton(context, ' الطلبات' , '${ConsultantCubit.get(context).appointments!.length}'),
+        buildDivider(),
+        buildButton(context,  'سنين الخبرة','${ConsultantCubit.get(context).consultantModel!.yearsofExperience}'),
+      ],
+    ),
   );
   Widget buildDivider() => Container(
     width: 5.0,
