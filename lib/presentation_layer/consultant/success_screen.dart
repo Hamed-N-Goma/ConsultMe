@@ -1,4 +1,5 @@
 import 'package:consultme/components/components.dart';
+import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
 import 'package:consultme/presentation_layer/consultant/consultant_home_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class AddingSuccessScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
             child: defaultButton(
                 function: () {
-                  Navigator.pop(context);
+                  navigateTo(context, AdminHomeScreen());
                 },
                 text: 'العودة ',
                 btnColor: mainColors),

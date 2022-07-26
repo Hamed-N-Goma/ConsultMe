@@ -21,6 +21,8 @@ class AddCategoy extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
         if(state is CreateCategorySuccessState ){
+          AdminCubit.get(context).categImage = null ;
+          nameController.clear();
           navigateTo(context, const AddingSuccessScreen());
         }
         if (state is CreateCategoryErrorState ){
@@ -89,7 +91,7 @@ class AddCategoy extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 3.0),
                                     child: IconButton(
                                       onPressed: () {
-                                        cubit.removePostImage();
+                                        cubit.removecategImage();
                                       },
                                       icon: const CircleAvatar(
                                         radius: 20.0,
@@ -150,6 +152,7 @@ class AddCategoy extends StatelessWidget {
                           name: nameController.text,
                           cubit: cubit,
                         );
+
                       },
                       text: 'إضافة القسم',
                       width: double.infinity,
@@ -238,14 +241,15 @@ Widget buildCategoryItem({
                           width: 10.0,
                         ),
                         Text(
-                          'تأكيد حذف قسم ${model.name} ؟',
+                          ' حذف قسم ${model.name} ؟',
                           textDirection: TextDirection.rtl,
                           style:
                           Theme
                               .of(context)
                               .textTheme
-                              .subtitle1,
+                              .bodyText1,
                         ),
+
                       ],
                     ),
                   ),
@@ -266,6 +270,7 @@ Widget buildCategoryItem({
                   TextButton(
                     onPressed: () {
                       cubit.DeleteCategory(model);
+                      cubit.DeleteAllConsultByCategory(model);
                        Navigator.pop(context);
                     },
                     child: Text(

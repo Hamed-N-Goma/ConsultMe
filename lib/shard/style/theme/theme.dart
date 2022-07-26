@@ -36,12 +36,19 @@ ThemeData lightTheme = ThemeData(
       fontFamily: 'cairo_semiBold',
       fontWeight: FontWeight.bold,
     ),
+    headline4: TextStyle(
+      fontSize: 70,
+      color: mainColors,
+      fontFamily: 'cairo_semiBold',
+      fontWeight: FontWeight.bold,
+    ),
     bodyText2: TextStyle(
       fontSize: 12.0,
       color: mainColors,
       fontFamily: 'cairo_semiBold',
     ),
   ),
+
   fontFamily: 'cairo_semiBold',
 );
 
@@ -85,6 +92,12 @@ ThemeData darkTheme = ThemeData(
       fontSize: 12.0,
       color: mainTextColor,
       fontFamily: 'cairo_semiBold',
+    ),
+    headline4: TextStyle(
+      fontSize: 70,
+      color: mainTextColor,
+      fontFamily: 'cairo_semiBold',
+      fontWeight: FontWeight.bold,
     ),
   ),
   fontFamily: 'cairo_semiBold',

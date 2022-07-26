@@ -73,12 +73,22 @@ class AdminCubit extends Cubit<AdminStates> {
   List<String>? posts = [];
   List<String>? users = [];
   List<ComplaintModel>? complaints = [];
+  List<String>? category = [];
 
   void getData() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
       value.docs.forEach((element) {
         element.reference.get().then((value) {
           posts!.add(element.id);
+        }).catchError((error) {});
+      });
+    });
+
+
+    FirebaseFirestore.instance.collection('Category').get().then((value) {
+      value.docs.forEach((element) {
+        element.reference.get().then((value) {
+          category!.add(element.id);
         }).catchError((error) {});
       });
     });
@@ -100,6 +110,8 @@ class AdminCubit extends Cubit<AdminStates> {
         }).catchError((error) {});
       });
     });
+
+
   }
 
   void delUser(UserModel model) {
@@ -318,10 +330,13 @@ class AdminCubit extends Cubit<AdminStates> {
     }
   }
 
-  void removePostImage() {
+  Future<void> removecategImage() async {
     categImage = null;
     emit(ImageRemoveSuccessState());
+
   }
+
+
 
   void uploadcategImage({
     required String name,
@@ -427,6 +442,28 @@ class AdminCubit extends Cubit<AdminStates> {
     }).catchError((error) {
       print(error.toString());
       emit(DeleteUserErrorState());
+      showToast(
+          message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
+          state: ToastStates.ERROR);
+    });
+  }
+
+  void DeleteAllConsultByCategory(CategoryModel model) {
+    FirebaseFirestore.instance.collection('users').get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['speachalist'] == model.name) {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(element.id)
+              .delete();
+        }
+      });
+      getUsers();
+      emit(DeleteAllConsultByCategorySuccessState());
+      showToast(message: 'تم حذف جميع الإستشاريين في قسم ${model.name} بنجاح', state: ToastStates.SUCCESS);
+    }).catchError((error) {
+      print(error.toString());
+      emit(DeleteAllConsultByCategoryErrorState());
       showToast(
           message: 'حدث خطأ ما, برجاء المحاولة في وقت لاحق',
           state: ToastStates.ERROR);

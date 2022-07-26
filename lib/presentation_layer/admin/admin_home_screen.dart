@@ -56,7 +56,7 @@ class AdminHomeScreen extends StatelessWidget {
                   builder: (context) {
                     if (cubit.adminModel != null) {
                       return Container(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(40.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -154,7 +154,7 @@ class AdminHomeScreen extends StatelessWidget {
                                           style: Theme
                                               .of(context)
                                               .textTheme
-                                              .headline6!
+                                              .headline4!
                                               .copyWith(color: Colors.green)
                                       ),
                                     ),
@@ -165,7 +165,7 @@ class AdminHomeScreen extends StatelessWidget {
                                           style: Theme
                                               .of(context)
                                               .textTheme
-                                              .headline6!
+                                              .headline4!
                                               .copyWith(color: Colors.red)
                                       ),
                                     ),
@@ -207,7 +207,7 @@ class AdminHomeScreen extends StatelessWidget {
                                         style: Theme
                                             .of(context)
                                             .textTheme
-                                            .headline6,
+                                            .headline4,
                                       ),
                                     ),
                                     Expanded(
@@ -217,28 +217,62 @@ class AdminHomeScreen extends StatelessWidget {
                                         style: Theme
                                             .of(context)
                                             .textTheme
-                                            .headline6,
+                                            .headline4,
                                       ),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 20.0,),
-                                Text(
-                                  ' الشكاوي',
-                                  textAlign: TextAlign.center,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyText1,
+
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        ' الشكاوي',
+                                        textAlign: TextAlign.center,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        ' الأقسام',
+                                        textAlign: TextAlign.center,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '${cubit.complaints?.length}',
-                                  textAlign: TextAlign.center,
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .headline6,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        '${cubit.complaints?.length}',
+                                        textAlign: TextAlign.center,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .headline4,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '${cubit.category?.length}',
+                                        textAlign: TextAlign.center,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .headline4,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+
                               ],
                             ),
                             const SizedBox(

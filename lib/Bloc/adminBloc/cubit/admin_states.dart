@@ -90,6 +90,9 @@ class DeleteCategoryErrorState extends AdminStates{}
 class DeleteUserSuccessState extends AdminStates{}
 class DeleteUserErrorState extends AdminStates{}
 
+class DeleteAllConsultByCategorySuccessState extends AdminStates{}
+class DeleteAllConsultByCategoryErrorState extends AdminStates{}
+
 
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}
