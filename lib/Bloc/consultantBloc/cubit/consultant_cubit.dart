@@ -384,6 +384,9 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   List<MessageModel> messages = [];
+  String? imageURL;
+  bool isMessageImageLoading = false;
+  File? messageImage;
 
   void getMessages({
     required String userId,
@@ -408,15 +411,73 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
+  void uploadMessagePic({
+    String ? senderId,
+    required String? receiverId,
+    String? content,
+    required String? dateTime,
+  }) {
+    isMessageImageLoading = true;
+    emit(UploadMessagePicLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child(Uri.file(messageImage!.path)
+        .pathSegments
+        .last)
+        .putFile(messageImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        imageURL = value;
+        sendMessage(
+          receiverId: receiverId!,
+          content: content,
+          messageImage: {
+            'width': 150,
+            'image': value,
+            'height': 200
+          },
+          dateTime: dateTime!
+          ,);
+        emit(UploadMessagePicSuccessState());
+        isMessageImageLoading = false;
+      }).catchError((error) {
+        print('Error While getDownloadURL ' + error);
+        emit(UploadMessagePicErrorState());
+      });
+    }).catchError((error) {
+      print('Error While putting the File ' + error);
+      emit(UploadMessagePicErrorState());
+    });
+  }
+
+  Future getMessageImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      messageImage = File(pickedFile.path);
+      emit(GetMessagePicSuccessState());
+    } else {
+      print('No Image Selected');
+      emit(GetMessagePicErrorState());
+    }
+  }
+
+  void popMessageImage() {
+    messageImage = null;
+    emit(DeleteMessagePicState());
+  }
+
+
   void sendMessage({
     required String receiverId,
     required String dateTime,
-    required String content,
+    Map<String, dynamic>? messageImage,
+    String? content,
   }) {
     MessageModel model = MessageModel(
       content: content,
       senderId: consultantModel?.uid,
       receiverId: receiverId,
+      messageImage:messageImage ,
       dateTime: dateTime,
     );
 
@@ -450,7 +511,6 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
       emit(SendMessageErrorState());
     });
   }
-
   List<UserModel> usersInChat = [];
 
   getUsersChat() {

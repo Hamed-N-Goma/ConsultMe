@@ -67,6 +67,20 @@ class SendMessageSuccessState extends UserLayoutState {}
 
 class SendMessageErrorState extends UserLayoutState {}
 
+class GetMessagePicSuccessState extends UserLayoutState {}
+
+class GetMessagePicErrorState extends UserLayoutState {}
+
+class UploadMessagePicLoadingState extends UserLayoutState {}
+
+class UploadMessagePicSuccessState extends UserLayoutState {}
+
+class UploadMessagePicErrorState extends UserLayoutState {}
+
+class DeleteMessagePicState extends UserLayoutState {}
+
+class DeleteCommentPicState extends UserLayoutState {}
+
 class LoadingConsultant extends UserLayoutState {}
 
 class LoadingCategory extends UserLayoutState {}

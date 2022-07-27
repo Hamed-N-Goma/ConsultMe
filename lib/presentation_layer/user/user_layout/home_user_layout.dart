@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
@@ -12,6 +13,7 @@ import 'package:consultme/presentation_layer/user/screens/more.dart';
 import 'package:consultme/presentation_layer/user/screens/search.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:fancy_snackbar/fancy_snackbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,13 +66,48 @@ class _UserLayoutState extends State<UserLayout> {
 
       }
       else if(event.data['type'] == "appointment" ){
-        BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
-        navigateTo(context, FollowRequestsScreen());
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+
+        AnimatedSnackBar.rectangle(
+          "${consult.name}",
+          "لقد تم قبول طلبك , يمكنك بدأ المحادثة .. ",
+          type: AnimatedSnackBarType.success,
+          brightness: Brightness.dark,
+        ).show(
+          context,
+        );
+
+        FancySnackbar.showSnackbar(
+          context,
+          snackBarType: FancySnackBarType.success,
+          title: "${consult.name}",
+          message: "لقد تم قبول طلبك , يمكنك بدأ المحادثة .. ",
+          duration: 4,
+          onCloseEvent: () {},
+        );
       }
       else if(event.data['type'] == "message" ){
         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
-        navigateTo(context, UserChatDetails(consultant: consult,));
+
+        AnimatedSnackBar.rectangle(
+          "${consult.name}",
+          "لقد تلقيت رسالة جديدة ",
+          type: AnimatedSnackBarType.success,
+          brightness: Brightness.dark,
+        ).show(
+          context,
+        );
+
+        FancySnackbar.showSnackbar(
+          context,
+          snackBarType: FancySnackBarType.waiting,
+          title: "${consult.name}",
+          message: "لقد تلقيت رسالة جديدة ",
+          duration: 4,
+          onCloseEvent: () {},
+        );
       }
     });
 
@@ -105,8 +142,8 @@ class _UserLayoutState extends State<UserLayout> {
 
     getMessage();
 
-    super.initState();
-  }
+  super.initState();
+}
 
   @override
   Widget build(BuildContext context) {

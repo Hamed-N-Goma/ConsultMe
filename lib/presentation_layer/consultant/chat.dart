@@ -127,7 +127,7 @@ Widget buildChatfallback(context) {
 }
 
 validation(context) {
-  if (ConsultantCubit.get(context).usersInChat!.isEmpty) {
+  if (ConsultantCubit.get(context).usersInChat.isEmpty) {
     return true;
   }
   return false;

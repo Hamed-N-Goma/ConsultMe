@@ -3,6 +3,9 @@ import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/presentation_layer/user/user_layout/home_user_layout.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'presentation_layer/user/widget/fullPicMessanger.dart';
 
 const userLayoutScreen = '/';
 const viewAllImportantArtcle = 'ViewAll';
@@ -35,3 +38,20 @@ Future<void> signOut(context) async {
     }
   });
 }
+Widget imagePreview(String? image){
+  return FullScreenWidget(
+    child: Center(
+      child: Image.network(
+        "$image",
+        fit: BoxFit.cover,
+        width: double.infinity,
+        alignment: AlignmentDirectional.topCenter,
+      ),
+    ),
+  );
+}
+double intToDouble(int num){
+  double doubleNum = num.toDouble();
+  return doubleNum;
+}
+

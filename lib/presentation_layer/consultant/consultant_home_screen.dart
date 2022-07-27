@@ -1,3 +1,5 @@
+
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
@@ -15,6 +17,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:fancy_snackbar/fancy_snackbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,12 +29,15 @@ import '../../moduls/signup/signup.dart';
 class ConsultantHomeScreen extends StatelessWidget {
   const ConsultantHomeScreen({Key? key}) : super(key: key);
 
+  @override
   initalMessage() async {
     var message = await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
     }
   }
+
+
 
   getMessage(context) {
 
@@ -40,13 +46,39 @@ class ConsultantHomeScreen extends StatelessWidget {
     FirebaseMessaging.onMessage.listen((event) {
 
       if(event.data['type'] == "appointment" ){
-        BlocProvider.of<ConsultantCubit>(context).getAppoinments();
-        navigateTo(context, RequestAppoinmentScreen());
+        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        user = BlocProvider.of<ConsultantCubit>(context).user!;
+
+
+        AnimatedSnackBar.rectangle(
+          "${user.name}",
+          "لقد تلقيت طلب إستشارة جديد ",
+          type: AnimatedSnackBarType.info,
+          brightness: Brightness.dark,
+        ).show(
+          context,
+        );
+
+        FancySnackbar.showSnackbar(
+          context,
+          snackBarType: FancySnackBarType.waiting,
+          title: "${user.name}",
+          message: "لقد تلقيت طلب إستشارة جديد , تفقد طلباتك .. ",
+          duration: 4,
+          onCloseEvent: () {},
+        );
       }
       else if(event.data['type'] == "message" ){
         BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
         user = BlocProvider.of<ConsultantCubit>(context).user!;
-        navigateTo(context, ConsultChatDetails( User: user));
+        FancySnackbar.showSnackbar(
+          context,
+          snackBarType: FancySnackBarType.waiting,
+          title: "${user.name}",
+          message: "لقد تلقيت رسالة جديدة ",
+          duration: 4,
+          onCloseEvent: () {},
+        );
       }
     });
 
@@ -63,17 +95,16 @@ class ConsultantHomeScreen extends StatelessWidget {
       }
     });
 
-
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
       listener: (BuildContext context, state) {
-        if  (state is ConsultantInitialState) {
           initalMessage();
           getMessage(context);
-        }
       },
+
       builder: (BuildContext context, state) {
         var consultantModel = ConsultantCubit.get(context).consultantModel;
         return Directionality(

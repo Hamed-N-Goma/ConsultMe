@@ -113,7 +113,7 @@ Widget buildChatfallback(context) {
 }
 
 validation(context) {
-  if (UserLayoutCubit.get(context).chats!.isEmpty) {
+  if (UserLayoutCubit.get(context).chats.isEmpty) {
     return true;
   }
   return false;

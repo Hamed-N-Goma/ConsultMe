@@ -148,6 +148,21 @@ class SendMessageSuccessState extends ConsultantStates {}
 
 class SendMessageErrorState extends ConsultantStates {}
 
+
+class GetMessagePicSuccessState extends ConsultantStates {}
+
+class GetMessagePicErrorState extends ConsultantStates {}
+
+class UploadMessagePicLoadingState extends ConsultantStates {}
+
+class UploadMessagePicSuccessState extends ConsultantStates {}
+
+class UploadMessagePicErrorState extends ConsultantStates {}
+
+class DeleteMessagePicState extends ConsultantStates {}
+
+class DeleteCommentPicState extends ConsultantStates {}
+
 class GetAllChatSuccessState extends ConsultantStates {
   final List<UserModel> chats;
 

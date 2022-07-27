@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -32,6 +33,7 @@ class UserChatDetails extends StatefulWidget {
 class _UserChatDetailsState extends State<UserChatDetails> {
   var messageController = TextEditingController();
   AssetsAudioPlayer player = AssetsAudioPlayer();
+
   @override
   void initState() {
     player.open(
@@ -50,26 +52,20 @@ class _UserChatDetailsState extends State<UserChatDetails> {
 
       BlocProvider.of<CallCubit>(context).getCallDetails(
           callerid: widget.consultant.uid!,
-          receiverID: UserLayoutCubit.get(context).userModel!.uid);
+          receiverID: UserLayoutCubit
+              .get(context)
+              .userModel!
+              .uid);
 
       return BlocListener<CallCubit, CallState>(
         listener: (context, state) async {
-          if (state is ReceiveCallSucsses && iscalling == false) {
-            iscalling = true;
-            token = state.token;
-            if (token.toString().isNotEmpty) {
-              await handleCameraAndMic(Permission.camera);
-              await handleCameraAndMic(Permission.microphone);
-              acceptgOrRejectCall(state.CallType);
-              player.play();
-            }
-          } else if (state is EndCall) {
-            showRating();
-          }
         },
         child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
           builder: (context, state) {
             var cubit = UserLayoutCubit.get(context);
+            dynamic messageImage = UserLayoutCubit
+                .get(context)
+                .messageImage;
 
             return Directionality(
               textDirection: TextDirection.rtl,
@@ -82,100 +78,186 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                       context, widget.consultant.image, widget.consultant.name),
                 ),
                 body: ConditionalBuilder(
-                  condition: UserLayoutCubit.get(context).messages.length >= 0,
-                  builder: (context) => Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ListView.separated(
-                            physics: const BouncingScrollPhysics(),
-                            reverse: true,
-                            itemBuilder: (context, index) {
-                              var message =
-                                  UserLayoutCubit.get(context).messages[index];
+                  condition: UserLayoutCubit
+                      .get(context)
+                      .messages
+                      .length >= 0,
+                  builder: (context) =>
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                reverse: true,
+                                itemBuilder: (context, index) {
+                                  var message =
+                                  UserLayoutCubit
+                                      .get(context)
+                                      .messages[index];
 
-                              if (UserLayoutCubit.get(context).userModel?.uid ==
-                                  message.senderId) {
-                                return buildMessage(message, context);
-                              }
+                                  if (UserLayoutCubit
+                                      .get(context)
+                                      .userModel
+                                      ?.uid ==
+                                      message.senderId) {
+                                    return buildMessage(message, context);
+                                  }
 
-                              return buildMyMessage(message);
-                            },
-                            separatorBuilder: (context, index) =>
+                                  return buildMyMessage(message, context);
+                                },
+                                separatorBuilder: (context, index) =>
                                 const SizedBox(
-                              height: 15.0,
+                                  height: 15.0,
+                                ),
+                                itemCount:
+                                UserLayoutCubit
+                                    .get(context)
+                                    .messages
+                                    .length,
+                              ),
                             ),
-                            itemCount:
-                                UserLayoutCubit.get(context).messages.length,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30.0,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
+                            const SizedBox(
+                              height: 30.0,
                             ),
-                            borderRadius: BorderRadius.circular(
-                              15.0,
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0,
+
+                            if (UserLayoutCubit.get(context).isMessageImageLoading == true)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: LinearProgressIndicator(
+                                  color: mainColors,
+                                ),
+                              ),
+
+                            if (messageImage != null)
+                              Padding(
+                                padding:
+                                const EdgeInsetsDirectional.only(bottom: 8.0),
+                                child: Align(
+                                  alignment: AlignmentDirectional.topStart,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        height: 100,
+                                        child: Image.file(messageImage,
+                                            fit: BoxFit.cover, width: 100),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey[300],
+                                          child: IconButton(
+                                            onPressed: () {
+                                              UserLayoutCubit.get(context)
+                                                  .popMessageImage();
+                                            },
+                                            icon: Icon(Icons.close),
+                                            iconSize: 15,
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  child: TextFormField(
-                                    controller: messageController,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'type your message here ...',
+                                ),
+                              ),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  15.0,
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0,
+                                      ),
+                                      child: TextFormField(
+                                        controller: messageController,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'type your message here ...',
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                height: 60.0,
-                                color: mainColors,
-                                child: MaterialButton(
-                                  onPressed: ()  {
-                                    if (cubit.messages.length > 80) {
-                                   //   showRating();
-                                    }
-                                    UserLayoutCubit.get(context).sendMessage(
-                                      receiverId: widget.consultant.uid!,
-                                      dateTime: DateTime.now().toString(),
-                                      content: messageController.text,
-                                    );
+                                  IconButton(
+                                      onPressed: () {
+                                        UserLayoutCubit.get(context)
+                                            .getMessageImage();
+                                      },
+                                      icon: Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.grey,
+                                      )),
+                                  Container(
+                                    height: 60.0,
+                                    color: mainColors,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        if (messageImage == null) {
+                                          UserLayoutCubit.get(context)
+                                              .sendMessage(
+                                            receiverId: widget.consultant.uid!,
+                                            dateTime: DateTime.now().toString(),
+                                            content: messageController.text,
+                                          );
+                                        }
+                                        else {
+                                          UserLayoutCubit.get(context)
+                                              .uploadMessagePic(
+                                            receiverId: widget.consultant.uid!,
+                                            content: messageController.text ==
+                                                ''
+                                                ? null
+                                                : messageController.text,
+                                            dateTime: DateTime.now().toString(),
+                                          );
+                                        }
 
                                         cubit.sendNotfiy(
-                                        " لديك رسالة جديدة  ",
-                                        " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
-                                             cubit.getTokenById("${widget.consultant.uid}")!,
-                                        "message");
-                                    messageController.clear();
-                                  },
-                                  minWidth: 1.0,
-                                  child: const Icon(
-                                    IconBroken.Send,
-                                    size: 18.0,
-                                    color: Colors.white,
+                                            " لديك رسالة جديدة  ",
+                                            " ${cubit.userModel!
+                                                .name} تلقيت رسالة جديدة من ",
+                                            cubit.getTokenById(
+                                                "${widget.consultant.uid}")!,
+                                            "message");
+                                        messageController.clear();
+                                        UserLayoutCubit.get(context)
+                                            .popMessageImage();
+                                      },
+                                      minWidth: 1.0,
+                                      child: const Icon(
+                                        IconBroken.Send,
+                                        size: 18.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                ),
+
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  fallback: (context) => const Center(
+                      ),
+                  fallback: (context) =>
+                  const Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
@@ -205,7 +287,10 @@ class _UserChatDetailsState extends State<UserChatDetails> {
         ),
         Text(
           widget.consultant.name!,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText1,
         )
       ],
     );
@@ -215,249 +300,165 @@ class _UserChatDetailsState extends State<UserChatDetails> {
     return [];
   }
 
-  Widget buildMessage(MessageModel model, context) => Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Container(
-          decoration: BoxDecoration(
-            color: ThemeCubit.get(context).darkTheme
-                ? mainColors
-                : mainColors.withOpacity(0.4),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomEnd: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
-          ),
-          child: Text(
-            model.content!,
-          ),
-        ),
-      );
+  Widget buildMessage(MessageModel message, context) =>
+      Align(
+        alignment: AlignmentDirectional.topStart,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-  Widget buildMyMessage(MessageModel model) => Align(
-        alignment: AlignmentDirectional.centerEnd,
-        child: Container(
-          decoration: BoxDecoration(
-            color: mainColors.withOpacity(
-              .2,
-            ),
-            borderRadius: const BorderRadiusDirectional.only(
-              bottomStart: Radius.circular(
-                10.0,
-              ),
-              topStart: Radius.circular(
-                10.0,
-              ),
-              topEnd: Radius.circular(
-                10.0,
-              ),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 5.0,
-            horizontal: 10.0,
-          ),
-          child: Text(
-            model.content!,
-          ),
-        ),
-      );
-  double rating = 0;
-  Widget buildRating() {
-    return RatingBar.builder(
-        itemSize: 40,
-        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
-        onRatingUpdate: (rating) {
-          setState(() {
-            this.rating = rating;
-          });
-        },
-        minRating: 1,
-        maxRating: 5);
-  }
-
-  void acceptgOrRejectCall(calltype) {
-    showGeneralDialog(
-        context: context,
-        pageBuilder: (BuildContext context, Animation animation,
-            Animation secondaryAnimation) {
-          return Scaffold(
-            body: Stack(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(widget.consultant.image!),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.8),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              widget.consultant.image!,
-                            ),
-                            maxRadius: 45,
-                          ),
-                          Text(
-                            widget.consultant.name!,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Text(
-                            " ....يتصل بك",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.25,
-                          ),
-                          Align(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 48),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  RawMaterialButton(
-                                    onPressed: () async {
-                                      iscalling = false;
-                                      player.stop();
-                                      player.dispose();
-                                      BlocProvider.of<CallCubit>(context)
-                                          .deleteCallinfo(
-                                        widget.consultant.uid!,
-                                        BlocProvider.of<UserLayoutCubit>(
-                                                context)
-                                            .userModel
-                                            ?.uid,
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Icon(
-                                      Icons.call_end,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ),
-                                    shape: const CircleBorder(),
-                                    elevation: 2.0,
-                                    fillColor: Colors.redAccent,
-                                    padding: const EdgeInsets.all(12),
-                                  ),
-                                  RawMaterialButton(
-                                    onPressed: () async {
-                                      iscalling = false;
-                                      player.stop();
-                                      player.dispose();
-                                      BlocProvider.of<CallCubit>(context)
-                                          .deleteCallinfo(
-                                        widget.consultant.uid!,
-                                        BlocProvider.of<UserLayoutCubit>(
-                                                context)
-                                            .userModel
-                                            ?.uid,
-                                      );
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ReciveCll(
-                                            channelName:
-                                                BlocProvider.of<CallCubit>(
-                                                        context)
-                                                    .channelName,
-                                            role: ClientRole.Broadcaster,
-                                            consultantId: widget.consultant.uid,
-                                            callType: calltype,
-                                            consultantinfo: widget.consultant,
-                                          ),
-                                        ),
-                                      );
-                                      const Icon(
-                                        Icons.call_rounded,
-                                        color: Colors.white,
-                                        size: 40,
-                                      );
-                                    },
-                                    child: calltype == "Audio"
-                                        ? const Icon(
-                                            Icons.call_rounded,
-                                            color: Colors.white,
-                                            size: 40,
-                                          )
-                                        : const Icon(
-                                            FontAwesomeIcons.video,
-                                            color: Colors.white,
-                                            size: 40,
-                                          ),
-                                    shape: const CircleBorder(),
-                                    elevation: 2.0,
-                                    fillColor: Colors.green,
-                                    padding: const EdgeInsets.all(12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
+                message.content != null && message.messageImage != null
+                    ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        width: intToDouble(
+                            message.messageImage!['width']) <
+                            150
+                            ? intToDouble(
+                            message.messageImage!['width'])
+                            : 150,
+
+                        decoration: BoxDecoration(
+
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                            )),
+                        child: imagePreview(
+                            message.messageImage!['image'])),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 8),
+                        decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            borderRadius: const BorderRadiusDirectional.only(
+                              topStart: Radius.circular(10.0),
+                              bottomEnd: Radius.circular(10.0),
+                              topEnd: Radius.circular(10.0),
+                            )),
+                        child: Text('${message.content}',
+                        )),
+                  ],
+                )
+                    : message.messageImage != null
+                    ? Container(
+                    padding: const EdgeInsets.all(8),
+                    width: intToDouble(
+                        message.messageImage!['width']) <
+                        230
+                        ? intToDouble(message.messageImage!['width'])
+                        : 230,
+                    height: intToDouble(
+                        message.messageImage!['height']) <
+                        250
+                        ? intToDouble(message.messageImage!['height'])
+                        : 250,
+
+                    child:
+                    imagePreview(message.messageImage!['image']))
+                    : message.content != null
+                    ? Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: const BorderRadiusDirectional.only(
+                          topStart: Radius.circular(10.0),
+                          bottomEnd: Radius.circular(10.0),
+                          topEnd: Radius.circular(10.0),
+                        )),
+                    child: Text('${message.content}',
+                    ))
+                    : const SizedBox(
+                  height: 0,
+                  width: 0,
+                )
               ],
             ),
-          );
-        });
-  }
-
-  void showRating() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "قيم المستشار",
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              BlocProvider.of<UserLayoutCubit>(context).sendRating(
-                rating: rating,
-                sender:
-                    BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
-                recever: widget.consultant.uid!,
-              );
-              Navigator.pop(context);
-            },
-            child: Text(
-              "تأكيد",
-              style: Theme.of(context).textTheme.bodyText1,
+            Text(
+              '${message.dateTime}',
+              style: TextStyle(color: Colors.grey, fontSize: 10),
             ),
-          ),
-        ],
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildRating(),
           ],
         ),
-      ),
-    );
-  }
+      );
+
+  Widget buildMyMessage(MessageModel message, context) =>
+      Align(
+        alignment: AlignmentDirectional.topEnd,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                message.content != null && message.messageImage != null
+                    ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                        width: intToDouble(
+                            message.messageImage!['width']) <
+                            230
+                            ? intToDouble(
+                            message.messageImage!['width'])
+                            : 230,
+
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: imagePreview(
+                                message.messageImage!['image']))),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                            color:Colors.grey[500],
+                            borderRadius: BorderRadiusDirectional.only(
+                              bottomStart: Radius.circular(10.0),
+                              topStart: Radius.circular(10.0),
+                              topEnd: Radius.circular(10.0),
+                            )),
+
+                        child: Text('${message.content}',
+                            style: const TextStyle(color: Colors.white))),
+                  ],
+                )
+                    : message.messageImage != null
+                    ? Container(
+                    padding: const EdgeInsets.all(8),
+                    width: 150,
+
+                    child:
+                    imagePreview(message.messageImage!['image']))
+                    : message.content != null
+                    ? Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[500],
+                        borderRadius: BorderRadiusDirectional.only(
+                          bottomStart: Radius.circular(10.0),
+                          topStart: Radius.circular(10.0),
+                          topEnd: Radius.circular(10.0),
+                        )),
+                    child: Text('${message.content}',
+                        style: const TextStyle(color: Colors.white)))
+                    : const SizedBox(
+                  height: 0,
+                  width: 0,
+                )
+              ],
+            ),
+
+            Text(
+              '${message.dateTime} ',
+              style: TextStyle(color: Colors.grey, fontSize: 10),
+            ),
+          ],
+        ),
+      );
+
 }
