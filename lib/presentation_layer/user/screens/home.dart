@@ -88,7 +88,7 @@ class Home extends StatelessWidget {
             ),
             buildCategoryList(),
             const SizedBox(
-              height: 15,
+              height: 25,
             ),
             buildRowMostImportantText(context),
             const SizedBox(
@@ -122,7 +122,7 @@ class Home extends StatelessWidget {
       children: [
         Expanded(
           child: SizedBox(
-            height: 120,
+            height: 130,
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

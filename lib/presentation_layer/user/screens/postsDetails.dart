@@ -1,20 +1,25 @@
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
 class PostsDetails extends StatelessWidget {
   final PostModel post;
+
   PostsDetails({Key? key, required this.post}) : super(key: key);
   var height, width, size;
   @override
   Widget build(BuildContext context) {
+
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -85,16 +90,6 @@ class PostsDetails extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        CircleAvatar(
-                                          radius:35 ,
-                                          backgroundColor:
-                                          ThemeCubit.get(context).darkTheme
-                                              ? mainTextColor
-                                              : mainColors,
-                                          backgroundImage: NetworkImage(
-                                            '${post.image}',
-                                          ),
-                                        ),
                                      Row(
                                          children: [
 

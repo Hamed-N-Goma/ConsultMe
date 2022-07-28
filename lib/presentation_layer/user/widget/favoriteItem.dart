@@ -37,7 +37,7 @@ class FavoriteItem extends StatelessWidget {
               onTap: () {},
               child: Container(
                 padding: EdgeInsets.all(16),
-                height: 125,
+                height: 144,
                 decoration: BoxDecoration(
                     color: ThemeCubit.get(context).darkTheme
                         ? mainColors

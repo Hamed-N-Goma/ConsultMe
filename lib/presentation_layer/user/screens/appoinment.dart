@@ -1,9 +1,9 @@
 import 'dart:ui' as ui;
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/presentation_layer/consultant/success_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
+import 'package:consultme/presentation_layer/user/screens/success_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,13 +26,21 @@ class appoinment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocListener<UserLayoutCubit, UserLayoutState>(
+    return BlocConsumer<UserLayoutCubit, UserLayoutState>(
         listener: (context, state) {
-
-
-        });
-
-    return BlocBuilder<UserLayoutCubit, UserLayoutState>(
+          if (state is CreateAppoinmentLoadingState){
+            showDialog<void>(
+                context: context,
+                builder: (context)=> waitingDialog(context: context)
+            );
+          }
+          else if (state is CreateAppoinmentSuccessState ){
+            descController.clear();
+            reassonController.clear();
+            Navigator.pop(context);
+            navigateTo(context, const AddingSuccessScreen());
+          }
+        },
         builder: (context, state) {
           var cubit = UserLayoutCubit.get(context);
 
@@ -94,7 +102,18 @@ class appoinment extends StatelessWidget {
                                         cm.speachalist!,
                                         style: Theme.of(context).textTheme.headline6,
                                       ),
-                                      const SizedBox(height: 14.0,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          for (var i = 0; i < cm.rating!.toInt(); i++)
+                                            const Icon(
+                                              Icons.star_rounded,
+                                              color: Colors.indigoAccent,
+                                              size: 30,
+                                            ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20.0,),
                                       Container(
                                         width: double.infinity,
                                         height: 60.0,
@@ -297,5 +316,6 @@ class appoinment extends StatelessWidget {
               )
           );
         });
+
   }
 }

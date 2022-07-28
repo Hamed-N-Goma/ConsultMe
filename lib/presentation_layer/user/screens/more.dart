@@ -341,15 +341,15 @@ class More extends StatelessWidget {
                                     children: [
                                       SvgPicture.asset(
                                         'assets/images/warning.svg',
-                                        width: 25.0,
-                                        height: 25.0,
+                                        width: 20.0,
+                                        height: 20.0,
                                         alignment: Alignment.center,
                                       ),
                                       const SizedBox(
                                         width: 10.0,
                                       ),
                                       Text(
-                                        'تأكيد الخروج من الحساب ؟',
+                                        ' الخروج من الحساب ؟',
                                         textDirection: TextDirection.rtl,
                                         style:
                                             Theme.of(context).textTheme.subtitle1,

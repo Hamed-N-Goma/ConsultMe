@@ -30,11 +30,11 @@ class ConsultChatitem extends StatelessWidget {
           left: 16,
           right: 16,
           top: 5,
+          bottom: 5,
         ),
         child: Container(
           padding: const EdgeInsets.all(16),
-          height: height * 0.14,
-          width: width,
+          height: 120,
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(20),

@@ -39,7 +39,7 @@ class Category extends StatelessWidget {
       Text(
         categotyItem.name!,
         style: Theme.of(context).textTheme.bodyText1,
-      )
+      ),
     ]);
   }
 

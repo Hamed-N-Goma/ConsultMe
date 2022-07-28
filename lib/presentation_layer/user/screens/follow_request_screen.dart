@@ -112,7 +112,7 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 5.0,
                                 ),
                                 Text(
-                                  'تمت الموافقه علي طلبكم',
+                                  'تمت الموافقه ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -136,7 +136,7 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 5.0,
                                 ),
                                 Text(
-                                  'جاري الرد علي طلبكم',
+                                  'قيد الإنتظار',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -160,7 +160,7 @@ class FollowRequestsScreen extends StatelessWidget {
                                   width: 5.0,
                                 ),
                                 Text(
-                                  'تم رفض طلبكم',
+                                  'تم الرفض ',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -253,7 +253,7 @@ Widget buildGuestItem(context, AppointmentModel model) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: buildEnquiry(
         context,
-        height: 115.0,
+        height: 120.0,
         state: model.MeetTime != null
             ? model.accept == true
                 ? StatusStates.ACCEPT

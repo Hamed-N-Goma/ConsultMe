@@ -71,7 +71,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  backgroundColor: mainColors.withOpacity(0.5),
+                  backgroundColor: mainColors,
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
                   actions: actionsAppBar(
@@ -287,10 +287,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
         ),
         Text(
           widget.consultant.name!,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodyText1,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
         )
       ],
     );
@@ -336,9 +333,10 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                         decoration: BoxDecoration(
                             color: Colors.blueAccent,
                             borderRadius: const BorderRadiusDirectional.only(
-                              topStart: Radius.circular(10.0),
-                              bottomEnd: Radius.circular(10.0),
-                              topEnd: Radius.circular(10.0),
+                              bottomStart: Radius.circular(5.0),
+                              topStart: Radius.circular(20.0),
+                              topEnd: Radius.circular(20.0),
+                              bottomEnd: Radius.circular(20.0),
                             )),
                         child: Text('${message.content}',
                         )),
@@ -346,7 +344,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                 )
                     : message.messageImage != null
                     ? Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     width: intToDouble(
                         message.messageImage!['width']) <
                         230
@@ -362,13 +360,14 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                     imagePreview(message.messageImage!['image']))
                     : message.content != null
                     ? Container(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.blueAccent,
                         borderRadius: const BorderRadiusDirectional.only(
-                          topStart: Radius.circular(10.0),
-                          bottomEnd: Radius.circular(10.0),
-                          topEnd: Radius.circular(10.0),
+                          bottomStart: Radius.circular(5.0),
+                          topStart: Radius.circular(20.0),
+                          topEnd: Radius.circular(20.0),
+                          bottomEnd: Radius.circular(20.0),
                         )),
                     child: Text('${message.content}',
                     ))
@@ -418,9 +417,10 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                         decoration: BoxDecoration(
                             color:Colors.grey[500],
                             borderRadius: BorderRadiusDirectional.only(
-                              bottomStart: Radius.circular(10.0),
-                              topStart: Radius.circular(10.0),
-                              topEnd: Radius.circular(10.0),
+                              bottomStart: Radius.circular(20.0),
+                              topStart: Radius.circular(20.0),
+                              topEnd: Radius.circular(20.0),
+                              bottomEnd: Radius.circular(5.0),
                             )),
 
                         child: Text('${message.content}',
@@ -429,20 +429,21 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                 )
                     : message.messageImage != null
                     ? Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     width: 150,
 
                     child:
                     imagePreview(message.messageImage!['image']))
                     : message.content != null
                     ? Container(
-                    padding: const EdgeInsets.all(13),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.grey[500],
                         borderRadius: BorderRadiusDirectional.only(
-                          bottomStart: Radius.circular(10.0),
-                          topStart: Radius.circular(10.0),
-                          topEnd: Radius.circular(10.0),
+                          bottomStart: Radius.circular(20.0),
+                          topStart: Radius.circular(20.0),
+                          topEnd: Radius.circular(20.0),
+                          bottomEnd: Radius.circular(5.0),
                         )),
                     child: Text('${message.content}',
                         style: const TextStyle(color: Colors.white)))

@@ -226,7 +226,7 @@ class EditProfileScreen extends StatelessWidget {
       alignment: AlignmentDirectional.bottomStart,
       children: [
         CircleAvatar(
-          radius: 54,
+          radius: 58,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           child: CircleAvatar(
             radius: 50.0,

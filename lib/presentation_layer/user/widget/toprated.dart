@@ -30,6 +30,7 @@ class Toprated extends StatelessWidget {
         left: 16,
         right: 16,
         top: 5,
+        bottom: 5,
       ),
       child: InkWell(
         onTap: () {
@@ -41,7 +42,7 @@ class Toprated extends StatelessWidget {
         },
         child: Container(
           padding: EdgeInsets.all(16),
-          height: 125,
+          height: 144,
           decoration: BoxDecoration(
               color: ThemeCubit.get(context).darkTheme
                   ? mainColors
@@ -60,7 +61,7 @@ class Toprated extends StatelessWidget {
               const SizedBox(width: 16),
               consultantDetales(context, consultant),
               const SizedBox(width: 16),
-              Expanded(child: favoriteButton())
+              Expanded(child: favoriteButton()),
             ],
           ),
         ),
@@ -173,9 +174,12 @@ class Toprated extends StatelessWidget {
             height: 10,
           ),
           Text(
-            consultant.speachalist as String,
+            '${consultant.speachalist}',
             style: Theme.of(context).textTheme.bodyText2,
-          )
+          ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       );
     });

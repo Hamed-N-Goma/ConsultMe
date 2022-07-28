@@ -73,7 +73,7 @@ class MostImportnatNews extends StatelessWidget {
                               fontWeight: FontWeight.bold
                           ),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                          maxLines: 2,
                         )
                       ],
                     ),

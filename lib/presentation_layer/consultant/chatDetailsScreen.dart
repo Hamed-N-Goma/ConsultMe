@@ -47,7 +47,7 @@ class ConsultChatDetails extends StatelessWidget {
               textDirection: TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
-                  backgroundColor: mainColors.withOpacity(0.5),
+                  backgroundColor: mainColors,
                   titleSpacing: 0,
                   title: buildAppbarTitle(context),
                   actions: actionsAppBar(context),
@@ -231,15 +231,15 @@ class ConsultChatDetails extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          radius: 25.0,
+          radius: 20.0,
           backgroundImage: NetworkImage(User.image!),
         ),
         const SizedBox(
           width: 15.0,
         ),
         Text(
-          User.name,
-          style: Theme.of(context).textTheme.bodyText1,
+          '${User.name}',
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
         )
       ],
     );
@@ -352,9 +352,11 @@ class ConsultChatDetails extends StatelessWidget {
                         decoration: BoxDecoration(
                             color:Colors.blueAccent,
                             borderRadius: const BorderRadiusDirectional.only(
-                              topStart: Radius.circular(10.0),
-                              bottomEnd: Radius.circular(10.0),
-                              topEnd: Radius.circular(10.0),
+                              bottomStart: Radius.circular(5.0),
+                              topStart: Radius.circular(20.0),
+                              topEnd: Radius.circular(20.0),
+                              bottomEnd: Radius.circular(20.0),
+
                             )),
                         child: Text('${message.content}',
                         )),
@@ -362,7 +364,7 @@ class ConsultChatDetails extends StatelessWidget {
                 )
                     : message.messageImage != null
                     ? Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     width: intToDouble(
                         message.messageImage!['width']) <
                         230
@@ -378,13 +380,14 @@ class ConsultChatDetails extends StatelessWidget {
                     imagePreview(message.messageImage!['image']))
                     : message.content != null
                     ? Container(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.blueAccent,
                         borderRadius: const BorderRadiusDirectional.only(
-                          topStart: Radius.circular(10.0),
-                          bottomEnd: Radius.circular(10.0),
-                          topEnd: Radius.circular(10.0),
+                          bottomStart: Radius.circular(5.0),
+                          topStart: Radius.circular(20.0),
+                          topEnd: Radius.circular(20.0),
+                          bottomEnd: Radius.circular(20.0),
                         )),
                     child: Text('${message.content}',
                     ))
@@ -434,9 +437,10 @@ class ConsultChatDetails extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.grey[500],
                             borderRadius: BorderRadiusDirectional.only(
-                              bottomStart: Radius.circular(10.0),
-                              topStart: Radius.circular(10.0),
-                              topEnd: Radius.circular(10.0),
+                              bottomStart: Radius.circular(5.0),
+                              topStart: Radius.circular(20.0),
+                              topEnd: Radius.circular(20.0),
+                              bottomEnd: Radius.circular(20.0),
                             )),
 
                         child: Text('${message.content}',
@@ -445,20 +449,21 @@ class ConsultChatDetails extends StatelessWidget {
                 )
                     : message.messageImage != null
                     ? Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     width: 150,
 
                     child:
                     imagePreview(message.messageImage!['image']))
                     : message.content != null
                     ? Container(
-                    padding: const EdgeInsets.all(13),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color:  Colors.grey[500],
                         borderRadius: BorderRadiusDirectional.only(
-                          bottomStart: Radius.circular(10.0),
-                          topStart: Radius.circular(10.0),
-                          topEnd: Radius.circular(10.0),
+                          bottomStart: Radius.circular(20.0),
+                          topStart: Radius.circular(20.0),
+                          topEnd: Radius.circular(20.0),
+                          bottomEnd: Radius.circular(5.0),
                         )),
                     child: Text('${message.content}',
                         style: const TextStyle(color: Colors.white)))

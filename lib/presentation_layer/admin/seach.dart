@@ -200,7 +200,7 @@ Widget buildUserCard(context, {required UserModel model}) => Column(
       children: [
         Container(
           width: double.infinity,
-          height: 120,
+          height: 125,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               8.0,

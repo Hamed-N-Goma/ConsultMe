@@ -41,7 +41,10 @@ class EditProfile extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  buildEditableProfile(context, usermodel, imagePicker)
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: buildEditableProfile(context, usermodel, imagePicker),
+                  )
                 ],
               ),
             ),
@@ -134,6 +137,7 @@ class EditProfile extends StatelessWidget {
             height: 30,
           ),
 
+
           defaultButton(
             function: () {
               UserLayoutCubit.get(context).upDateUser(
@@ -165,7 +169,7 @@ class EditProfile extends StatelessWidget {
           radius: 54,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           child: CircleAvatar(
-            radius: 50.0,
+            radius: 100.0,
             backgroundImage: imagePicker == null
                 ? NetworkImage(image)
                 : FileImage(imagepicker) as ImageProvider,

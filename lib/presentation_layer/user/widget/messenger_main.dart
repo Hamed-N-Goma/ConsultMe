@@ -28,11 +28,11 @@ class ChatitemConsult extends StatelessWidget {
           left: 16,
           right: 16,
           top: 5,
+          bottom: 5,
         ),
         child: Container(
+          height: 120,
           padding: const EdgeInsets.all(16),
-          height: height * 0.14,
-          width: width,
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(20),
@@ -78,9 +78,6 @@ class ChatitemConsult extends StatelessWidget {
         Text(
           '${conslutant.speachalist!}',
           style: Theme.of(context).textTheme.bodyText2,
-        ),
-        const SizedBox(
-          height: 8,
         ),
       ],
     );
