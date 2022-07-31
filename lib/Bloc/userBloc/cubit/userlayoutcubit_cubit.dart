@@ -54,20 +54,21 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   var picker = ImagePicker();
 
   Future getProfileImage() async {
-    final PickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (PickedFile != null) {
-      profileImage = File(PickedFile.path);
-      print('pickedffile');
+    final PickedFile = await picker.pickImage(source: ImageSource.gallery)
+        .then((value) {
+      profileImage = File(value!.path);
+      uploadProfile();
       emit(PickedProfileImageSucsses());
-    } else {
-      print('no image selected');
+    });
+    print('no image selected');
       emit(ErrorWithPickedProfileImage());
     }
-  }
+
 
   String? profileImageUrl;
 
   Future<void> uploadProfile() async {
+    profileImageUrl = "";
     await firebase_storage.FirebaseStorage.instance
         .ref()
         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")

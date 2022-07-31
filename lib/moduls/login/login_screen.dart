@@ -162,6 +162,8 @@ class LoginScreen extends StatelessWidget {
                                   height: 33.0,
                                 ),
                                 TextFormField(
+                                  key: Key("email-field"),
+
                                   controller: emailController,
                                   style: Theme.of(context).textTheme.bodyText1,
                                   validator: (String? value) {
@@ -191,6 +193,8 @@ class LoginScreen extends StatelessWidget {
                                   height: 12.0,
                                 ),
                                 TextFormField(
+                                  key: Key("password-field"),
+
                                   controller: passwordController,
                                   keyboardType: TextInputType.visiblePassword,
                                   obscureText: cubit.isPassword,

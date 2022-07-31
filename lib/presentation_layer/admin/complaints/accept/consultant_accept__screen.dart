@@ -21,15 +21,6 @@ class AcceptedConsultantsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
-        if(state is PutStudentLoadingStates || state is DeleteStudentLoadingStates){
-          showDialog<void>(
-              context: context,
-              builder: (context)=> waitingDialog(context: context)
-          );
-        }else if(state is DeleteStudentSuccess){
-          Navigator.pop(context);
-          showToast(message: 'تم الحذف بنجاح', state: ToastStates.SUCCESS);
-        }
       },
       builder: (context, state) {
         var cubit = AdminCubit.get(context);

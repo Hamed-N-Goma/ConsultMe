@@ -28,15 +28,7 @@ class RequestAppoinmentDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
       listener: (context, state) {
-        if(state is PutReplayHostingLoadingStates){
-          showDialog<void>(
-              context: context,
-              builder: (context)=> waitingDialog(context: context)
-          );
-        }else if(state is GetAllOrdersSuccessStates){
-          Navigator.pop(context);
-          showToast(message: 'تم الرد بنجاح', state: ToastStates.SUCCESS);
-        }
+
       },
       builder: (context, state) {
 

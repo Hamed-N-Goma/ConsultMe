@@ -200,19 +200,21 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
+
   File? profileImage;
+  var pickerr = ImagePicker();
 
   Future getProfileImage() async {
-    final PickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (PickedFile != null) {
-      profileImage = File(PickedFile.path);
-      print('pickedffile');
+    final PickedFile = await pickerr.pickImage(source: ImageSource.gallery)
+        .then((value) {
+      profileImage = File(value!.path);
+      uploadProfile();
       emit(PickedProfileImageSucsses());
-    } else {
-      print('no image selected');
-      emit(ErrorWithPickedProfileImage());
-    }
+    });
+    print('no image selected');
+    emit(ErrorWithPickedProfileImage());
   }
+
 
   String? profileImageUrl;
 
@@ -222,18 +224,18 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
         .putFile(profileImage!)
         .then((value) => {
-              value.ref
-                  .getDownloadURL()
-                  .then(
-                    (value) => {
-                      profileImageUrl = value.toString(),
-                      print(profileImageUrl)
-                    },
-                  )
-                  .catchError((error) {
-                emit(ErrorWithUploadProfileimagge());
-              })
-            })
+      value.ref
+          .getDownloadURL()
+          .then(
+            (value) => {
+          profileImageUrl = value.toString(),
+          print(profileImageUrl)
+        },
+      )
+          .catchError((error) {
+        emit(ErrorWithUploadProfileimagge());
+      })
+    })
         .catchError((error) {
       emit(ErrorWithUploadProfileimagge());
 
@@ -241,57 +243,77 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
+
   void upDateConsultant(
       {required name, required phone, required email, required depatment, required bio}) {
     emit(LoadingUpdateConsultantInfo());
     if (profileImageUrl != null) {
+      consultantModel = ConsultantModel(
+        email: email,
+        name: name,
+        phone: phone,
+        department: depatment ,
+        bio : bio ,
+        rating: consultantModel!.rating,
+        speachalist : consultantModel!.speachalist,
+        imageOfCertificate : consultantModel!.imageOfCertificate,
+        yearsofExperience: consultantModel!.yearsofExperience ,
+        userType: consultantModel!.userType,
+        uid: consultantModel!.uid,
+        image: profileImageUrl,
+        accept: consultantModel!.accept,
+
+      );
       FirebaseFirestore.instance
           .collection('users')
           .doc(consultantModel!.uid)
-          .update({
-            'email': email,
-            'name': name,
-            'phone': phone,
-            'department': depatment,
-            'bio' : bio
-          })
+          .update(consultantModel!.toMap())
           .then((value) => {
-                emit(UpdateConsultantInfoScusses()),
-                getConsultantData(),
-                showToast(
-                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-              })
-          .catchError((onError) {
-            emit(ErrorWithUpdateConsultant());
-            showToast(
-                message: 'حدث خطأ يرجى إعادة المحاولة',
-                state: ToastStates.ERROR);
-          });
-    } else {
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(consultantModel!.uid)
-          .update({
-            'email': email,
-            'name': name,
-            'phone': phone,
-            'department': depatment,
-            'bio' : bio
+        emit(UpdateConsultantInfoScusses()),
+        getConsultantData(),
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
       })
-          .then((value) => {
-                emit(UpdateConsultantInfoScusses()),
-                getConsultantData(),
-                showToast(
-                    message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
-              })
           .catchError((onError) {
-            emit(ErrorWithUpdateConsultant());
-            showToast(
-                message: 'حدث خطأ يرجى إعادة المحاولة',
-                state: ToastStates.ERROR);
-          });
+        emit(ErrorWithUpdateConsultant());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
+    } else {
+      consultantModel = ConsultantModel(
+        email: email,
+        name: name,
+        phone: phone,
+        department: depatment ,
+        bio : bio ,
+        rating: consultantModel!.rating,
+        speachalist : consultantModel!.speachalist,
+        imageOfCertificate : consultantModel!.imageOfCertificate,
+        yearsofExperience: consultantModel!.yearsofExperience ,
+        userType: consultantModel!.userType,
+        uid: consultantModel!.uid,
+        image: consultantModel!.image,
+        accept: consultantModel!.accept,
+
+      );
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(consultantModel!.uid)
+          .update(consultantModel!.toMap())
+          .then((value) => {
+        emit(UpdateConsultantInfoScusses()),
+        getConsultantData(),
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
+          .catchError((onError) {
+        emit(ErrorWithUpdateConsultant());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
     }
   }
+
 
   List<AppointmentModel>? appointments = [];
 
