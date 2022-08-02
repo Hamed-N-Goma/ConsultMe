@@ -18,6 +18,7 @@ import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import '../../components/components.dart';
 import '../../presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import '../../shard/utils/validators.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -166,13 +167,7 @@ class LoginScreen extends StatelessWidget {
 
                                   controller: emailController,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'الإيميل فارغ';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: emailValidator,
                                   decoration: const InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(10.0),
@@ -199,13 +194,6 @@ class LoginScreen extends StatelessWidget {
                                   keyboardType: TextInputType.visiblePassword,
                                   obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'كلمة المرور فارغة !';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: const EdgeInsets.all(10.0),

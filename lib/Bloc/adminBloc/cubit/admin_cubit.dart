@@ -322,21 +322,110 @@ class AdminCubit extends Cubit<AdminStates> {
   Future<void> getcategImage() async {
     final pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
-    );
-
-    if (pickedFile != null) {
-      categImage = File(pickedFile.path);
+    )
+    .then((value) {
+      categImage = File(value!.path);
       emit(categImagePickedSuccessState());
-    } else {
+    });
       print('No image selected.');
       emit(categImagePickedErrorState());
-    }
+
   }
 
   Future<void> removecategImage() async {
     categImage = null;
     emit(ImageRemoveSuccessState());
 
+  }
+
+
+  File? EditcategImage;
+
+  Future<void> getEditcategImage() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    )
+        .then((value) {
+      EditcategImage = File(value!.path);
+      emit(EditcategImagePickedSuccessState());
+      uploadEditcategImage();
+    });
+    print('No image selected.');
+    emit(EditcategImagePickedErrorState());
+
+  }
+
+
+
+  String? categoryImageUrl;
+
+  Future<void> uploadEditcategImage() async {
+
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Category/${Uri.file(EditcategImage!.path).pathSegments.last}')
+        .putFile(EditcategImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        categoryImageUrl = value.toString();
+        print(categoryImageUrl);
+      }).catchError((error) {
+        emit(EditCategoryErrorState());
+      });
+    }).catchError((error) {
+      emit(EditCategoryErrorState());
+    });
+  }
+
+
+  void updateCategory(
+      {required name , required CategoryModel categoryModel}) {
+    emit(EditCategoryLoadingState());
+    if (categoryImageUrl != null) {
+      categoryModel = CategoryModel(
+        name: name,
+        id: categoryModel.id,
+        image: categoryImageUrl,
+
+      );
+      FirebaseFirestore.instance
+          .collection('Category')
+          .doc(categoryModel.id)
+          .update(categoryModel.toMap())
+          .then((value) => {
+        emit(EditCategorySuccessState()),
+        getCategorys(),
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
+          .catchError((onError) {
+        emit(EditCategoryErrorState());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
+    } else {
+      categoryModel = CategoryModel(
+        name: name,
+        id: categoryModel.id,
+        image: categoryModel.image,
+      );
+      FirebaseFirestore.instance
+          .collection('Category')
+          .doc(categoryModel.id)
+          .update(categoryModel.toMap())
+          .then((value) => {
+        emit(EditCategorySuccessState()),
+        getCategorys(),
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+      })
+          .catchError((onError) {
+        emit(EditCategoryErrorState());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
+    }
   }
 
 
@@ -366,7 +455,6 @@ class AdminCubit extends Cubit<AdminStates> {
     });
   }
 
-  CategoryModel? categoryModel;
 
   void AddCategory({
     required String name,
@@ -377,15 +465,22 @@ class AdminCubit extends Cubit<AdminStates> {
     CategoryModel model = CategoryModel(
       image: categImage,
       name: name,
+      id: null,
     );
 
     FirebaseFirestore.instance
         .collection('Category')
         .add(model.toMap())
         .then((value) {
-      getCategorys();
-      emit(CreateCategorySuccessState());
-      showToast(message: 'تم إضافة القسم بنجاح', state: ToastStates.SUCCESS);
+      FirebaseFirestore.instance
+          .collection('Category')
+          .doc(value.id)
+          .update({'id': value.id})
+          .then((value) => {
+      getCategorys(),
+      emit(CreateCategorySuccessState()),
+      showToast(message: 'تم إضافة القسم بنجاح', state: ToastStates.SUCCESS),
+    });
     }).catchError((error) {
       emit(CreateCategoryErrorState(error.toString()));
     });

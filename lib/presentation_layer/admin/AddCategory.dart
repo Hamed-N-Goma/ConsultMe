@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'EditCategory.dart';
+
 
 class AddCategoy extends StatelessWidget {
   AddCategoy({Key? key}) : super(key: key);
@@ -269,7 +271,7 @@ Widget buildCategoryItem({
                           width: 10.0,
                         ),
                         Text(
-                          ' حذف قسم ${model.name} ؟',
+                          'سيتم حذف جميع مستشارين ${model.name}',
                           textDirection: TextDirection.rtl,
                           style:
                           Theme
@@ -333,59 +335,64 @@ Widget buildCategoryItem({
       ),
     ),
     key: UniqueKey(),
-    child: Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: mainColors.withOpacity(0.2), width: 3),
-        borderRadius: BorderRadius.circular(
-          20.0,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100.0,
-            height: 90.0,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-                child: CachedNetworkImage(
-                  imageUrl: '${model.image}',
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>  Container(
-                    alignment: Alignment.center,
-                    height: 80.0,
-                    child: Icon(Icons.error,
-                      color: ThemeCubit.get(context).darkTheme
-                          ? mainTextColor
-                          : mainColors,),
-                  ),
-                  fit:BoxFit.cover,
-              ),
-            ),
+    child: InkWell(
+      onTap: () {
+        navigateTo(context, EditCategory(categoryModel: model,));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: mainColors.withOpacity(0.2), width: 3),
+          borderRadius: BorderRadius.circular(
+            20.0,
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: SizedBox(
-                height: 80.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${model.name}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 100.0,
+              height: 90.0,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                  child: CachedNetworkImage(
+                    imageUrl: '${model.image}',
+                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>  Container(
+                      alignment: Alignment.center,
+                      height: 80.0,
+                      child: Icon(Icons.error,
+                        color: ThemeCubit.get(context).darkTheme
+                            ? mainTextColor
+                            : mainColors,),
                     ),
-                  ],
+                    fit:BoxFit.cover,
                 ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SizedBox(
+                  height: 80.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${model.name}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

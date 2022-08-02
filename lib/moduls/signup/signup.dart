@@ -1,6 +1,7 @@
 import 'package:consultme/moduls/login/login_screen.dart';
 import 'package:consultme/moduls/signup/cubit/cubit.dart';
 import 'package:consultme/moduls/signup/cubit/states.dart';
+import 'package:consultme/shard/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,16 +97,8 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   controller: nameController,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  // obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'الاسم لم تكمله !';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: nameValidator,
                                   decoration: const InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(10.0),
@@ -128,13 +121,7 @@ class SignUpScreen extends StatelessWidget {
                                 TextFormField(
                                   controller: emailController,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'البريد الإلكتروني فارغ !';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: emailValidator,
                                   decoration: const InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(10.0),
@@ -157,22 +144,15 @@ class SignUpScreen extends StatelessWidget {
                                 TextFormField(
                                   controller: passwordController,
                                   keyboardType: TextInputType.visiblePassword,
-                                  // obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'كلمة المرور فارغة !';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: passwordValidator,
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: const EdgeInsets.all(10.0),
                                     suffixIcon: IconButton(
                                       color: Colors.grey,
                                       onPressed: () {
-                                        //  cubit.changePasswordVisibility();
+                                          cubit.changePasswordVisibility();
                                       },
                                       icon: Icon(
                                         cubit.suffix,
@@ -198,13 +178,7 @@ class SignUpScreen extends StatelessWidget {
                                   controller: phoneController,
                                   // obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'رقم الهاتف فارغة !';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  validator: phoneNumberValidator,
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: const EdgeInsets.all(10.0),
@@ -313,7 +287,6 @@ class SignUpScreen extends StatelessWidget {
                                         child: TextFormField(
                                           controller:
                                               consultSeptalistController,
-                                          // enabled: false,
                                           readOnly: true,
                                           onTap: () {
                                             showDialog<void>(
@@ -392,13 +365,7 @@ class SignUpScreen extends StatelessWidget {
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1,
-                                        validator: (String? value) {
-                                          if (value!.isEmpty) {
-                                            return 'المجال لم تكمله !';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
+                                        validator: notEmptyValidator,
                                         decoration: const InputDecoration(
                                           isDense: true,
                                           contentPadding: EdgeInsets.all(10.0),

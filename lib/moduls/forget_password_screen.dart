@@ -1,5 +1,6 @@
 
 import 'package:consultme/moduls/login/cubit/cubit.dart';
+import 'package:consultme/shard/utils/validators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,7 @@ class ForgetScreen extends StatelessWidget {
                                   controller: emailController,
                                   textInputAction: TextInputAction.next,
                                   style: Theme.of(context).textTheme.bodyText1,
+                                  validator: emailValidator,
                                   decoration: const InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(10.0),
@@ -97,7 +99,7 @@ class ForgetScreen extends StatelessWidget {
                                 },
                                 controller: cubit.resetButton,
                                 child: const Text(
-                                  'إرسال الى البريد',
+                                  'إرسال',
                                   style: TextStyle(
                                     fontSize: 20.0,
                                   ),

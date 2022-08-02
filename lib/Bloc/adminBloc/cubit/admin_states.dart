@@ -95,6 +95,14 @@ class DeleteAllConsultByCategorySuccessState extends AdminStates{}
 class DeleteAllConsultByCategoryErrorState extends AdminStates{}
 
 
+class EditcategImagePickedSuccessState extends AdminStates {}
+class EditcategImagePickedErrorState extends AdminStates {}
+
+class EditCategoryLoadingState extends AdminStates{}
+class EditCategorySuccessState extends AdminStates {}
+class EditCategoryErrorState extends AdminStates {}
+
+
 //post attendance
 class PostAttendanceLoadingStates extends AdminStates {}
 class PostAttendanceSuccessStates extends AdminStates {}
