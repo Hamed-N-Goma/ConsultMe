@@ -113,12 +113,12 @@ class _CallState extends State<Call> {
                                     MainAxisAlignment.spaceAround,
                                     children: [
                                       RawMaterialButton(
-                                        onPressed: () async {
+                                        onPressed: ()  {
                                           Navigator.pop(context);
                                           iscalling = false;
                                           player.stop();
                                           player.dispose();
-                                          BlocProvider.of<CallCubit>(context)
+                                           BlocProvider.of<CallCubit>(context)
                                               .deleteCallinfo(
                                             widget.consultant.uid!,
                                             BlocProvider.of<UserLayoutCubit>(
@@ -138,11 +138,11 @@ class _CallState extends State<Call> {
                                         padding: const EdgeInsets.all(12),
                                       ),
                                       RawMaterialButton(
-                                        onPressed: () async {
+                                        onPressed: ()  {
                                           iscalling = false;
                                           player.stop();
                                           player.dispose();
-                                          BlocProvider.of<CallCubit>(context)
+                                           BlocProvider.of<CallCubit>(context)
                                               .deleteCallinfo(
                                             widget.consultant.uid!,
                                             BlocProvider.of<UserLayoutCubit>(

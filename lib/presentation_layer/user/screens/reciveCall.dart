@@ -134,7 +134,7 @@ class _ReciveCllState extends State<ReciveCll> {
           _users.remove(uid);
           _engine.leaveChannel();
           Navigator.pop(context);
-          BlocProvider.of<CallCubit>(context).endCall();
+          BlocProvider.of<CallCubit>(context).endCall(widget.consultantId);
         },
         firstRemoteVideoFrame: (uid, height, width, elepse) {
           setState(
@@ -186,8 +186,8 @@ class _ReciveCllState extends State<ReciveCll> {
             onPressed: () {
               _engine.leaveChannel();
               Navigator.pop(context);
-              showRating();
-              BlocProvider.of<CallCubit>(context).endCall();
+              //showRating();
+              BlocProvider.of<CallCubit>(context).endCall(widget.consultantId);
             },
             child: const Icon(
               Icons.call_end,
@@ -248,10 +248,10 @@ class _ReciveCllState extends State<ReciveCll> {
             padding: const EdgeInsets.all(12),
           ),
           RawMaterialButton(
-            onPressed: () {
+            onPressed: () async {
               _engine.leaveChannel();
               iscalling = false;
-              BlocProvider.of<CallCubit>(context)
+              await BlocProvider.of<CallCubit>(context)
                   .deleteCallinfo(
                 widget.consultantId!,
                 BlocProvider.of<UserLayoutCubit>(
@@ -260,8 +260,8 @@ class _ReciveCllState extends State<ReciveCll> {
                     ?.uid,
               );
               Navigator.pop(context);
-              showRating();
-              BlocProvider.of<CallCubit>(context).endCall();
+             // showRating();
+              BlocProvider.of<CallCubit>(context).endCall(widget.consultantId);
             },
             child: const Icon(
               Icons.call_end,
@@ -404,55 +404,4 @@ class _ReciveCllState extends State<ReciveCll> {
     );
   }
 
-
-  double rating = 0;
-  Widget buildRating() {
-    return RatingBar.builder(
-        itemSize: 40,
-        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
-        onRatingUpdate: (rating) {
-          setState(() {
-            this.rating = rating;
-          });
-        },
-        minRating: 1,
-        maxRating: 5);
-  }
-
-  void showRating() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Center(
-          child: Text(
-            "قيم المستشار",
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              BlocProvider.of<UserLayoutCubit>(context).sendRating(
-                rating: rating,
-                sender:
-                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
-                recever: widget.consultantId!,
-              );
-              Navigator.pop(context);
-            },
-            child:  Text(
-              "تأكيد",
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ),
-        ],
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            buildRating(),
-          ],
-        ),
-      ),
-    );
-  }
 }

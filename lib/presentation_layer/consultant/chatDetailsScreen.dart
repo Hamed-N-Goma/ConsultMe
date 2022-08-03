@@ -173,7 +173,7 @@ class ConsultChatDetails extends StatelessWidget {
                                 height: 60.0,
                                 color: mainColors,
                                 child: MaterialButton(
-                                  onPressed: ()  {
+                                  onPressed: ()  async {
                                     if (messageImage == null) {
                                       ConsultantCubit.get(context).sendMessage(
                                         receiverId: User.uid,
@@ -191,10 +191,10 @@ class ConsultChatDetails extends StatelessWidget {
                                       );
                                     }
 
-                                      cubit.sendNotfiy(
+                                      cubit.sendNotfiy (
                                         " لديك رسالة جديدة  ",
                                         " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                           cubit.getTokenById("${User.uid}")!,
+                                           await cubit.getTokenById("${User.uid}"),
                                         "message");
 
                                         messageController.clear();
@@ -254,7 +254,7 @@ class ConsultChatDetails extends StatelessWidget {
             ConsultantCubit.get(context).sendNotfiy(
                 " لقد تلقيت مكالمة ",
                 " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-                 ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call",token.toString());
+                 await ConsultantCubit.get(context).getTokenById("${User.uid}"),"call",token.toString());
 
             await handleCameraAndMic(Permission.camera);
             await handleCameraAndMic(Permission.microphone);
@@ -288,7 +288,7 @@ class ConsultChatDetails extends StatelessWidget {
           ConsultantCubit.get(context).sendNotfiy(
               " لقد تلقيت مكالمة ",
               "${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-               ConsultantCubit.get(context).getTokenById("${User.uid}")!,"call" ,token.toString());
+               await ConsultantCubit.get(context).getTokenById("${User.uid}"),"call" ,token.toString());
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

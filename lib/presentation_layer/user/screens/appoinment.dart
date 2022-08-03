@@ -285,7 +285,7 @@ class appoinment extends StatelessWidget {
                             ),
                             const SizedBox(height: 20.0),
                             defaultButton(
-                              function: ()  {
+                              function: ()  async {
                                 cubit.createAppoinment(
                                     consultId: cm.uid!,
                                     consultName : cm.name!,
@@ -296,7 +296,7 @@ class appoinment extends StatelessWidget {
                                 cubit.sendNotfiy(
                                     " لديك طلب إستشارة جديد ",
                                     " ${cubit.userModel!.name} تلقيت طلب أستشارة من ",
-                                     cubit.getTokenById("${cm.uid}")!,"appointment");
+                                     await cubit.getTokenById("${cm.uid}"),"appointment");
                               }
                               ,
                               text: 'تقديم الطلب',

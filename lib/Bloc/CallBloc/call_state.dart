@@ -29,4 +29,10 @@ class DeleteCalldetailsSucssesfully extends CallState {}
 
 class CallEnded extends CallState {}
 
-class EndCall extends CallState {}
+class EndCall extends CallState {
+  final String consultId;
+
+
+  EndCall(this.consultId);
+
+}

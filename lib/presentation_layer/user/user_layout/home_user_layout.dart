@@ -17,6 +17,7 @@ import 'package:fancy_snackbar/fancy_snackbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 import '../screens/profile.dart';
@@ -53,20 +54,20 @@ class _UserLayoutState extends State<UserLayout> {
   }
 
   getMessage(){
-    FirebaseMessaging.onMessage.listen((event) {
+    FirebaseMessaging.onMessage.listen((event) async {
 
       if(event.data['type'] == "call" ){
         BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
             receiverID: UserLayoutCubit.get(context).userModel!.uid);
-        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
         navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
 
       }
       else if(event.data['type'] == "appointment" ){
-        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
 
         AnimatedSnackBar.rectangle(
@@ -88,7 +89,7 @@ class _UserLayoutState extends State<UserLayout> {
         );
       }
       else if(event.data['type'] == "message" ){
-        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+       await  BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
 
         AnimatedSnackBar.rectangle(
@@ -111,12 +112,12 @@ class _UserLayoutState extends State<UserLayout> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    FirebaseMessaging.onMessageOpenedApp.listen((event) async {
       if(event.data['type'] == "call" ){
         BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
             receiverID: UserLayoutCubit.get(context).userModel!.uid);
-        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
         navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
@@ -126,7 +127,7 @@ class _UserLayoutState extends State<UserLayout> {
         navigateTo(context, FollowRequestsScreen());
       }
       else if(event.data['type'] == "message" ){
-        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+      await  BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         navigateTo(context, UserChatDetails(consultant: consult,));
       }
@@ -147,7 +148,13 @@ class _UserLayoutState extends State<UserLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserLayoutCubit, UserLayoutState>(
+    return BlocListener<CallCubit, CallState>(
+        listener: (context, state) async {
+      if (state is EndCall) {
+        showRating(state.consultId);
+      }
+    },
+    child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
       builder: (context, state) {
         var model = UserLayoutCubit.get(context).userModel;
 
@@ -236,7 +243,57 @@ class _UserLayoutState extends State<UserLayout> {
           ),
         );
       },
+    ),
     );
   }
-  
+  double rating = 0;
+  Widget buildRating() {
+    return RatingBar.builder(
+        itemSize: 40,
+        itemBuilder: (context, _) => Icon(IconBroken.Star, color: Colors.amber),
+        onRatingUpdate: (rating) {
+          setState(() {
+            this.rating = rating;
+          });
+        },
+        minRating: 1,
+        maxRating: 5);
+  }
+
+  void showRating(consultId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Center(
+          child: Text(
+            "قيم المستشار",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              BlocProvider.of<UserLayoutCubit>(context).sendRating(
+                rating: rating,
+                sender:
+                BlocProvider.of<UserLayoutCubit>(context).userModel!.uid,
+                recever: consultId,
+              );
+              Navigator.pop(context);
+            },
+            child:  Text(
+              "تأكيد",
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        ],
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildRating(),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -290,7 +290,7 @@ class RequestAppoinmentDetails extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: defaultButton(
-                                  function: ()  {
+                                  function: ()  async {
                                     cubit.acceptAppointment(
                                       MeetTime : consultTimeController.text,
                                       appoItem : appoItem!,
@@ -298,7 +298,7 @@ class RequestAppoinmentDetails extends StatelessWidget {
                                     cubit.sendNotfiy(
                                         "${appoItem?.consultName}",
                                         "لقد تم قبول طلبك , يمكنك بدء المحادثة ",
-                                         cubit.getTokenById("${appoItem!.userID}")!,"appointment");
+                                        await  cubit.getTokenById("${appoItem!.userID}"),"appointment");
                                   },
                                   text: 'اوافق',
                                   btnColor: Colors.green,

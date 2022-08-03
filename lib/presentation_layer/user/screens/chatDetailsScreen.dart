@@ -59,6 +59,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
 
       return BlocListener<CallCubit, CallState>(
         listener: (context, state) async {
+
         },
         child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
           builder: (context, state) {
@@ -200,6 +201,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                       onPressed: () {
                                         UserLayoutCubit.get(context)
                                             .getMessageImage();
+
                                       },
                                       icon: Icon(
                                         Icons.camera_alt_outlined,
@@ -209,7 +211,8 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                     height: 60.0,
                                     color: mainColors,
                                     child: MaterialButton(
-                                      onPressed: () {
+                                      onPressed: () async {
+
                                         if (messageImage == null) {
                                           UserLayoutCubit.get(context)
                                               .sendMessage(
@@ -234,8 +237,8 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                             " لديك رسالة جديدة  ",
                                             " ${cubit.userModel!
                                                 .name} تلقيت رسالة جديدة من ",
-                                            cubit.getTokenById(
-                                                "${widget.consultant.uid}")!,
+                                          await cubit.getTokenById(
+                                                "${widget.consultant.uid}"),
                                             "message");
                                         messageController.clear();
                                         UserLayoutCubit.get(context)
@@ -461,5 +464,4 @@ class _UserChatDetailsState extends State<UserChatDetails> {
           ],
         ),
       );
-
 }

@@ -105,7 +105,7 @@ class EditCategory extends StatelessWidget {
                 validate: (String? value) {
                   if (value!.isEmpty  ) {
                     return 'اسم القسم فارغ  !';
-                  } else if (int.tryParse(value!) == null && value != ''){
+                  } else if (int.tryParse(value) == null && value != ''){
                     return 'الرجاء ادخال اسم القسم صحيح';
                   }else {
                     return null;

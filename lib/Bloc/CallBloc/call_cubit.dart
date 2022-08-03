@@ -89,7 +89,7 @@ class CallCubit extends Cubit<CallState> {
     }).then((value) => emit(DeleteCalldetailsSucssesfully()));
   }
 
-  endCall() {
-    emit(EndCall());
+  endCall(consultId) {
+    emit(EndCall(consultId));
   }
 }

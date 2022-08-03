@@ -62,7 +62,7 @@ class _MakeCallState extends State<MakeCall> {
       });
       return;
     }
-    BlocProvider.of<CallCubit>(context).sendCallinfo(
+     BlocProvider.of<CallCubit>(context).sendCallinfo(
         senderId: BlocProvider.of<ConsultantCubit>(context).uId,
         receverId: widget.userId!,
         channelName: widget.channelName!,
@@ -204,9 +204,9 @@ class _MakeCallState extends State<MakeCall> {
             padding: const EdgeInsets.all(12),
           ),
           RawMaterialButton(
-            onPressed: () {
+            onPressed: ()  {
               iscalling = false;
-              BlocProvider.of<CallCubit>(context)
+               BlocProvider.of<CallCubit>(context)
                   .deleteCallinfo(
                 BlocProvider.of<ConsultantCubit>(context).uId,
                 BlocProvider.of<UserLayoutCubit>(
@@ -256,10 +256,10 @@ class _MakeCallState extends State<MakeCall> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           RawMaterialButton(
-            onPressed: () {
+            onPressed: ()  {
               _engine.leaveChannel();
               iscalling = false;
-              BlocProvider.of<CallCubit>(context)
+               BlocProvider.of<CallCubit>(context)
                   .deleteCallinfo(
                 BlocProvider.of<ConsultantCubit>(context).uId,
                 BlocProvider.of<UserLayoutCubit>(
@@ -268,7 +268,7 @@ class _MakeCallState extends State<MakeCall> {
                     ?.uid,
               );
               Navigator.pop(context);
-              BlocProvider.of<CallCubit>(context).endCall();
+              BlocProvider.of<CallCubit>(context).endCall( BlocProvider.of<ConsultantCubit>(context).uId);
             },
             child: const Icon(
               Icons.call_end,

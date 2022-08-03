@@ -553,12 +553,13 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
-  var token;
-  String? getTokenById(String id) {
-    FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
-      token = value.data()!["token"];
+  var Token;
+  Future<String> getTokenById(String id) async {
+     Token = "";
+    await FirebaseFirestore.instance.collection('users').doc(id).get().then((value) async{
+      Token = await value.data()!["token"];
     });
-    return token;
+    return Token;
   }
 
 

@@ -43,10 +43,10 @@ class ConsultantHomeScreen extends StatelessWidget {
 
     late UserModel user;
 
-    FirebaseMessaging.onMessage.listen((event) {
+    FirebaseMessaging.onMessage.listen((event) async {
 
       if(event.data['type'] == "appointment" ){
-        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        await BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
         user = BlocProvider.of<ConsultantCubit>(context).user!;
 
 
@@ -69,7 +69,7 @@ class ConsultantHomeScreen extends StatelessWidget {
         );
       }
       else if(event.data['type'] == "message" ){
-        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        await BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
         user = BlocProvider.of<ConsultantCubit>(context).user!;
         FancySnackbar.showSnackbar(
           context,
@@ -82,14 +82,14 @@ class ConsultantHomeScreen extends StatelessWidget {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    FirebaseMessaging.onMessageOpenedApp.listen((event) async {
 
       if(event.data['type'] == "appointment" ){
         BlocProvider.of<ConsultantCubit>(context).getAppoinments();
         navigateTo(context, RequestAppoinmentScreen());
       }
       else if(event.data['type'] == "message" ){
-        BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
+        await BlocProvider.of<ConsultantCubit>(context).getUserById(event.data['userId']);
         user = BlocProvider.of<ConsultantCubit>(context).user!;
         navigateTo(context, ConsultChatDetails( User: user));
       }
