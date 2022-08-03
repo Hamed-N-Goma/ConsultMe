@@ -15,6 +15,7 @@ import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:fancy_snackbar/fancy_snackbar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -187,6 +188,7 @@ class _UserLayoutState extends State<UserLayout> {
             //bottom navebar controller
             body: screens[_selectedIndex],
 
+
             bottomNavigationBar: Container(
               height: 70,
               decoration: BoxDecoration(
@@ -199,44 +201,35 @@ class _UserLayoutState extends State<UserLayout> {
                       spreadRadius: 0.5,
                     )
                   ]),
-              child: GNav(
-                curve: Curves.easeOutCubic,
-                textStyle: Theme.of(context).textTheme.bodyText2,
+              child: FlashyTabBar(
+                iconSize : 30.0,
                 backgroundColor: ThemeCubit.get(context).darkTheme
                     ? mainColors
                     : Theme.of(context).scaffoldBackgroundColor,
-                color:
-                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                activeColor: Theme.of(context)
-                    .bottomNavigationBarTheme
-                    .selectedItemColor,
-                tabBackgroundColor: ColorManager.myBlue.withOpacity(0.5),
-                padding: const EdgeInsets.all(16),
-                gap: 8,
                 selectedIndex: _selectedIndex,
-                onTabChange: (index) {
+                showElevation: true,
+                onItemSelected: (index) {
                   setState(() {
                     _selectedIndex = index;
                   });
                 },
-                tabs: const [
-                  GButton(
-                    icon: IconBroken.Home,
-                    text: 'الرئيسية',
-                    gap: 8,
-                  ), //home
-                  GButton(
-                    icon: IconBroken.Search,
-                    text: 'بحث',
-                  ), //search
-                  GButton(
-                    icon: IconBroken.Chat,
-                    text: 'الرسائل',
-                  ), //chat
-                  GButton(
-                    icon: IconBroken.More_Square,
-                    text: 'أخري',
-                  ) //more
+                items: [
+                  FlashyTabBarItem(
+                    icon: Icon(Icons.home),
+                    title: Text('الرئيسية'),
+                  ),
+                  FlashyTabBarItem(
+                    icon: Icon(Icons.search),
+                    title: Text('بحث'),
+                  ),
+                  FlashyTabBarItem(
+                    icon: Icon(Icons.chat),
+                    title: Text('الرسائل'),
+                  ),
+                  FlashyTabBarItem(
+                    icon: Icon(Icons.more_horiz),
+                    title: Text('أخري'),
+                  ),
                 ],
               ),
             ),

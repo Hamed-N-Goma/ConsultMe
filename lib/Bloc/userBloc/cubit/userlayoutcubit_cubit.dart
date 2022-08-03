@@ -454,18 +454,24 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   }
 
   List<ConsultantModel> chats = [];
+  List<ConsultantModel> consultantInChat = [];
 
   getConsultChat() {
+    getAppoinments();
     chats = [];
     appointments!.forEach((element) {
       FirebaseFirestore.instance.collection('users').get().then((value) {
         value.docs.forEach((consult) {
-          if (consult.data()['uid'] == element.consultId &&
-              element.accept == true) {
+          if (consult.data()['uid'] == element.consultId && element.accept == true) {
             chats.add(ConsultantModel.fromJson(consult.data()));
           }
         });
-        emit(GetAllChatSuccessState(chats));
+
+        consultantInChat = chats.toSet().toList();
+        var set = <String>{};
+        consultantInChat = chats.where((consultant) => set.add(consultant.uid!)).toList();
+
+        emit(GetAllChatSuccessState(consultantInChat));
       }).catchError((error) {
         print(error.toString());
         emit(GetAllChatErrorState(error.toString()));

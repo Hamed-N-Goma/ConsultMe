@@ -534,17 +534,23 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
   List<UserModel> usersInChat = [];
+  List<UserModel> users = [];
 
   getUsersChat() {
     getAppoinments();
-    usersInChat = [];
+    users = [];
     appointments!.forEach((element) {
       FirebaseFirestore.instance.collection('users').get().then((value) {
         value.docs.forEach((user) {
           if (user.data()['uid'] == element.userID && element.accept == true) {
-            usersInChat.add(UserModel.fromJson(user.data()));
+            users.add(UserModel.fromJson(user.data()));
           }
         });
+
+        usersInChat = users.toSet().toList();
+        var set = <String>{};
+        usersInChat = users.where((user) => set.add(user.uid)).toList();
+
         emit(GetAllChatSuccessState(usersInChat));
       }).catchError((error) {
         print(error.toString());
@@ -593,6 +599,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
   UserModel? user;
   getUserById(userId){
+    user = null;
     FirebaseFirestore.instance.collection('users').doc(userId).get().then((value) {
       user = UserModel.fromJson(value.data());
     });

@@ -33,13 +33,13 @@ class UserChat extends StatelessWidget {
           else {
             return
               ConditionalBuilder(
-            condition: UserLayoutCubit.get(context).chats.length >= 0,
+            condition: UserLayoutCubit.get(context).consultantInChat.length >= 0,
             builder: (context) => ListView.separated(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) => ChatitemConsult(
-                    UserLayoutCubit.get(context).chats[index], context),
+                    UserLayoutCubit.get(context).consultantInChat[index], context),
                 separatorBuilder: (context, index) => myDivider(),
-                itemCount: UserLayoutCubit.get(context).chats.length),
+                itemCount: UserLayoutCubit.get(context).consultantInChat.length),
             fallback: (context) =>   Center(child: buildChatfallback(context)),
           );
         }})
@@ -113,7 +113,7 @@ Widget buildChatfallback(context) {
 }
 
 validation(context) {
-  if (UserLayoutCubit.get(context).chats.isEmpty) {
+  if (UserLayoutCubit.get(context).consultantInChat.isEmpty) {
     return true;
   }
   return false;

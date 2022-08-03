@@ -233,16 +233,12 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                                           );
                                         }
 
-                                        cubit.sendNotfiy(
-                                            " لديك رسالة جديدة  ",
-                                            " ${cubit.userModel!
-                                                .name} تلقيت رسالة جديدة من ",
-                                          await cubit.getTokenById(
-                                                "${widget.consultant.uid}"),
+                                        cubit.sendNotfiy(" لديك رسالة جديدة  ",
+                                            " ${cubit.userModel!.name} تلقيت رسالة جديدة من ",
+                                            await cubit.getTokenById("${widget.consultant.uid}"),
                                             "message");
                                         messageController.clear();
-                                        UserLayoutCubit.get(context)
-                                            .popMessageImage();
+                                        UserLayoutCubit.get(context).popMessageImage();
                                       },
                                       minWidth: 1.0,
                                       child: const Icon(
