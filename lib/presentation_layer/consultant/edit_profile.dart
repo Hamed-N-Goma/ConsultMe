@@ -6,6 +6,7 @@ import 'package:consultme/presentation_layer/presentation_layer_manager/color_ma
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../components/components.dart';
@@ -60,6 +61,8 @@ class EditProfileScreen extends StatelessWidget {
       if (state is PickedProfileImageSucsses) {
         ConsultantCubit.get(context).uploadProfile();
       }
+      else if (state is UpdateConsultantInfoScusses) {
+        Navigator.pop(context);      }
     });
   }
 
@@ -121,7 +124,7 @@ class EditProfileScreen extends StatelessWidget {
                   (
                     context,
                     controller: bioController,
-                    height : 100 ,
+                    height : 150 ,
                 ),
                 SizedBox(
                   height: 30,

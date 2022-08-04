@@ -173,7 +173,7 @@ class _UserLayoutState extends State<UserLayout> {
                   navigateTo(context, const Profile());
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.only(top: 5 , left: 20),
                   child: CircleAvatar(
                     backgroundImage: model?.image == null
                         ? const AssetImage(

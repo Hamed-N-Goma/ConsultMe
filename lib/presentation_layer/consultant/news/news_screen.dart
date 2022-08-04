@@ -40,43 +40,63 @@ class NewsScreen extends StatelessWidget {
               title: 'إستشرني',
               context: context,
             ),
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Builder(
-                  builder: (context) {
-                    if (state is GetNewsLoadingStates) {
-                      return const SizedBox(
-                          width: double.infinity,
-                          height: 300.0,
-                          child: Center(child: CircularProgressIndicator()));
-                    } else {
-                      return Column(
-                        children: [
+            body: Builder(
+                builder: (context) {
+                  if (validation(context)) {
+                    return SingleChildScrollView(
+                      child: Center(
+                          child: buildChatfallback(context)
+                      ),
+                    );
+                  }
+                  else {
+                    return SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Builder(
+                          builder: (context) {
+                            if (state is GetNewsLoadingStates) {
+                              return const SizedBox(
+                                  width: double.infinity,
+                                  height: 300.0,
+                                  child: Center(
+                                      child: CircularProgressIndicator()));
+                            } else {
+                              return Column(
+                                children: [
 
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => buildNewsItem(
-                                context: context,
-                                model: ConsultantCubit.get(context).posts[index],
-                                cubit: cubit),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 16,
-                            ),
-                            itemCount: ConsultantCubit.get(context).posts.length,
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                ),
-              ),
+                                  const SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) =>
+                                        buildNewsItem(
+                                            context: context,
+                                            model: ConsultantCubit
+                                                .get(context)
+                                                .posts[index],
+                                            cubit: cubit),
+                                    separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 16,
+                                    ),
+                                    itemCount: ConsultantCubit
+                                        .get(context)
+                                        .posts
+                                        .length,
+                                  ),
+                                ],
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  }
+              }
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
             floatingActionButton: Padding(
@@ -274,6 +294,48 @@ Widget buildNewsItem({
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+validation(context) {
+  if (ConsultantCubit.get(context).posts.isEmpty) {
+    return true;
+  }
+  return false;
+}
+Widget buildChatfallback(context) {
+  return SizedBox(
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 100.0,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: SvgPicture.asset(
+              'assets/images/post.svg',
+              height: 200.0,
+            ),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Text(
+            '" قم بنشر إعلاناتك الأن"',
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText2,
+          ),
+          const SizedBox(
+            height: 5.0,
           ),
         ],
       ),

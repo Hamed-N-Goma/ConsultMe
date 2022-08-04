@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
               ..getConsultants()
               ..getFavorite()
               ..getAllPosts()
-              ..getConsultChat()
               ..getAppoinments()
               ..getConsultChat()),
         BlocProvider(

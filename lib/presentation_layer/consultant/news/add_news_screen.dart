@@ -59,6 +59,7 @@ class AddPostScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12.0,),
                     whiteBoard(
+
                         context,
                         hint: 'المحنوى ...',
                         controller: bodyController,
@@ -158,19 +159,19 @@ class AddPostScreen extends StatelessWidget {
                           }
                         }
                     ),
-                    defaultButton(
-                      function: (){
-                        validation(
-                          context: context,
-                          title: titleController.text,
-                          body: bodyController.text,
-                          cubit: cubit,
-                        );
-                      },
-                      text: 'نشر',
-                      width: double.infinity,
-                      height: 47.0,
-                      btnColor: mainColors,
+                        defaultButton(
+                          function: (){
+                            validation(
+                              context: context,
+                              title: titleController.text,
+                              body: bodyController.text,
+                              cubit: cubit,
+                            );
+                          },
+                          text: 'نشر',
+                          width: double.infinity,
+                          height: 47.0,
+                          btnColor: mainColors,
                     ),
                   ],
                 ),

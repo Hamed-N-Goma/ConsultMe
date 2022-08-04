@@ -25,6 +25,7 @@ const appId = "dc1ae831884844359d056b423b793e83";
 Future<void> signOut(context) async {
   await FirebaseAuth.instance.signOut();
   CacheHelper.removeData(key: 'uId');
+  CacheHelper.signOut();
   CacheHelper.removeData(
     key: 'type',
   ).then((value)

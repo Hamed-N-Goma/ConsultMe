@@ -269,10 +269,10 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .doc(consultantModel!.uid)
           .update(consultantModel!.toMap())
           .then((value) => {
-        emit(UpdateConsultantInfoScusses()),
         getConsultantData(),
         showToast(
             message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+        emit(UpdateConsultantInfoScusses()),
       })
           .catchError((onError) {
         emit(ErrorWithUpdateConsultant());
@@ -301,10 +301,10 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .doc(consultantModel!.uid)
           .update(consultantModel!.toMap())
           .then((value) => {
-        emit(UpdateConsultantInfoScusses()),
         getConsultantData(),
         showToast(
             message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+        emit(UpdateConsultantInfoScusses()),
       })
           .catchError((onError) {
         emit(ErrorWithUpdateConsultant());

@@ -38,4 +38,10 @@ class CacheHelper {
   }) async {
     return await sharedPreferences.remove(key);
   }
+
+
+  static Future<void> signOut() async {
+     await sharedPreferences.clear();
+  }
+
 }
