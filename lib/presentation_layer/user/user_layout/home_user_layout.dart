@@ -61,14 +61,14 @@ class _UserLayoutState extends State<UserLayout> {
         BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
             receiverID: UserLayoutCubit.get(context).userModel!.uid);
-        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
         navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
 
       }
       else if(event.data['type'] == "appointment" ){
-        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
 
         AnimatedSnackBar.rectangle(
@@ -90,7 +90,7 @@ class _UserLayoutState extends State<UserLayout> {
         );
       }
       else if(event.data['type'] == "message" ){
-       await  BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
 
         AnimatedSnackBar.rectangle(
@@ -118,7 +118,7 @@ class _UserLayoutState extends State<UserLayout> {
         BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
             receiverID: UserLayoutCubit.get(context).userModel!.uid);
-        await BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
         navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
@@ -128,7 +128,7 @@ class _UserLayoutState extends State<UserLayout> {
         navigateTo(context, FollowRequestsScreen());
       }
       else if(event.data['type'] == "message" ){
-      await  BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         navigateTo(context, UserChatDetails(consultant: consult,));
       }

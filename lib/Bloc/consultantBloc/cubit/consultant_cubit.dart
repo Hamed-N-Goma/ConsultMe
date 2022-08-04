@@ -41,6 +41,27 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
+  List<UserModel> Users = [];
+
+  void getUsers() {
+    emit(LoadingUser());
+    CollectionReference us =
+    FirebaseFirestore.instance.collection('users');
+    us.where('userType', isEqualTo: 'user').get().then(
+          (us) => {
+            Users = us.docs
+            .map((e) =>
+            UserModel.fromJson(e.data() as Map<String, dynamic>))
+            .toList(),
+        emit(GetUserDataSucsses(Users)),
+        us.docs.forEach((element) {
+          print(element.data());
+          print("++++============================");
+        })
+      },
+    );
+  }
+
   void postComplaints({
     required String complaints,
     required String email,
@@ -562,8 +583,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   var Token;
   Future<String> getTokenById(String id) async {
      Token = "";
-    await FirebaseFirestore.instance.collection('users').doc(id).get().then((value) async{
-      Token = await value.data()!["token"];
+    await FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
+      Token =  value.data()!["token"];
     });
     return Token;
   }
@@ -600,8 +621,9 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   UserModel? user;
   getUserById(userId){
     user = null;
-    FirebaseFirestore.instance.collection('users').doc(userId).get().then((value) {
-      user = UserModel.fromJson(value.data());
+    Users.forEach((element) {
+      if (element.uid == userId)
+        user = element ;
     });
   }
 }

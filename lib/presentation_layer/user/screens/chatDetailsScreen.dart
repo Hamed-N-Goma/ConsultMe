@@ -24,7 +24,6 @@ class UserChatDetails extends StatefulWidget {
       : super(key: key);
 
   ConsultantModel consultant;
-  String? notifyToken ;
 
   @override
   State<UserChatDetails> createState() => _UserChatDetailsState();

@@ -17,6 +17,17 @@ class GetProfileConsultantErrorStates extends ConsultantStates {
   GetProfileConsultantErrorStates(this.error);
 }
 
+class LoadingUser extends ConsultantStates {}
+
+class GetUserDataSucsses extends ConsultantStates {
+  final List<UserModel> users;
+
+  GetUserDataSucsses(
+      this.users,
+      );
+}
+
+
 class PostComplaintsLoadingStates extends ConsultantStates {}
 
 class PostComplaintsSuccessStates extends ConsultantStates {}

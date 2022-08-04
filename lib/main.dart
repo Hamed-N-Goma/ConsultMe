@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ConsultantCubit()
               ..getConsultantData()
               ..getPosts()
+              ..getUsers()
               ..getAppoinments()
               ..getUsersChat()),
         BlocProvider(

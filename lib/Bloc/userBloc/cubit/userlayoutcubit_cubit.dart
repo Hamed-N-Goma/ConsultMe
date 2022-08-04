@@ -482,8 +482,8 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   var Token;
   Future<String> getTokenById(String id) async {
     Token = "";
-    await FirebaseFirestore.instance.collection('users').doc(id).get().then((value) async{
-      Token = await value.data()!["token"];
+    await FirebaseFirestore.instance.collection('users').doc(id).get().then((value){
+      Token = value.data()!["token"];
     });
     return Token;
   }
