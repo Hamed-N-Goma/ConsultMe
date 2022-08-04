@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:consultme/shard/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -90,11 +91,7 @@ class EditProfile extends StatelessWidget {
             child: defaultFormField(
                 controller: nameController,
                 type: TextInputType.name,
-                validate: (String value) {
-                  if (value.isEmpty) {
-                    return 'يجب ملئ الإسم';
-                  }
-                },
+                validate: nameValidator,
                 prefix: IconBroken.User,
                 context: context,
                 label: "الإسم كامل"),
@@ -107,11 +104,7 @@ class EditProfile extends StatelessWidget {
             child: defaultFormField(
                 controller: emailController,
                 type: TextInputType.emailAddress,
-                validate: (String value) {
-                  if (value.isEmpty) {
-                    return 'يجب ملئ البريد الالكتروني';
-                  }
-                },
+                validate: emailValidator,
                 prefix: IconBroken.Message,
                 context: context,
                 label:  'البريد الالكتروني'),
@@ -124,11 +117,7 @@ class EditProfile extends StatelessWidget {
             child: defaultFormField(
                 controller: phoneController,
                 type: TextInputType.phone,
-                validate: (String value) {
-                  if (value.isEmpty) {
-                    return 'يجب ملئ رقم الهاتف';
-                  }
-                },
+                validate: phoneNumberValidator,
                 prefix: IconBroken.Call,
                 context: context,
                 label:  'رقم الهاتف'),

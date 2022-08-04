@@ -16,31 +16,33 @@ class Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      InkWell(
-          radius: 30,
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          onTap: () {
-            divideChoosingCategory();
-            navigateTo(
-                context,
-                CategoryDetails(
-                  spechalist: spechalist,
-                  categotyItem: categotyItem,
-                ));
-          },
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(categotyItem.image!),
-            radius: 40,
-          )),
-      const SizedBox(
-        height: 10,
-      ),
-      Text(
-        categotyItem.name!,
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-    ]);
+    return Center(
+      child: Column(children: [
+        InkWell(
+            radius: 30,
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            onTap: () {
+              divideChoosingCategory();
+              navigateTo(
+                  context,
+                  CategoryDetails(
+                    spechalist: spechalist,
+                    categotyItem: categotyItem,
+                  ));
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(categotyItem.image!),
+              radius: 40,
+            )),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          categotyItem.name!,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ]),
+    );
   }
 
   void divideChoosingCategory() {

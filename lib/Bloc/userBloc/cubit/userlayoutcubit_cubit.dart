@@ -68,7 +68,6 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   String? profileImageUrl;
 
   Future<void> uploadProfile() async {
-    profileImageUrl = "";
     await firebase_storage.FirebaseStorage.instance
         .ref()
         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")

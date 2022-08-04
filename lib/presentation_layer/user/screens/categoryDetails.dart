@@ -20,14 +20,17 @@ class CategoryDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(categotyItem.name!,
-            style: Theme.of(context).textTheme.bodyLarge),
-        centerTitle: true,
-        elevation: 5,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(categotyItem.name!,
+              style: Theme.of(context).textTheme.bodyLarge),
+          centerTitle: true,
+          elevation: 5,
+        ),
+        body: buildMain(),
       ),
-      body: buildMain(),
     );
   }
 

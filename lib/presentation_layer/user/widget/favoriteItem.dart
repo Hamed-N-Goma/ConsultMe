@@ -35,29 +35,32 @@ class FavoriteItem extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {},
-              child: Container(
-                padding: EdgeInsets.all(16),
-                height: 144,
-                decoration: BoxDecoration(
-                    color: ThemeCubit.get(context).darkTheme
-                        ? mainColors
-                        : Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0, 3),
-                          color: HexColor('#404863').withOpacity(0.2),
-                          blurRadius: 10)
-                    ]),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    consultantImage(),
-                    const SizedBox(width: 16),
-                    consultantDetales(context, consultant),
-                    const SizedBox(width: 16),
-                    Expanded(child: favoriteButton())
-                  ],
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  height: 144,
+                  decoration: BoxDecoration(
+                      color: ThemeCubit.get(context).darkTheme
+                          ? mainColors
+                          : Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0, 3),
+                            color: HexColor('#404863').withOpacity(0.2),
+                            blurRadius: 10)
+                      ]),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      consultantImage(),
+                      const SizedBox(width: 16),
+                      consultantDetales(context, consultant),
+                      const SizedBox(width: 16),
+                      Expanded(child: favoriteButton())
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -106,9 +109,9 @@ class FavoriteItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: ColorManager.myBlue,
           borderRadius: BorderRadius.circular(10),
-          image: const DecorationImage(
+          image: DecorationImage(
               image: NetworkImage(
-                profileImageUri,
+                consultant.image!,
               ),
               fit: BoxFit.fill)),
     );
@@ -122,7 +125,7 @@ class FavoriteItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                '4.8',
+                double.parse(consultant.rating!.toStringAsFixed(2)).toString(),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const SizedBox(
@@ -176,9 +179,12 @@ class FavoriteItem extends StatelessWidget {
             height: 10,
           ),
           Text(
-            consultant.speachalist as String,
+            '${consultant.speachalist}',
             style: Theme.of(context).textTheme.bodyText2,
-          )
+          ),
+          const SizedBox(
+            height: 10,
+          ),
         ],
       );
     });

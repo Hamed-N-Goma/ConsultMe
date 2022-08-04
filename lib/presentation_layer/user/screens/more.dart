@@ -10,12 +10,9 @@ import 'package:consultme/presentation_layer/user/screens/TermsAndConditionsScre
 import 'package:consultme/presentation_layer/user/screens/edit_profile.dart';
 import 'package:consultme/presentation_layer/user/screens/favoritescreen.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
-import 'package:consultme/presentation_layer/user/screens/profile.dart';
-import 'package:consultme/shard/network/local/cache_helper.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

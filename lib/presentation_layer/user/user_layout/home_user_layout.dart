@@ -7,6 +7,7 @@ import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/user/screens/Call.dart';
 import 'package:consultme/presentation_layer/user/screens/chat.dart';
 import 'package:consultme/presentation_layer/user/screens/chatDetailsScreen.dart';
+import 'package:consultme/presentation_layer/user/screens/edit_profile.dart';
 import 'package:consultme/presentation_layer/user/screens/follow_request_screen.dart';
 import 'package:consultme/presentation_layer/user/screens/home.dart';
 import 'package:consultme/presentation_layer/user/screens/more.dart';
@@ -21,7 +22,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
-import '../screens/profile.dart';
 
 class UserLayout extends StatefulWidget {
   const UserLayout({Key? key}) : super(key: key);
@@ -170,7 +170,7 @@ class _UserLayoutState extends State<UserLayout> {
               pop: false,
               action: InkWell(
                 onTap: () {
-                  navigateTo(context, const Profile());
+                  navigateTo(context, EditProfile());
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5 , left: 20),
