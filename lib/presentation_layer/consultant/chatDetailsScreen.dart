@@ -28,12 +28,25 @@ class ConsultChatDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (BuildContext context) {
+    return BlocListener<CallCubit, CallState>(
+        listener: (context, state) async {
+      if (state is MakeCallSucsses) {
+        ConsultantCubit.get(context).sendNotfiy(
+            " لقد تلقيت مكالمة ",
+            " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
+            await ConsultantCubit.get(context).getTokenById("${User.uid}"),"call",token.toString() ,  state.callId);
+      }
+    },
+    child: Builder(builder: (BuildContext context)
+    {
       ConsultantCubit.get(context).getMessages(
         userId: User.uid,
       );
       BlocProvider.of<CallCubit>(context).generateToken(
-          BlocProvider.of<ConsultantCubit>(context).consultantModel!.uid,
+          BlocProvider
+              .of<ConsultantCubit>(context)
+              .consultantModel!
+              .uid,
           "publisher",
           "uid",
           "0");
@@ -41,7 +54,9 @@ class ConsultChatDetails extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             var cubit = ConsultantCubit.get(context);
-            dynamic messageImage = ConsultantCubit.get(context).messageImage;
+            dynamic messageImage = ConsultantCubit
+                .get(context)
+                .messageImage;
 
             return Directionality(
               textDirection: TextDirection.rtl,
@@ -53,176 +68,197 @@ class ConsultChatDetails extends StatelessWidget {
                   actions: actionsAppBar(context),
                 ),
                 body: ConditionalBuilder(
-                  condition: ConsultantCubit.get(context).messages.length >= 0,
-                  builder: (context) => Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            reverse: true,
+                  condition: ConsultantCubit
+                      .get(context)
+                      .messages
+                      .length >= 0,
+                  builder: (context) =>
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                physics: BouncingScrollPhysics(),
+                                reverse: true,
 
-                            itemBuilder: (context, index) {
-                              var message =
-                                  ConsultantCubit.get(context).messages[index];
+                                itemBuilder: (context, index) {
+                                  var message =
+                                  ConsultantCubit
+                                      .get(context)
+                                      .messages[index];
 
-                              if (ConsultantCubit.get(context)
+                                  if (ConsultantCubit
+                                      .get(context)
                                       .consultantModel
                                       ?.uid ==
-                                  message.senderId)
-                                return buildMessage(message, context);
+                                      message.senderId)
+                                    return buildMessage(message, context);
 
-                              return buildMyMessage(message, context);
-                            },
-                            separatorBuilder: (context, index) =>
+                                  return buildMyMessage(message, context);
+                                },
+                                separatorBuilder: (context, index) =>
                                 const SizedBox(
-                              height: 15.0,
-                            ),
-                            itemCount:
-                                ConsultantCubit.get(context).messages.length,
+                                  height: 15.0,
+                                ),
+                                itemCount:
+                                ConsultantCubit
+                                    .get(context)
+                                    .messages
+                                    .length,
 
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30.0,
-                        ),
-                        if (ConsultantCubit.get(context).isMessageImageLoading == true)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: LinearProgressIndicator(
-                              color: mainColors,
+                              ),
                             ),
-                          ),
+                            const SizedBox(
+                              height: 30.0,
+                            ),
+                            if (ConsultantCubit
+                                .get(context)
+                                .isMessageImageLoading == true)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: LinearProgressIndicator(
+                                  color: mainColors,
+                                ),
+                              ),
 
-                        if (messageImage != null)
-                          Padding(
-                            padding:
-                            const EdgeInsetsDirectional.only(bottom: 8.0),
-                            child: Align(
-                              alignment: AlignmentDirectional.topStart,
+                            if (messageImage != null)
+                              Padding(
+                                padding:
+                                const EdgeInsetsDirectional.only(bottom: 8.0),
+                                child: Align(
+                                  alignment: AlignmentDirectional.topStart,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        height: 100,
+                                        child: Image.file(messageImage,
+                                            fit: BoxFit.cover, width: 100),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey[300],
+                                          child: IconButton(
+                                            onPressed: () {
+                                              ConsultantCubit.get(context)
+                                                  .popMessageImage();
+                                            },
+                                            icon: Icon(Icons.close),
+                                            iconSize: 15,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  15.0,
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Image.file(messageImage,
-                                        fit: BoxFit.cover, width: 100),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.grey[300],
-                                      child: IconButton(
-                                        onPressed: () {
-                                          ConsultantCubit.get(context)
-                                              .popMessageImage();
-                                        },
-                                        icon: Icon(Icons.close),
-                                        iconSize: 15,
+
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15.0,
+                                      ),
+                                      child: TextFormField(
+                                        controller: messageController,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'type your message here ...',
+                                        ),
                                       ),
                                     ),
-                                  )
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        ConsultantCubit.get(context)
+                                            .getMessageImage();
+                                      },
+                                      icon: Icon(
+                                        Icons.camera_alt_outlined,
+                                        color: Colors.grey,
+                                      )),
+                                  Container(
+                                    height: 60.0,
+                                    color: mainColors,
+                                    child: MaterialButton(
+                                      onPressed: () async {
+                                        if (messageImage == null) {
+                                          ConsultantCubit.get(context)
+                                              .sendMessage(
+                                            receiverId: User.uid,
+                                            dateTime: DateTime.now().toString(),
+                                            content: messageController.text,
+                                          );
+                                        }
+                                        else {
+                                          ConsultantCubit.get(context)
+                                              .uploadMessagePic(
+                                            receiverId: User.uid,
+                                            content: messageController.text ==
+                                                ''
+                                                ? null
+                                                : messageController.text,
+                                            dateTime: DateTime.now().toString(),
+                                          );
+                                        }
+
+                                        cubit.sendNotfiy(
+                                            " لديك رسالة جديدة  ",
+                                            " ${cubit.consultantModel!
+                                                .name} تلقيت رسالة جديدة من ",
+                                            await cubit.getTokenById(
+                                                "${User.uid}"),
+                                            "message");
+
+                                        messageController.clear();
+                                        ConsultantCubit.get(context)
+                                            .popMessageImage();
+                                      },
+                                      minWidth: 1.0,
+                                      child: const Icon(
+                                        IconBroken.Send,
+                                        size: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ),
-
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              15.0,
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: Row(
-                            children: [
-
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0,
-                                  ),
-                                  child: TextFormField(
-                                    controller: messageController,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'type your message here ...',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    ConsultantCubit.get(context).getMessageImage();
-                                  },
-                                  icon: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.grey,
-                                  )),
-                              Container(
-                                height: 60.0,
-                                color: mainColors,
-                                child: MaterialButton(
-                                  onPressed: ()  async {
-                                    if (messageImage == null) {
-                                      ConsultantCubit.get(context).sendMessage(
-                                        receiverId: User.uid,
-                                        dateTime: DateTime.now().toString(),
-                                        content: messageController.text,
-                                      );
-                                    }
-                                    else {
-                                      ConsultantCubit.get(context).uploadMessagePic(
-                                        receiverId: User.uid,
-                                        content: messageController.text == ''
-                                            ? null
-                                            : messageController.text,
-                                        dateTime: DateTime.now().toString(),
-                                      );
-                                    }
-
-                                      cubit.sendNotfiy (
-                                        " لديك رسالة جديدة  ",
-                                        " ${cubit.consultantModel!.name} تلقيت رسالة جديدة من ",
-                                           await cubit.getTokenById("${User.uid}"),
-                                        "message");
-
-                                        messageController.clear();
-                                        ConsultantCubit.get(context).popMessageImage();
-
-                                  },
-                                  minWidth: 1.0,
-                                  child: const Icon(
-                                    IconBroken.Send,
-                                    size: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  fallback: (context) => const Center(
+                      ),
+                  fallback: (context) =>
+                  const Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
               ),
             );
           });
-    });
+    }));
+
   }
 
   //you must send user Model with Navigation
@@ -251,10 +287,7 @@ class ConsultChatDetails extends StatelessWidget {
         onPressed: () async {
           if (token.toString().isNotEmpty) {
 
-            ConsultantCubit.get(context).sendNotfiy(
-                " لقد تلقيت مكالمة ",
-                " ${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-                 await ConsultantCubit.get(context).getTokenById("${User.uid}"),"call",token.toString());
+
 
             await handleCameraAndMic(Permission.camera);
             await handleCameraAndMic(Permission.microphone);
@@ -285,10 +318,7 @@ class ConsultChatDetails extends StatelessWidget {
       IconButton(
         onPressed: () async {
 
-          ConsultantCubit.get(context).sendNotfiy(
-              " لقد تلقيت مكالمة ",
-              "${ConsultantCubit.get(context).consultantModel!.name} لديك موعد مكالمة الأن مع ",
-               await ConsultantCubit.get(context).getTokenById("${User.uid}"),"call" ,token.toString());
+
 
           if (token.toString().isNotEmpty) {
             await handleCameraAndMic(Permission.camera);

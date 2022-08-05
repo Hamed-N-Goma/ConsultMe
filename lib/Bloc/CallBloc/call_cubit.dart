@@ -35,6 +35,7 @@ class CallCubit extends Cubit<CallState> {
       channelName: channelName,
       token: token,
       callType: callType,
+      callId: null,
     );
 
     FirebaseFirestore.instance
@@ -44,49 +45,53 @@ class CallCubit extends Cubit<CallState> {
         .doc(senderId)
         .collection('calls')
         .add(callerModel.toMap())
-        .then((value) => {emit(MakeCallSucsses())})
-        .catchError((error) {
+        .then((value) =>
+    {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(receverId)
+          .collection('callDetails')
+          .doc(senderId)
+          .collection('calls')
+          .doc(value.id)
+          .update({'callId': value.id})
+          .then((vvv) => {
+      emit(MakeCallSucsses(value.id))
+    })
+  }).catchError((error) {
       emit(ErrorWithMakeingCall(error));
     });
   }
 
-  String channelName = '';
-  String callType = "";
-  List<CallMessageModel> callanswer = [];
-  void getCallDetails({callerid, receiverID}) {
-    FirebaseFirestore.instance
+  String? channelName;
+  String? callType;
+  late CallMessageModel callanswer ;
+  Future<void> getCallDetails({callerid, receiverID , callId}) async {
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(receiverID)
         .collection('callDetails')
         .doc(callerid)
         .collection('calls')
-        .snapshots()
-        .listen((event) {
-      callanswer = [];
-      for (var element in event.docs) {
-        callanswer.add(CallMessageModel.fromJson(element.data()));
-        callType = callanswer.first.callType!;
-        channelName = callanswer.first.channelName!;
-        token = callanswer.first.token!;
+        .doc(callId)
+        .get().then((value) {
 
-        emit(ReceiveCallSucsses(channelName, token, callType));
-      }
+      callanswer = CallMessageModel.fromJson(value.data()!);
+      callType = callanswer.callType!;
+      channelName = callanswer.channelName!;
+      token = callanswer.token;
+      print("=================================================================================== call amser==================================================");
+      print(callanswer);
+      print("=================================================================================== call amser==================================================");
+      print(callanswer.callId);
+
+      emit(ReceiveCallSucsses(callanswer));
+    }).catchError((error) {
+
     });
   }
 
   deleteCallinfo(callerID, receiverID) {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(receiverID)
-        .collection("callDetails")
-        .doc(callerID)
-        .collection("calls")
-        .snapshots()
-        .forEach((querySnapshot) {
-      for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
-        docSnapshot.reference.delete();
-      }
-    }).then((value) => emit(DeleteCalldetailsSucssesfully()));
   }
 
   endCall(consultId) {

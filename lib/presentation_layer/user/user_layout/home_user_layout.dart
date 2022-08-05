@@ -58,13 +58,14 @@ class _UserLayoutState extends State<UserLayout> {
     FirebaseMessaging.onMessage.listen((event) async {
 
       if(event.data['type'] == "call" ){
-        BlocProvider.of<CallCubit>(context).getCallDetails(
+        await BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
-            receiverID: UserLayoutCubit.get(context).userModel!.uid);
+            receiverID: UserLayoutCubit.get(context).userModel!.uid,
+            callId: event.data['callId'],);
          BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
-        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken,));
 
       }
       else if(event.data['type'] == "appointment" ){
@@ -115,13 +116,14 @@ class _UserLayoutState extends State<UserLayout> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) async {
       if(event.data['type'] == "call" ){
-        BlocProvider.of<CallCubit>(context).getCallDetails(
+        await BlocProvider.of<CallCubit>(context).getCallDetails(
             callerid: event.data['consultId'],
-            receiverID: UserLayoutCubit.get(context).userModel!.uid);
-         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
+            receiverID: UserLayoutCubit.get(context).userModel!.uid,
+            callId: event.data['callId']);
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
-        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType, RTCtoken: RTCtoken,));
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken,));
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();

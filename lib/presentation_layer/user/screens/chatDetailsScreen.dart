@@ -49,12 +49,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
         consultId: widget.consultant.uid!,
       );
 
-      BlocProvider.of<CallCubit>(context).getCallDetails(
-          callerid: widget.consultant.uid!,
-          receiverID: UserLayoutCubit
-              .get(context)
-              .userModel!
-              .uid);
+
 
       return BlocListener<CallCubit, CallState>(
         listener: (context, state) async {

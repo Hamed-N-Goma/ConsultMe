@@ -54,10 +54,6 @@ class _CallState extends State<Call> {
   Widget build(BuildContext context) {
     return Builder(builder: (BuildContext context) {
 
-      BlocProvider.of<CallCubit>(context).getCallDetails(
-          callerid: widget.consultant.uid!,
-          receiverID: UserLayoutCubit.get(context).userModel!.uid);
-
       return BlocListener<CallCubit, CallState>(
         listener: (context, state) async {},
         child: BlocBuilder<UserLayoutCubit, UserLayoutState>(

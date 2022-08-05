@@ -5,6 +5,7 @@ class CallMessageModel {
   String? channelName;
   String? token;
   String? callType;
+  String? callId;
 
   CallMessageModel({
     required this.senderId,
@@ -13,6 +14,8 @@ class CallMessageModel {
     required this.channelName,
     this.token,
     required this.callType,
+    required this.callId,
+
   });
 
   CallMessageModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +25,8 @@ class CallMessageModel {
     channelName = json['channelName'];
     token = json['token'];
     callType = json['callType'];
+    callId = json['callId'];
+
   }
 
   Map<String, dynamic> toMap() {
@@ -32,6 +37,8 @@ class CallMessageModel {
       'channelName': channelName,
       'token': token,
       'callType': callType,
+      'callId': callId,
+
     };
   }
 }

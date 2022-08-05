@@ -9,7 +9,11 @@ class GetTokenSucsses extends CallState {}
 
 class GetTokenFaild extends CallState {}
 
-class MakeCallSucsses extends CallState {}
+class MakeCallSucsses extends CallState {
+  final String callId;
+
+  MakeCallSucsses(this.callId);
+}
 
 class ErrorWithMakeingCall extends CallState {
   final String error;
@@ -18,11 +22,9 @@ class ErrorWithMakeingCall extends CallState {
 }
 
 class ReceiveCallSucsses extends CallState {
-  final String cahnnelName;
-  final String token;
-  final String CallType;
+  final CallMessageModel callanswer;
 
-  ReceiveCallSucsses(this.cahnnelName, this.token, this.CallType);
+  ReceiveCallSucsses(this.callanswer);
 }
 
 class DeleteCalldetailsSucssesfully extends CallState {}
