@@ -74,7 +74,7 @@ class NewsDashDetailsScreen extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Text(
                       '${model.title}',
                       style: Theme.of(context).textTheme.headline6!.copyWith(

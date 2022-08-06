@@ -394,6 +394,8 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .set({'favoriteConsultant': consultantid})
         .then((value) => {
               emit(AddConsultantToFavoriteSucssesfuly()),
+              showToast(
+              message: 'تم الإضافة الى المفضلة بنجاح', state: ToastStates.SUCCESS),
               getFavorite(),
             })
         .catchError((error) {
@@ -433,6 +435,9 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
               print('getting sucssesfuly'),
               print('delete sucssesfuly'),
               emit(DeleteFromFavSucsses()),
+               emit(AddConsultantToFavoriteSucssesfuly()),
+               showToast(
+                message: 'تمت ازالته من المفضلة بنجاح', state: ToastStates.WARNING),
               getFavorite(),
             })
         .catchError((error) {

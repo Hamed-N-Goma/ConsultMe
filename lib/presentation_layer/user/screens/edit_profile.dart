@@ -62,89 +62,93 @@ class EditProfile extends StatelessWidget {
   Widget buildEditableProfile(context, usermodel, imagePicker) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 120,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                buildProfilePic(
-                    context: context,
-                    image: usermodel!.image,
-                    imagepicker: imagePicker),
-              ],
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 120,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  buildProfilePic(
+                      context: context,
+                      image: usermodel!.image,
+                      imagepicker: imagePicker),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          buildCustomText(
-            text: usermodel!.name,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            height: 60,
-            child: defaultFormField(
-                controller: nameController,
-                type: TextInputType.name,
-                validate: nameValidator,
-                prefix: IconBroken.User,
-                context: context,
-                label: "الإسم كامل"),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            height: 60,
-            child: defaultFormField(
-                controller: emailController,
-                type: TextInputType.emailAddress,
-                validate: emailValidator,
-                prefix: IconBroken.Message,
-                context: context,
-                label:  'البريد الالكتروني'),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            height: 60,
-            child: defaultFormField(
-                controller: phoneController,
-                type: TextInputType.phone,
-                validate: phoneNumberValidator,
-                prefix: IconBroken.Call,
-                context: context,
-                label:  'رقم الهاتف'),
-          ),
-           SizedBox(
-            height: 30,
-          ),
+            const SizedBox(
+              height: 5,
+            ),
+            buildCustomText(
+              text: usermodel!.email,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 55,
+              child: defaultFormField(
+                  controller: nameController,
+                  type: TextInputType.name,
+                  validate: nameValidator,
+                  prefix: IconBroken.User,
+                  context: context,
+                  label: "الإسم كامل"),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 55,
+              child: defaultFormField(
+                  controller: emailController,
+                  type: TextInputType.emailAddress,
+                  validate: emailValidator,
+                  prefix: IconBroken.Message,
+                  context: context,
+                  label:  'البريد الالكتروني'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 55,
+              child: defaultFormField(
+                  controller: phoneController,
+                  type: TextInputType.phone,
+                  validate: phoneNumberValidator,
+                  prefix: IconBroken.Call,
+                  context: context,
+                  label:  'رقم الهاتف'),
+            ),
+             SizedBox(
+              height: 30,
+            ),
 
 
-          defaultButton(
-            function: () {
-              UserLayoutCubit.get(context).upDateUser(
-                  name: nameController.text,
-                  phone: phoneController.text,
-                  email: emailController.text,
-              );
-            },
-            text: 'تعديل ',
-            fontSize: 18,
-            height: 60.0,
-            btnColor: mainColors,
-            width: double.infinity,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+
+            defaultButton(
+              function: () {
+                UserLayoutCubit.get(context).upDateUser(
+                    name: nameController.text,
+                    phone: phoneController.text,
+                    email: emailController.text,
+                );
+              },
+              text: 'تعديل ',
+              fontSize: 18,
+              height: 50.0,
+              btnColor: mainColors,
+              width: double.infinity,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }

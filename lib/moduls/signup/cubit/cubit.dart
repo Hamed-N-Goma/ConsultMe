@@ -177,7 +177,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
         phone: phone,
         uid: uid,
         userType: "user",
-        image: "image");
+        image: "https://cdn-icons-png.flaticon.com/512/527/527489.png?w=740&t=st=1659793760~exp=1659794360~hmac=7cfff10352a3dc96fdfe74b00449c87f5c62482ebc231eae5e3ccecc537684e7");
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)

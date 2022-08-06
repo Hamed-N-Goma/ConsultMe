@@ -184,7 +184,8 @@ class AdminHomeScreen extends StatelessWidget {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            ' الخبراء المتاحين',
+                                            ' المستشارين '
+                                                'المتاحين',
                                             textAlign: TextAlign.center,
                                             style: Theme
                                                 .of(context)
@@ -194,7 +195,8 @@ class AdminHomeScreen extends StatelessWidget {
                                         ),
                                         Expanded(
                                           child: Text(
-                                            ' الخبراء الغير متاحين',
+                                            ' المستشارين '
+                                                'الغير متاحين',
                                             textAlign: TextAlign.center,
                                             style: Theme
                                                 .of(context)

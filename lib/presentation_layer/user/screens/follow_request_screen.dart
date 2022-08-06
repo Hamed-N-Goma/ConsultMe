@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'dart:ui' as ui;
 
 class FollowRequestsScreen extends StatelessWidget {
   const FollowRequestsScreen({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class FollowRequestsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -249,70 +251,85 @@ Widget buildOrderScreen(context) => Column(
       ],
     );
 
-Widget buildGuestItem(context, AppointmentModel model) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: buildEnquiry(
-        context,
-        height: 120.0,
-        state: model.MeetTime != null
-            ? model.accept == true
-                ? StatusStates.ACCEPT
-                : StatusStates.REJECT
-            : StatusStates.WAITING,
-        body: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              alignment: AlignmentDirectional.bottomEnd,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 2.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          'الأسم: ${model.consultName}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
+Widget buildGuestItem(context, AppointmentModel model) {
+  DateTime tempDate =
+  DateFormat("yyyy-MM-dd HH:mm:ss").parse(model.time!);
+  String date = tempDate.toString().substring(0, 10);
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: buildEnquiry(
+      context,
+      height: 120.0,
+      state: model.MeetTime != null
+          ? model.accept == true
+          ? StatusStates.ACCEPT
+          : StatusStates.REJECT
+          : StatusStates.WAITING,
+      body: Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0, vertical: 2.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'الأسم: ${model.consultName}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          'تاريخ الطلب: ${model.time}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'تاريخ الطلب: ${date}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  navigateTo(
+                    context,
+                    FollowAppointmentScreen(model: model),
+                  );
+                },
+                child: Text(
+                  'عرض التفاصيل',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(
+                    decoration: TextDecoration.underline,
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    navigateTo(
-                      context,
-                      FollowAppointmentScreen(model: model),
-                    );
-                  },
-                  child: Text(
-                    'عرض التفاصيل',
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
-    );
-
+    ),
+  );
+}
 Widget buildOrderShimmerScreen(context) => Column(
       children: [
         Shimmer.fromColors(

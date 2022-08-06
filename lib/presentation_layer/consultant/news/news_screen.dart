@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-
-
 import 'add_news_screen.dart';
 import 'news_dash_details_screen.dart';
 
@@ -122,7 +120,7 @@ Widget buildNewsItem({
   required ConsultantCubit cubit,
 }) {
   DateTime tempDate =
-      DateFormat("yyyy-MM-dd").parse(model.dateTime!);
+  DateFormat("yyyy-MM-dd HH:mm:ss").parse(model.dateTime!);
   String date = tempDate.toString().substring(0, 10);
 
   return Dismissible(

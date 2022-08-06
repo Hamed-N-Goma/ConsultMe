@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
 import 'package:consultme/presentation_layer/user/screens/postsDetails.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:consultme/models/consultantmodel.dart';
 
 import '../../presentation_layer_manager/color_manager/color_manager.dart';
 import '../../presentation_layer_manager/font_manager/fontmanager.dart';
@@ -11,13 +13,16 @@ import '../../presentation_layer_manager/font_manager/fontmanager.dart';
 class MostImportnatNews extends StatelessWidget {
   final height, width;
   final PostModel post;
+  ConsultantModel? consultantModel;
 
-  const MostImportnatNews(
+   MostImportnatNews(
       {Key? key, this.height, this.width, required this.post})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    UserLayoutCubit.get(context).getConsultById(post.uid);
+    consultantModel = UserLayoutCubit.get(context).consult;
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       radius: 20,
@@ -25,7 +30,7 @@ class MostImportnatNews extends StatelessWidget {
         navigateTo(
             context,
             PostsDetails(
-              post: post,
+              model: post,
             ));
       },
       child: Row(
@@ -53,28 +58,27 @@ class MostImportnatNews extends StatelessWidget {
                   height: height,
                   width: width! / 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(5),
                     child: Column(
                       children: [
                         Text(
                           post.title!,
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: Theme.of(context).textTheme.headline6!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(
-                          height: 5,
+                          height: 7,
                         ),
                         Text(
                           post.text!,
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: Theme.of(context).textTheme.bodyText2!,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        )
+                          maxLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   ),

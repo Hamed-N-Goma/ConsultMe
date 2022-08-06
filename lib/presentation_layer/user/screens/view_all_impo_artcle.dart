@@ -28,7 +28,7 @@ class ViewAll extends StatelessWidget {
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20.0),
               child: Builder(
                 builder: (context) {
                 //  if (state is GetNewsLoadingStates) {
@@ -150,7 +150,7 @@ Widget buildNewsItem({
                               navigateTo(
                                   context,
                                   PostsDetails(
-                                    post : model,
+                                    model: model,
                                   ));
                             },
                           ),

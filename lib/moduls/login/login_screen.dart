@@ -132,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                               alignment: AlignmentDirectional.topStart,
                               child: ThemeCubit.get(context).darkTheme
                                   ? Image.asset(
-                                      'assets/images/logo_dark.png',
+                                      'assets/images/logo.png',
                                       width: 71.0,
                                       height: 71.0,
                                     )
