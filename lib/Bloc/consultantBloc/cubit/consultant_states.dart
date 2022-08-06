@@ -66,6 +66,14 @@ class DeletePostErrorState extends ConsultantStates {}
 
 class ImagePickedSuccessState extends ConsultantStates {}
 
+
+class EditPostImagePickedSuccessState extends ConsultantStates {}
+class EditPostImagePickedErrorState extends ConsultantStates {}
+
+class EditPostLoadingState extends ConsultantStates{}
+class EditPostSuccessState extends ConsultantStates {}
+class EditPostErrorState extends ConsultantStates {}
+
 // Add post
 class PostImagePickedSuccessState extends ConsultantStates {}
 
@@ -102,6 +110,7 @@ class DelNewsErrorStates extends ConsultantStates {
 
   DelNewsErrorStates(this.error);
 }
+
 
 class GetAppointmentsLodingState extends ConsultantStates {}
 

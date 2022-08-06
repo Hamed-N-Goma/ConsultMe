@@ -3,11 +3,14 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/PostModel.dart';
+import 'package:consultme/presentation_layer/consultant/news/editPost.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../shard/style/iconly_broken.dart';
 
 
 class NewsDashDetailsScreen extends StatelessWidget {
@@ -26,6 +29,17 @@ class NewsDashDetailsScreen extends StatelessWidget {
             appBar: dashAppBar(
               title:  '${model.title}',
               context: context,
+              action: IconButton(
+                icon: Icon(
+                    IconBroken.Edit,
+                  color: ThemeCubit.get(context).darkTheme
+                      ? mainTextColor
+                      : mainColors,
+                ),
+                onPressed: () { 
+                  navigateTo(context, EditPost(postModel: model,));
+                },
+              ),
             ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),

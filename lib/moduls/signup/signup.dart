@@ -147,17 +147,19 @@ class SignUpScreen extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyText1,
                                   validator: passwordValidator,
                                   decoration: InputDecoration(
+
                                     isDense: true,
                                     contentPadding: const EdgeInsets.all(10.0),
                                     suffixIcon: IconButton(
                                       color: Colors.grey,
                                       onPressed: () {
-                                          cubit.changePasswordVisibility();
+                                        cubit.changePasswordVisibility();
                                       },
                                       icon: Icon(
                                         cubit.suffix,
                                       ),
                                     ),
+
                                     border: const OutlineInputBorder(),
                                     hintText: 'كلمه المرور',
                                     hintStyle: const TextStyle(
@@ -176,10 +178,10 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   controller: phoneController,
-                                  obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
                                   validator: phoneNumberValidator,
                                   decoration: InputDecoration(
+
                                     isDense: true,
                                     contentPadding: const EdgeInsets.all(10.0),
                                     border: const OutlineInputBorder(),
@@ -368,7 +370,6 @@ class SignUpScreen extends StatelessWidget {
                                       TextFormField(
                                         controller: careerField,
                                         keyboardType: TextInputType.text,
-                                        // obscureText: cubit.isPassword,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1,

@@ -221,6 +221,105 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
     });
   }
 
+  File? EditPostImage;
+
+  Future<void> getEditPostImage() async {
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    )
+        .then((value) {
+      EditPostImage = File(value!.path);
+      emit(EditPostImagePickedSuccessState());
+      uploadEditPostImage();
+    });
+    print('No image selected.');
+    emit(EditPostImagePickedErrorState());
+
+  }
+
+
+
+  String? PostImageUrl;
+
+  Future<void> uploadEditPostImage() async {
+
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Category/${Uri.file(EditPostImage!.path).pathSegments.last}')
+        .putFile(EditPostImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        PostImageUrl = value.toString();
+        print(PostImageUrl);
+      }).catchError((error) {
+        emit(EditPostErrorState());
+      });
+    }).catchError((error) {
+      emit(EditPostErrorState());
+    });
+  }
+
+
+  void updatePost(
+      {required String text ,required String title , required PostModel postModel}) {
+    emit(EditPostLoadingState());
+    if (PostImageUrl != null) {
+      postModel = PostModel(
+        name: postModel.name,
+        image: postModel.image,
+        uid: postModel.uid,
+        postID: postModel.postID,
+        text: text,
+        title: title,
+        postImage: PostImageUrl,
+        dateTime: postModel.dateTime,
+
+      );
+      FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postModel.postID)
+          .update(postModel.toMap())
+          .then((value) => {
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+        emit(EditPostSuccessState()),
+        getPosts(),
+      })
+          .catchError((onError) {
+        emit(EditPostErrorState());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
+    } else {
+      postModel = PostModel(
+        name: postModel.name,
+        image: postModel.image,
+        uid: postModel.uid,
+        postID: postModel.postID,
+        text: text,
+        title: title,
+        postImage: postModel.postImage,
+        dateTime: postModel.dateTime,
+
+      );
+      FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postModel.postID)
+          .update(postModel.toMap())
+          .then((value) => {
+        showToast(
+            message: 'تم التعديل بنجاح', state: ToastStates.SUCCESS),
+        emit(EditPostSuccessState()),
+        getPosts(),
+      })
+          .catchError((onError) {
+        emit(EditPostErrorState());
+        showToast(
+            message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
+      });
+    }
+  }
 
   File? profileImage;
   var pickerr = ImagePicker();
