@@ -1,8 +1,8 @@
 import 'package:consultme/Bloc/adminBloc/cubit/admin_cubit.dart';
 import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/components/components.dart';
-import 'package:consultme/presentation_layer/admin/complaints/accept/consultant_accept__screen.dart';
-import 'package:consultme/presentation_layer/admin/complaints/accept/waiting_consultant_accept__screen.dart';
+import 'package:consultme/presentation_layer/admin/accept/consultant_accept__screen.dart';
+import 'package:consultme/presentation_layer/admin/accept/waiting_consultant_accept__screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';

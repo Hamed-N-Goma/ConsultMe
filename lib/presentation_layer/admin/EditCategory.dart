@@ -5,8 +5,10 @@ import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
+import 'package:consultme/shard/widgets/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../components/components.dart';
@@ -27,43 +29,44 @@ class EditCategory extends StatelessWidget {
           nameController = TextEditingController(text: categoryModel.name);
 
           return Directionality(
-            textDirection: TextDirection.rtl,
-            child: Scaffold(
-              appBar: dashAppBar(
-                title: 'تعديل بيانات القسم',
-                context: context,
-                pop: true,
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: buildEditableCategImg(context, categoryModel, imagePicker),
-                      )
-                    ],
+              textDirection: TextDirection.rtl,
+              child: Scaffold(
+                appBar: dashAppBar(
+                  title: 'تعديل بيانات القسم',
+                  context: context,
+                  pop: true,
+                ),
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: buildEditableCategImg(context, categoryModel, imagePicker),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-               floatingActionButton: Padding(
-               padding: const EdgeInsets.all(20.0),
-                    child: FloatingActionButton(
-                         child: Icon(Icons.edit),
-                         backgroundColor: mainColors,
-                         onPressed: () {
-                           AdminCubit.get(context).updateCategory(
-                               name: nameController.text,
-                               categoryModel : categoryModel,);
-                         },
-                    ),
-             ),
-          ));
+                floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: FloatingActionButton(
+                    highlightElevation: 40,
+                    child: Icon(Icons.edit),
+                    backgroundColor: mainColors,
+                    onPressed: () {
+                      AdminCubit.get(context).updateCategory(
+                        name: nameController.text,
+                        categoryModel : categoryModel,);
+                    },
+                  ),
+                ),
+              ));
         }, listener: (context, state) {
       if (state is EditcategImagePickedSuccessState) {
         AdminCubit.get(context).uploadEditcategImage();
@@ -95,28 +98,7 @@ class EditCategory extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            height: 60,
-            child: defaultFormField(
-                controller: nameController,
-                type: TextInputType.name,
-                validate: (String? value) {
-                  if (value!.isEmpty  ) {
-                    return 'اسم القسم فارغ  !';
-                  } else if (int.tryParse(value) == null && value != ''){
-                    return 'الرجاء ادخال اسم القسم صحيح';
-                  }else {
-                    return null;
-                  }
-                },
-                prefix: IconBroken.User,
-                context: context,
-                label: "إسم القسم "),
-          ),
-          const SizedBox(
-            height: 50,
+            height: 10,
           ),
           SizedBox(
             height: 120,
@@ -130,21 +112,60 @@ class EditCategory extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          TextFormField(
+            controller: nameController,
+            style: Theme.of(context).textTheme.bodyText1,
+            validator: (String? value) {
+              if (value!.isEmpty  ) {
+                return 'اسم القسم فارغ  !!';
+              } else if (int.tryParse(value) == null && value != ''){
+                return 'الرجاء ادخال اسم القسم صحيح';
+              }else {
+                return null;
+              }
+            },
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: const EdgeInsets.all(15.0),
+              border: const OutlineInputBorder(),
+              hintText: "إسم القسم ",
+              hintStyle: const TextStyle(
+                fontSize: 15.0,
+                color: Colors.grey,
+              ),
+              enabledBorder:  OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: mainColors,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            height: 50,
+          ),
 
 
-     //     defaultButton(
-     //       function: () {
-     //         AdminCubit.get(context).updateCategory(
-     //           name: nameController.text,
-     //           categoryModel : categoryModel,
-     //         );
-   //         },
-    //        text: 'تعديل ',
-    //        fontSize: 18,
-    //        height: 60.0,
-    //        btnColor: mainColors,
-     //       width: double.infinity,
-    //      ),
+
+          //     defaultButton(
+          //       function: () {
+          //         AdminCubit.get(context).updateCategory(
+          //           name: nameController.text,
+          //           categoryModel : categoryModel,
+          //         );
+          //         },
+          //        text: 'تعديل ',
+          //        fontSize: 18,
+          //        height: 60.0,
+          //        btnColor: mainColors,
+          //       width: double.infinity,
+          //      ),
           SizedBox(
             height: 20,
           ),

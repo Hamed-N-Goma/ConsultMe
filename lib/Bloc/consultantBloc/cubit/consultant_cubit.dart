@@ -377,6 +377,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   }
 
   void refusalAppointment({required AppointmentModel appoItem}) {
+    emit(refusalAppointmentLoadingStates());
     FirebaseFirestore.instance
         .collection('appointments')
         .doc(appoItem.appoId)
@@ -388,8 +389,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             })
         .then((value) {
           getAppoinments();
+          showToast(message: 'تم رفض الطلب بنجاح', state: ToastStates.ERROR);
           emit(refusalAppointmentSuccessStates());
-          showToast(message: 'تم رفض الطلب بنجاح', state: ToastStates.SUCCESS);
         })
         .catchError((error) {
           print(error);
@@ -402,6 +403,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
 
   void acceptAppointment(
       {required String MeetTime, required AppointmentModel appoItem}) {
+    emit(AcceptedAppointmentLoadingStates());
     FirebaseFirestore.instance
         .collection('appointments')
         .doc(appoItem.appoId)
@@ -414,8 +416,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
             })
         .then((value) {
           getAppoinments();
-          emit(AcceptedAppointmentSuccessStates());
           showToast(message: 'تم القبول بنجاح', state: ToastStates.SUCCESS);
+          emit(AcceptedAppointmentSuccessStates());
         })
         .catchError((error) {
           print(error);

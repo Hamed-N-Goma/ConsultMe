@@ -4,6 +4,7 @@ import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/AppoinmentModel.dart';
+import 'package:consultme/presentation_layer/consultant/consultant_home_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,16 @@ class RequestAppoinmentDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
       listener: (context, state) {
-
+        if (state is AcceptedAppointmentLoadingStates || state is refusalAppointmentLoadingStates){
+          showDialog<void>(
+              context: context,
+              builder: (context)=> waitingDialog(context: context)
+          );
+        }
+        else if (state is AcceptedAppointmentSuccessStates  || state is refusalAppointmentSuccessStates){
+          Navigator.pop(context);
+          navigateTo(context, ConsultantHomeScreen());
+        }
       },
       builder: (context, state) {
 

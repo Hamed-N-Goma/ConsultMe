@@ -5,6 +5,7 @@ import 'package:consultme/Bloc/adminBloc/cubit/admin_states.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
 import 'package:consultme/components/components.dart';
 import 'package:consultme/models/ConsultantModel.dart';
+import 'package:consultme/presentation_layer/admin/admin_home_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class WaitingConsultantsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
-        if(state is PutStudentLoadingStates || state is DeleteStudentLoadingStates){
+        if(state is AcceptedConsultantLoadingStates ){
           showDialog<void>(
               context: context,
               builder: (context)=> waitingDialog(context: context)
@@ -29,6 +30,11 @@ class WaitingConsultantsScreen extends StatelessWidget {
         }else if(state is DeleteStudentSuccess){
           Navigator.pop(context);
           showToast(message: 'تم الحذف بنجاح', state: ToastStates.SUCCESS);
+        }
+        else if (state is AcceptedConsultantSuccessStates  ){
+          Navigator.pop(context);
+          navigateTo(context, AdminHomeScreen());
+
         }
       },
       builder: (context, state) {

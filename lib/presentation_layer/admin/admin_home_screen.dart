@@ -4,7 +4,7 @@ import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/admin/AddCategory.dart';
-import 'package:consultme/presentation_layer/admin/complaints/accept/accept_screen.dart';
+import 'package:consultme/presentation_layer/admin/accept/accept_screen.dart';
 import 'package:consultme/presentation_layer/admin/complaints/dash_complaints_screen.dart';
 import 'package:consultme/presentation_layer/admin/seach.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
