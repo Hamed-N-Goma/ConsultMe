@@ -176,7 +176,7 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                                 TextFormField(
                                   controller: phoneController,
-                                  // obscureText: cubit.isPassword,
+                                  obscureText: cubit.isPassword,
                                   style: Theme.of(context).textTheme.bodyText1,
                                   validator: phoneNumberValidator,
                                   decoration: InputDecoration(
@@ -285,6 +285,13 @@ class SignUpScreen extends StatelessWidget {
                                               color: Colors.grey, width: 1),
                                         ),
                                         child: TextFormField(
+                                          validator: (String? value) {
+                                            if (value == null || value.isEmpty) {
+                                              showToast(
+                                                  message: 'الرجاء اختيار تخصصك الوظيفي ! ', state: ToastStates.ERROR);
+                                            }
+                                            return null;
+                                          },
                                           controller:
                                               consultSeptalistController,
                                           readOnly: true,
@@ -498,6 +505,13 @@ class SignUpScreen extends StatelessWidget {
                                                   color: Colors.grey, width: 1),
                                             ),
                                             child: TextFormField(
+                                              validator: (String? value) {
+                                                if (value == null || value.isEmpty) {
+                                                  showToast(
+                                                      message: 'الرجاء اختيار صورة شهادتك او مؤهلك الوظيفي ! ', state: ToastStates.ERROR);
+                                                }
+                                                return null;
+                                              },
                                               onTap: () {
                                                 cubit.pikeBuildingImage();
                                               },
@@ -530,7 +544,7 @@ class SignUpScreen extends StatelessWidget {
                                   }
                                 }),
                                 const SizedBox(
-                                  height: 10.0,
+                                  height: 20.0,
                                 ),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width,

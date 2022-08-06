@@ -147,8 +147,7 @@ class LoginCubit extends Cubit<LoginStates> {
     auth.sendPasswordResetEmail(email: email).then((value) =>
     {
       emit(sendEmailSecces()),
-      showToast(message: 'لقد تم إرسال رسالة , تحقق من البريد الخاص بك',
-          state: ToastStates.SUCCESS)
+
     }).catchError((error) {
       emit(sendEmailError());
       showToast(message: 'حدث خطأ يرجى إعادة المحاولة لاحقا ..',

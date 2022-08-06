@@ -96,6 +96,10 @@ class LoginScreen extends StatelessWidget {
                 message: 'يرجى التأكد من البيانات', state: ToastStates.ERROR);
             LoginCubit.get(context).loginbutton.stop();
           }
+          if (state is sendEmailSecces){
+            showToast(message: 'لقد تم إرسال رسالة , تحقق من البريد الخاص بك',
+                state: ToastStates.SUCCESS);
+          }
         },
         builder: (BuildContext context, Object? state) {
           var cubit = LoginCubit.get(context);

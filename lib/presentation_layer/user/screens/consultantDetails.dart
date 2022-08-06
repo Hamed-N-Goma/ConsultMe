@@ -106,7 +106,7 @@ class consultantDetails extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                'البريد الإلكتروني : ',
+                                'البريد : ',
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
                               const SizedBox(

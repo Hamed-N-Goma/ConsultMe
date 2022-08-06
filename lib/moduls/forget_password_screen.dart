@@ -14,7 +14,7 @@ import 'login/cubit/states.dart';
 class ForgetScreen extends StatelessWidget {
   // late LoginModel loginModel;
   DateTime timeBackPressed = DateTime.now();
-  var _formKey = GlobalKey<FormState>();
+  var fromKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
 
   ForgetScreen({Key? key}) : super(key: key);
@@ -27,7 +27,10 @@ class ForgetScreen extends StatelessWidget {
       create: (BuildContext context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, state) async {
-
+          if (state is sendEmailSecces){
+            showToast(message: 'لقد تم إرسال رسالة , تحقق من البريد الخاص بك',
+                state: ToastStates.SUCCESS);
+          }
         },
         builder: (BuildContext context, Object? state) {
           var cubit = LoginCubit.get(context);
@@ -41,72 +44,82 @@ class ForgetScreen extends StatelessWidget {
                   ),
                   body: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 80,
-                            ),
-                            Text(
-                              'إعادة تعيين كلمة المرور',
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child:  Text(
-                                '.الرجاء إدخال بريدك الإلكتروني',
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      child: Form(
+                        key: fromKey,
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 80,
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: TextFormField(
-                                  controller: emailController,
-                                  textInputAction: TextInputAction.next,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                  validator: emailValidator,
-                                  decoration: const InputDecoration(
-                                    isDense: true,
-                                    contentPadding: EdgeInsets.all(10.0),
-                                    border: OutlineInputBorder(),
-                                    hintText: 'البريد الإلكتروني',
-                                    hintStyle: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.grey,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                              Text(
+                                'إعادة تعيين كلمة المرور',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child:  Text(
+                                  '.الرجاء إدخال بريدك الإلكتروني',
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: TextFormField(
+                                    controller: emailController,
+                                    textInputAction: TextInputAction.next,
+                                    style: Theme.of(context).textTheme.bodyText1,
+                                    validator: emailValidator,
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(10.0),
+                                      border: OutlineInputBorder(),
+                                      hintText: 'البريد الإلكتروني',
+                                      hintStyle: TextStyle(
+                                        fontSize: 15.0,
                                         color: Colors.grey,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
+                              const SizedBox(
+                                height: 20,
                               ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 25),
-                              child: RoundedLoadingButton(
-                                color: mainColors,
-                                borderRadius: 5.0,
-                                onPressed:(){
-                                  LoginCubit.get(context).
-                                  sendPasswordResetEmail(emailController.text);
-                                  Navigator.of(context).pop();
-                                },
-                                controller: cubit.resetButton,
-                                child: const Text(
-                                  'إرسال',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 50.0,
+                                child: RoundedLoadingButton(
+                                  color: mainColors,
+                                  controller: cubit.buttonController,
+                                  borderRadius: 5.0,
+                                  onPressed:(){
+                                    if (fromKey.currentState!.validate()) {
+
+                                      LoginCubit.get(context).
+                                    sendPasswordResetEmail(emailController.text.toString());
+                                    }
+                                   else {
+                                       cubit.buttonController.stop();
+                                      }
+                                  },
+                                  child: const Text(
+                                    'إرسال',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ])
+
+                            ]),
+                      )
                   )
               ),
             ),

@@ -7,7 +7,7 @@ String? emailValidator(String? value) {
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(value);
   if (emailValid) return null;
-  return 'الرجاء ادخال بريد الكتروني صحيح';
+  return 'الرجاء ادخال بريد إلكتروني صحيح';
 }
 
 ///returns error message if the [value] is less than 8 characters or the [value] is empty
@@ -23,7 +23,7 @@ String? passwordValidator(String? value) {
   if (symbol.hasMatch(value)) validate++;
 
   if (validate >= 2) return null;
-  return 'يجب ان تحتوي كلمة المرور على رموز واحرف كبيرة وصغيرة وعلى الأقل 8 حروف';
+  return 'يجب ان تحتوي كلمة المرور على الأقل 8 حروف';
 }
 
 ///returns error message if the provided values doesn't match
@@ -43,7 +43,7 @@ String? passwordMatchValidator(String? password, String? passwordConfirmation) {
 ///returns error message if the [value] is only numbers
 String? nameValidator(String? value) {
   if (int.tryParse(value!) == null && value != '') return null;
-  return 'الرجاء ادخال اسم صحيح';
+  return 'الرجاء ادخال الإسم صحيح';
 }
 
 ///return error message if [value] is not numbers only
@@ -54,7 +54,7 @@ String? phoneNumberValidator(String? value) {
 
   if (int.tryParse(value) != null) return null;
 
-  return 'الرجاء ادخال رقم هاتف صحيح';
+  return 'الرجاء ادخال رقم الهاتف صحيح';
 }
 
 String? intOnlyValidator(String? value) {
@@ -64,7 +64,7 @@ String? intOnlyValidator(String? value) {
 
   if (int.tryParse(value) != null) return null;
 
-  return 'الرجاء ادخال رقم صحيح';
+  return 'الرجاء ادخال رقم ';
 }
 
 String? doubleOnlyValidator(String? value) {
