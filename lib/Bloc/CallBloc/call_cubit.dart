@@ -36,6 +36,7 @@ class CallCubit extends Cubit<CallState> {
       token: token,
       callType: callType,
       callId: null,
+      callState: null,
     );
 
     FirebaseFirestore.instance
@@ -91,7 +92,45 @@ class CallCubit extends Cubit<CallState> {
     });
   }
 
-  deleteCallinfo(callerID, receiverID) {
+  Future<void> ubdateCallinfo(callerID, receiverID , callId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverID)
+        .collection('callDetails')
+        .doc(callerID)
+        .collection('calls')
+        .doc(callId)
+        .update({'callState': false})
+        .then((value) => {
+
+  });
+  }
+
+  List<CallMessageModel> calls = [];
+
+  bool ?Canceling;
+  Future<void> lestenCallinfo(callerID, receiverID , callId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverID)
+        .collection('callDetails')
+        .doc(callerID)
+        .collection('calls')
+        .snapshots()
+        .listen((event) {
+      calls = [];
+
+      event.docs.forEach((element) {
+        calls.add(CallMessageModel.fromJson(element.data()));
+      });
+    });
+    calls.forEach((element) {
+      if (element.callId == callId){
+        if(element.callState == false){
+          emit(UserCancelCall());
+        }
+      };
+    });
   }
 
   endCall(consultId) {

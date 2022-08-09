@@ -229,6 +229,7 @@ class _ReciveCllState extends State<ReciveCll> {
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           RawMaterialButton(
             onPressed: () {
@@ -240,7 +241,7 @@ class _ReciveCllState extends State<ReciveCll> {
             child: Icon(
               mute ? Icons.mic_off : Icons.mic,
               color: mute ? Colors.white : Colors.blueAccent,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
@@ -251,14 +252,7 @@ class _ReciveCllState extends State<ReciveCll> {
             onPressed: () async {
               _engine.leaveChannel();
               iscalling = false;
-              await BlocProvider.of<CallCubit>(context)
-                  .deleteCallinfo(
-                widget.consultantId!,
-                BlocProvider.of<UserLayoutCubit>(
-                    context)
-                    .userModel
-                    ?.uid,
-              );
+
               Navigator.pop(context);
              // showRating();
               BlocProvider.of<CallCubit>(context).endCall(widget.consultantId);
@@ -266,7 +260,7 @@ class _ReciveCllState extends State<ReciveCll> {
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
@@ -280,7 +274,7 @@ class _ReciveCllState extends State<ReciveCll> {
             child: Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,

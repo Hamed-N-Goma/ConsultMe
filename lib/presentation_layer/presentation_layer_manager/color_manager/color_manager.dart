@@ -11,7 +11,7 @@ class ColorManager {
 
 // Light theme
 
-Color backGround = HexColor('#F1F5F9');
+Color backGround = HexColor('#ffffff');
 
 Color mainColors = HexColor('#00264D');
 

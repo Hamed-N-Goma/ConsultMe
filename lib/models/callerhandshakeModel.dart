@@ -6,6 +6,7 @@ class CallMessageModel {
   String? token;
   String? callType;
   String? callId;
+  bool? callState;
 
   CallMessageModel({
     required this.senderId,
@@ -15,6 +16,8 @@ class CallMessageModel {
     this.token,
     required this.callType,
     required this.callId,
+    required this.callState,
+
 
   });
 
@@ -26,6 +29,7 @@ class CallMessageModel {
     token = json['token'];
     callType = json['callType'];
     callId = json['callId'];
+    callState = json['callState'];
 
   }
 
@@ -38,6 +42,8 @@ class CallMessageModel {
       'token': token,
       'callType': callType,
       'callId': callId,
+      'callState': callState,
+
 
     };
   }

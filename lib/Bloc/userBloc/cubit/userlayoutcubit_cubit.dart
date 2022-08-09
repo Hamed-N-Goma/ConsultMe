@@ -57,7 +57,6 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
     final PickedFile = await picker.pickImage(source: ImageSource.gallery)
         .then((value) {
       profileImage = File(value!.path);
-      uploadProfile();
       emit(PickedProfileImageSucsses());
     });
     print('no image selected');
@@ -94,7 +93,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   void upDateUser({required name, required phone, required email}) {
     emit(LoadingUpdateUseInfo());
-    if (profileImageUrl != null) {
+    if (profileImageUrl!.isNotEmpty) {
       userModel = UserModel(
         email: email,
         name: name,
@@ -119,6 +118,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
             message: 'حدث خطأ يرجى إعادة المحاولة', state: ToastStates.ERROR);
       });
     } else {
+      print(profileImageUrl.toString());
       userModel = UserModel(
         email: email,
         name: name,

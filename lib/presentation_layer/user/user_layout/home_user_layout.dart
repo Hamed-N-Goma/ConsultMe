@@ -65,7 +65,7 @@ class _UserLayoutState extends State<UserLayout> {
          BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
-        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken,));
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken, callId : event.data['callId']));
 
       }
       else if(event.data['type'] == "appointment" ){
@@ -123,7 +123,7 @@ class _UserLayoutState extends State<UserLayout> {
         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
-        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken,));
+        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken, callId : event.data['callId']));
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();
@@ -219,18 +219,42 @@ class _UserLayoutState extends State<UserLayout> {
                   FlashyTabBarItem(
                     icon: Icon(Icons.home),
                     title: Text('الرئيسية'),
+                    activeColor: ThemeCubit.get(context).darkTheme
+                        ? Colors.white
+                        : mainColors,
+                    inactiveColor: ThemeCubit.get(context).darkTheme
+                        ? Color(0xff9496c1)
+                        : mainColors,
                   ),
                   FlashyTabBarItem(
                     icon: Icon(Icons.search),
                     title: Text('بحث'),
+                    activeColor: ThemeCubit.get(context).darkTheme
+                        ? Colors.white
+                        : mainColors,
+                    inactiveColor: ThemeCubit.get(context).darkTheme
+                        ? Color(0xff9496c1)
+                        : mainColors,
                   ),
                   FlashyTabBarItem(
                     icon: Icon(Icons.chat),
                     title: Text('الرسائل'),
+                    activeColor: ThemeCubit.get(context).darkTheme
+                        ? Colors.white
+                        : mainColors,
+                    inactiveColor: ThemeCubit.get(context).darkTheme
+                        ? Color(0xff9496c1)
+                        : mainColors,
                   ),
                   FlashyTabBarItem(
                     icon: Icon(Icons.more_horiz),
                     title: Text('أخري'),
+                    activeColor: ThemeCubit.get(context).darkTheme
+                        ? Colors.white
+                        : mainColors,
+                    inactiveColor: ThemeCubit.get(context).darkTheme
+                        ? Color(0xff9496c1)
+                        : mainColors,
                   ),
                 ],
               ),

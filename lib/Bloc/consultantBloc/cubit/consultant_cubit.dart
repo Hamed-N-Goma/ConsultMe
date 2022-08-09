@@ -367,7 +367,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   void upDateConsultant(
       {required name, required phone, required email, required depatment, required bio}) {
     emit(LoadingUpdateConsultantInfo());
-    if (profileImageUrl != null) {
+    if (profileImageUrl!.isNotEmpty) {
       consultantModel = ConsultantModel(
         email: email,
         name: name,

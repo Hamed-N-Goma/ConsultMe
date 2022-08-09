@@ -89,7 +89,7 @@ class EditProfile extends StatelessWidget {
               height: 30,
             ),
             SizedBox(
-              height: 55,
+              height: 70,
               child: defaultFormField(
                   controller: nameController,
                   type: TextInputType.name,
@@ -102,7 +102,7 @@ class EditProfile extends StatelessWidget {
               height: 20,
             ),
             SizedBox(
-              height: 55,
+              height: 70,
               child: defaultFormField(
                   controller: emailController,
                   type: TextInputType.emailAddress,
@@ -115,7 +115,7 @@ class EditProfile extends StatelessWidget {
               height: 20,
             ),
             SizedBox(
-              height: 55,
+              height: 70,
               child: defaultFormField(
                   controller: phoneController,
                   type: TextInputType.phone,

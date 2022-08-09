@@ -11,6 +11,7 @@ import 'dart:async';
 import 'package:consultme/models/UserModel.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 class MakeCall extends StatefulWidget {
   final UserModel userinfo;
@@ -18,6 +19,7 @@ class MakeCall extends StatefulWidget {
   final ClientRole? role;
   final String? userId;
   final String? callType;
+
   MakeCall(
       {Key? key,
       this.channelName,
@@ -121,7 +123,7 @@ class _MakeCallState extends State<MakeCall> {
         leaveChannel: (status) {
           setState(
             () {
-              final info = 'Join Chanel: $status ';
+              final info = 'leave Chanel: $status ';
               infoString.add(info);
               _users.clear();
             },
@@ -185,6 +187,7 @@ class _MakeCallState extends State<MakeCall> {
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           RawMaterialButton(
             onPressed: () {
@@ -196,7 +199,7 @@ class _MakeCallState extends State<MakeCall> {
             child: Icon(
               mute ? Icons.mic_off : Icons.mic,
               color: mute ? Colors.white : Colors.blueAccent,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
@@ -206,20 +209,13 @@ class _MakeCallState extends State<MakeCall> {
           RawMaterialButton(
             onPressed: ()  {
               iscalling = false;
-               BlocProvider.of<CallCubit>(context)
-                  .deleteCallinfo(
-                BlocProvider.of<ConsultantCubit>(context).uId,
-                BlocProvider.of<UserLayoutCubit>(
-                    context)
-                    .userModel
-                    ?.uid,
-              );
+
                  Navigator.pop(context);
             },
             child: const Icon(
               Icons.call_end,
               color: Colors.white,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
@@ -233,7 +229,7 @@ class _MakeCallState extends State<MakeCall> {
             child: Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
-              size: 20,
+              size: 50,
             ),
             shape: const CircleBorder(),
             elevation: 2.0,
@@ -259,14 +255,7 @@ class _MakeCallState extends State<MakeCall> {
             onPressed: ()  {
               _engine.leaveChannel();
               iscalling = false;
-               BlocProvider.of<CallCubit>(context)
-                  .deleteCallinfo(
-                BlocProvider.of<ConsultantCubit>(context).uId,
-                BlocProvider.of<UserLayoutCubit>(
-                    context)
-                    .userModel
-                    ?.uid,
-              );
+
               Navigator.pop(context);
               BlocProvider.of<CallCubit>(context).endCall( BlocProvider.of<ConsultantCubit>(context).uId);
             },
@@ -355,22 +344,35 @@ class _MakeCallState extends State<MakeCall> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return Scaffold(
-        backgroundColor: Colors.black,
-        body: widget.callType == "Video"
-            ? Center(
-                child: Stack(
-                  children: [
-                    viewRow(),
-                    panel(),
-                    toolbar(),
-                  ],
-                ),
-              )
-            : audioCall(),
-      );
-    });
+    String? callId;
+    return BlocListener<CallCubit,CallState>(
+      listener: (context, state) async {
+        if (state is UserCancelCall) {
+          Navigator.pop(context);
+        }
+        if (state is MakeCallSucsses) {
+           callId = state.callId;
+        }
+
+      },
+      child: Builder(builder: (context) {
+        BlocProvider.of<CallCubit>(context).lestenCallinfo(widget.channelName, widget.userId, callId);
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: widget.callType == "Video"
+              ? Center(
+                  child: Stack(
+                    children: [
+                      viewRow(),
+                      panel(),
+                      toolbar(),
+                    ],
+                  ),
+                )
+              : audioCall(),
+        );
+      }),
+    );
   }
 
   Widget audioCall() {

@@ -38,3 +38,4 @@ class EndCall extends CallState {
   EndCall(this.consultId);
 
 }
+class UserCancelCall extends CallState{}

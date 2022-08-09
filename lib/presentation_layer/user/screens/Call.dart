@@ -19,12 +19,13 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../shard/style/iconly_broken.dart';
 
 class Call extends StatefulWidget {
-  Call({Key? key, required ConsultantModel this.consultant ,required String this.calltype,required String this.RTCtoken})
+  Call({Key? key, required ConsultantModel this.consultant ,required String this.calltype,required String this.RTCtoken,required String this.callId,})
       : super(key: key);
 
   ConsultantModel consultant;
   String calltype;
   String RTCtoken;
+  String callId;
   @override
   State<Call> createState() => _CallState();
 }
@@ -109,19 +110,12 @@ class _CallState extends State<Call> {
                                     MainAxisAlignment.spaceAround,
                                     children: [
                                       RawMaterialButton(
-                                        onPressed: ()  {
+                                        onPressed: ()  async {
                                           Navigator.pop(context);
                                           iscalling = false;
                                           player.stop();
                                           player.dispose();
-                                           BlocProvider.of<CallCubit>(context)
-                                              .deleteCallinfo(
-                                            widget.consultant.uid!,
-                                            BlocProvider.of<UserLayoutCubit>(
-                                                context)
-                                                .userModel
-                                                ?.uid,
-                                          );
+
                                         },
                                         child: const Icon(
                                           Icons.call_end,
@@ -138,13 +132,14 @@ class _CallState extends State<Call> {
                                           iscalling = false;
                                           player.stop();
                                           player.dispose();
-                                           BlocProvider.of<CallCubit>(context)
-                                              .deleteCallinfo(
-                                            widget.consultant.uid!,
-                                            BlocProvider.of<UserLayoutCubit>(
-                                                context)
-                                                .userModel
-                                                ?.uid,
+                                          BlocProvider.of<CallCubit>(context)
+                                              .ubdateCallinfo(
+                                              widget.consultant.uid!,
+                                              BlocProvider.of<UserLayoutCubit>(
+                                                  context)
+                                                  .userModel
+                                                  ?.uid,
+                                              widget.callId
                                           );
                                           Navigator.pushReplacement(
                                             context,
