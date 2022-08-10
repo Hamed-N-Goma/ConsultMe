@@ -58,6 +58,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         .then((value) {
       profileImage = File(value!.path);
       emit(PickedProfileImageSucsses());
+      uploadProfile();
     });
     print('no image selected');
       emit(ErrorWithPickedProfileImage());
@@ -67,6 +68,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
   String? profileImageUrl;
 
   Future<void> uploadProfile() async {
+    emit(LoadingWithUploadProfileimagge());
     await firebase_storage.FirebaseStorage.instance
         .ref()
         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
@@ -77,7 +79,8 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
                   .then(
                     (value) => {
                       profileImageUrl = value.toString(),
-                      print(profileImageUrl)
+                      print(profileImageUrl),
+                      emit(SuccessWithUploadProfileimagge()),
                     },
                   )
                   .catchError((error) {
@@ -93,7 +96,7 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
 
   void upDateUser({required name, required phone, required email}) {
     emit(LoadingUpdateUseInfo());
-    if (profileImageUrl!.isNotEmpty) {
+    if (profileImageUrl != null ) {
       userModel = UserModel(
         email: email,
         name: name,

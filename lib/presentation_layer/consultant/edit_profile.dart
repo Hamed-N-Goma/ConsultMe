@@ -62,7 +62,20 @@ class EditProfileScreen extends StatelessWidget {
         ConsultantCubit.get(context).uploadProfile();
       }
       else if (state is UpdateConsultantInfoScusses) {
-        Navigator.pop(context);      }
+        Navigator.pop(context);
+      }
+      else if (state is LoadingUpdateUseInfo ) {
+        ConsultantCubit.get(context).profileImage = null ;
+        Navigator.pop(context);
+      }
+      else if (state is UpdateConsultantInfoScusses || state is LoadingWithUploadProfileimagge) {
+        showDialog<void>(
+            context: context,
+            builder: (context)=> waitingDialog(context: context)
+        );
+      }else if (state is SuccessWithUploadProfileimagge ) {
+        Navigator.pop(context);
+      }
     });
   }
 

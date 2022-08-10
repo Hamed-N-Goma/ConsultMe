@@ -347,11 +347,13 @@ Widget defaultFormField(
           prefix,
           color: Colors.grey,
         ),
-        enabledBorder: const OutlineInputBorder(
+        enabledBorder:  OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey,
+            color:mainColors.withOpacity(0.6),
           ),
+          borderRadius: BorderRadius.circular(10),
         ),
+
         border: const OutlineInputBorder(),
       ),
     );

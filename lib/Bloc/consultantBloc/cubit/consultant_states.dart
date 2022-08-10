@@ -132,6 +132,10 @@ class ErrorWithPickedProfileImage extends ConsultantStates {}
 
 class UploadProfileimaggeSucsess extends ConsultantStates {}
 
+class LoadingWithUploadProfileimagge extends ConsultantStates {}
+
+class SuccessWithUploadProfileimagge extends ConsultantStates {}
+
 class ErrorWithUploadProfileimagge extends ConsultantStates {}
 
 class LoadingUpdateConsultantInfo extends ConsultantStates {}

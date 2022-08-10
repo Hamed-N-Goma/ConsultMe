@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/models/categorymodel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/models/favoriteModel.dart';
@@ -23,11 +24,10 @@ class CategoryDetails extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(categotyItem.name!,
-              style: Theme.of(context).textTheme.bodyLarge),
-          centerTitle: true,
-          elevation: 5,
+        appBar: dashAppBar(
+          title: categotyItem.name!,
+          context: context,
+          pop: true,
         ),
         body: buildMain(),
       ),

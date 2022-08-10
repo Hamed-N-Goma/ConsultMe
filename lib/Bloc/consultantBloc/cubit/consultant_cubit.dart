@@ -339,6 +339,8 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   String? profileImageUrl;
 
   Future<void> uploadProfile() async {
+    emit(LoadingWithUploadProfileimagge());
+
     await firebase_storage.FirebaseStorage.instance
         .ref()
         .child("users/${Uri.file(profileImage!.path).pathSegments.last}")
@@ -348,9 +350,10 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
           .getDownloadURL()
           .then(
             (value) => {
-          profileImageUrl = value.toString(),
-          print(profileImageUrl)
-        },
+             profileImageUrl = value.toString(),
+             print(profileImageUrl),
+              emit(SuccessWithUploadProfileimagge()),
+            },
       )
           .catchError((error) {
         emit(ErrorWithUploadProfileimagge());
@@ -367,7 +370,7 @@ class ConsultantCubit extends Cubit<ConsultantStates> {
   void upDateConsultant(
       {required name, required phone, required email, required depatment, required bio}) {
     emit(LoadingUpdateConsultantInfo());
-    if (profileImageUrl!.isNotEmpty) {
+    if (profileImageUrl != null ) {
       consultantModel = ConsultantModel(
         email: email,
         name: name,

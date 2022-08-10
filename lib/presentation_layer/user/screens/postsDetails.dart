@@ -13,6 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 
 
 
@@ -30,8 +32,12 @@ class PostsDetails extends StatelessWidget {
       builder: (BuildContext context, Object? state) {
         UserLayoutCubit.get(context).getTokenById(model.uid!);
         consultantModel = UserLayoutCubit.get(context).consult;
+        DateTime tempDate =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(model.dateTime!);
+        String date = tempDate.toString().substring(0, 16);
+
         return Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
               title:  '${consultantModel!.department!}',
@@ -143,8 +149,11 @@ class PostsDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 18.0,),
-
+                  const SizedBox(height: 5.0,),
+                  Text(
+                     date,
+                      style: Theme.of(context).textTheme.bodyText1!,),
+                  const SizedBox(height: 5.0,),
                 ],
               ),
             ),

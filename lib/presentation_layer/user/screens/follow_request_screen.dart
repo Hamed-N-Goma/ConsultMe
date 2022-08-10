@@ -254,7 +254,7 @@ Widget buildOrderScreen(context) => Column(
 Widget buildGuestItem(context, AppointmentModel model) {
   DateTime tempDate =
   DateFormat("yyyy-MM-dd HH:mm:ss").parse(model.time!);
-  String date = tempDate.toString().substring(0, 10);
+  String date = tempDate.toString().substring(0, 16);
 
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),

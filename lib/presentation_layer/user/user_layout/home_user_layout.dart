@@ -204,6 +204,7 @@ class _UserLayoutState extends State<UserLayout> {
                     )
                   ]),
               child: FlashyTabBar(
+                animationDuration :Duration(milliseconds: 300),
                 iconSize : 30.0,
                 backgroundColor: ThemeCubit.get(context).darkTheme
                     ? mainColors

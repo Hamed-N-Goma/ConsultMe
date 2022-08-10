@@ -56,6 +56,18 @@ class EditProfile extends StatelessWidget {
       if (state is PickedProfileImageSucsses) {
         UserLayoutCubit.get(context).uploadProfile();
       }
+      else if (state is LoadingUpdateUseInfo ) {
+        UserLayoutCubit.get(context).profileImage = null ;
+        Navigator.pop(context);
+      }
+      else if (state is UpdateUserInfoScusses || state is LoadingWithUploadProfileimagge) {
+        showDialog<void>(
+            context: context,
+            builder: (context)=> waitingDialog(context: context)
+        );
+      }else if (state is SuccessWithUploadProfileimagge ) {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -65,6 +77,7 @@ class EditProfile extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               height: 120,

@@ -17,6 +17,10 @@ class ErrorWithPickedProfileImage extends UserLayoutState {}
 
 class UploadProfileimaggeSucsess extends UserLayoutState {}
 
+class LoadingWithUploadProfileimagge extends UserLayoutState {}
+
+class SuccessWithUploadProfileimagge extends UserLayoutState {}
+
 class ErrorWithUploadProfileimagge extends UserLayoutState {}
 
 class LoadingUpdateUseInfo extends UserLayoutState {}
