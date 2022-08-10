@@ -175,8 +175,8 @@ Widget ConsultantItem({
                         child: IconButton(
                           onPressed: () {
                             cubit.showWaitingConsultantDetails(!cubit.showWaitingConsultant_details, index);
-                            if(cubit.showWaitingStudentEdit) {
-                              cubit.changeWaitingStudentEditIcon(!cubit.showWaitingStudentEdit);
+                            if(cubit.showWaitingConsultantEdit) {
+                              cubit.changeWaitingConsultantEditIcon(!cubit.showWaitingConsultantEdit);
                             }
                           },
                           alignment: Alignment.center,
@@ -200,7 +200,7 @@ Widget ConsultantItem({
                     decoration: BoxDecoration(
                       border: Border.all(color: mainColors.withOpacity(0.5), width: 2),
                       borderRadius: BorderRadius.circular(20.0),
-                      color: cubit.showWaitingStudentEdit == true
+                      color: cubit.showWaitingConsultantEdit == true
                           ? ThemeCubit.get(context).darkTheme
                           ? mainColors
                           : Colors.white

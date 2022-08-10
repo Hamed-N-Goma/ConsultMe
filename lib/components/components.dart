@@ -538,13 +538,13 @@ Widget switchedTextFormField({
           hintStyle: Theme.of(context).textTheme.bodyText1,
         ),
         readOnly: cubit.showEdit == true ||
-                cubit.showStudentEdit == true ||
-                cubit.showWaitingStudentEdit == true
+                cubit.showConsultanEdit == true ||
+                cubit.showWaitingConsultantEdit == true
             ? false
             : true,
         enableInteractiveSelection: cubit.showEdit == true ||
-                cubit.showStudentEdit == true ||
-                cubit.showWaitingStudentEdit == true
+                cubit.showConsultanEdit == true ||
+                cubit.showWaitingConsultantEdit == true
             ? true
             : false,
         style: Theme.of(context).textTheme.bodyText1,

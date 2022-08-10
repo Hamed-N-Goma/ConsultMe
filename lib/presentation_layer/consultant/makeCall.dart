@@ -1,6 +1,7 @@
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -64,7 +65,7 @@ class _MakeCallState extends State<MakeCall> {
       });
       return;
     }
-     BlocProvider.of<CallCubit>(context).sendCallinfo(
+     await BlocProvider.of<CallCubit>(context).sendCallinfo(
         senderId: BlocProvider.of<ConsultantCubit>(context).uId,
         receverId: widget.userId!,
         channelName: widget.channelName!,
@@ -349,6 +350,8 @@ class _MakeCallState extends State<MakeCall> {
       listener: (context, state) async {
         if (state is UserCancelCall) {
           Navigator.pop(context);
+          showToast(
+              message: 'المستخدم مشغول حاليا', state: ToastStates.WARNING);
         }
         if (state is MakeCallSucsses) {
            callId = state.callId;
@@ -356,7 +359,7 @@ class _MakeCallState extends State<MakeCall> {
 
       },
       child: Builder(builder: (context) {
-        BlocProvider.of<CallCubit>(context).lestenCallinfo(widget.channelName, widget.userId, callId);
+        BlocProvider.of<CallCubit>(context).lestenCallinfo(widget.channelName, widget.userId);
         return Scaffold(
           backgroundColor: Colors.black,
           body: widget.callType == "Video"

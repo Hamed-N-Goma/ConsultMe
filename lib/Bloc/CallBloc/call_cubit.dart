@@ -21,13 +21,15 @@ class CallCubit extends Cubit<CallState> {
     });
   }
 
-  sendCallinfo(
+  String? callId;
+  Future<void> sendCallinfo(
       {required String senderId,
       required String receverId,
       required String datetime,
       required String channelName,
       required String token,
-      required String callType}) {
+      required String callType}) async{
+    callId = "";
     CallMessageModel callerModel = CallMessageModel(
       senderId: senderId,
       receiverId: receverId,
@@ -57,6 +59,7 @@ class CallCubit extends Cubit<CallState> {
           .doc(value.id)
           .update({'callId': value.id})
           .then((vvv) => {
+            callId = value.id,
       emit(MakeCallSucsses(value.id))
     })
   }).catchError((error) {
@@ -102,35 +105,39 @@ class CallCubit extends Cubit<CallState> {
         .doc(callId)
         .update({'callState': false})
         .then((value) => {
+    print("=================================================================================== call ubdateCallinfo=================================================="),
+        print(call!.callState),
+    print("=================================================================================== call ubdateCallinfo==================================================")
 
   });
   }
 
-  List<CallMessageModel> calls = [];
+  CallMessageModel? call ;
 
   bool ?Canceling;
-  Future<void> lestenCallinfo(callerID, receiverID , callId) async {
+  Future<void> lestenCallinfo(callerID, receiverID) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(receiverID)
         .collection('callDetails')
         .doc(callerID)
         .collection('calls')
+        .doc(callId)
         .snapshots()
         .listen((event) {
-      calls = [];
+      call = CallMessageModel.fromJson(event.data()!);
+      print("=================================================================================== call callId==================================================");
+      print(call!.callId);
+      print("=================================================================================== call callId==================================================");
+      if(call!.callState == false){
+        emit(UserCancelCall());
+        print("=================================================================================== call call.callState==================================================");
+        print(call!.callState);
+        print("=================================================================================== call call.callState==================================================");
 
-      event.docs.forEach((element) {
-        calls.add(CallMessageModel.fromJson(element.data()));
-      });
-    });
-    calls.forEach((element) {
-      if (element.callId == callId){
-        if(element.callState == false){
-          emit(UserCancelCall());
-        }
       };
     });
+
   }
 
   endCall(consultId) {

@@ -157,7 +157,7 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
                               },
                               child: Row(
                                 children: [
-                                  if ('${consultantModel?.image}' != null)
+                                  if (consultantModel!.image!.isNotEmpty)
                                     CircleAvatar(
                                       radius: 60,
                                       backgroundColor:
@@ -167,10 +167,10 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
                                           ? mainTextColor
                                           : mainColors,
                                       backgroundImage: NetworkImage(
-                                        '${consultantModel?.image}',
+                                        '${consultantModel.image}',
                                       ),
                                     ),
-                                  if ('${consultantModel?.image}' == null)
+                                  if (consultantModel.image!.isEmpty)
                                     CircleAvatar(
                                       radius: 60,
                                       backgroundColor:
@@ -200,7 +200,7 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
                                         .start,
                                     children: [
                                       Text(
-                                        '${consultantModel?.name}',
+                                        '${consultantModel.name}',
                                         style: Theme
                                             .of(context)
                                             .textTheme
@@ -212,7 +212,7 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
                                         height: 2.0,
                                       ),
                                       Text(
-                                        '${consultantModel?.email}',
+                                        '${consultantModel.email}',
                                         style: Theme
                                             .of(context)
                                             .textTheme

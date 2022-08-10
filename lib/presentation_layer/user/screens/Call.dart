@@ -111,6 +111,15 @@ class _CallState extends State<Call> {
                                     children: [
                                       RawMaterialButton(
                                         onPressed: ()  async {
+                                          BlocProvider.of<CallCubit>(context)
+                                              .ubdateCallinfo(
+                                              widget.consultant.uid!,
+                                              BlocProvider.of<UserLayoutCubit>(
+                                                  context)
+                                                  .userModel
+                                                  ?.uid,
+                                              widget.callId
+                                          );
                                           Navigator.pop(context);
                                           iscalling = false;
                                           player.stop();
@@ -132,15 +141,7 @@ class _CallState extends State<Call> {
                                           iscalling = false;
                                           player.stop();
                                           player.dispose();
-                                          BlocProvider.of<CallCubit>(context)
-                                              .ubdateCallinfo(
-                                              widget.consultant.uid!,
-                                              BlocProvider.of<UserLayoutCubit>(
-                                                  context)
-                                                  .userModel
-                                                  ?.uid,
-                                              widget.callId
-                                          );
+
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(

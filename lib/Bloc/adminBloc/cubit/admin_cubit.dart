@@ -146,22 +146,17 @@ class AdminCubit extends Cubit<AdminStates> {
 
   bool showEdit = false;
 
-  void changeBuildingEditIcon(bool edit) {
-    showEdit = edit;
+  bool showConsultanEdit = false;
+
+  void changeConsultanEditIcon(bool edit) {
+    showConsultanEdit = edit;
     emit(ChangeConsultantEditIcon());
   }
 
-  bool showStudentEdit = false;
+  bool showWaitingConsultantEdit = false;
 
-  void changeStudentEditIcon(bool edit) {
-    showStudentEdit = edit;
-    emit(ChangeConsultantEditIcon());
-  }
-
-  bool showWaitingStudentEdit = false;
-
-  void changeWaitingStudentEditIcon(bool edit) {
-    showWaitingStudentEdit = edit;
+  void changeWaitingConsultantEditIcon(bool edit) {
+    showWaitingConsultantEdit = edit;
     emit(ChangeConsultantEditIcon());
   }
 
