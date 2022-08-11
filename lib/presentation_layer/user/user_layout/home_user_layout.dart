@@ -123,7 +123,14 @@ class _UserLayoutState extends State<UserLayout> {
         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
         consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
         RTCtoken = event.data['RTCtoken'];
-        navigateTo(context, Call(consultant: consult, calltype:BlocProvider.of<CallCubit>(context).callType!, RTCtoken: RTCtoken, callId : event.data['callId']));
+        if(BlocProvider.of<CallCubit>(context).callanswer.callState == null) {
+          navigateTo(context, Call(consultant: consult, calltype: BlocProvider
+              .of<CallCubit>(context)
+              .callType!, RTCtoken: RTCtoken, callId: event.data['callId']));
+        }
+        else {
+          showToast(message: "لقد فاتك موعد المكالمة", state: ToastStates.ERROR);
+        }
       }
       else if(event.data['type'] == "appointment" ){
         BlocProvider.of<UserLayoutCubit>(context).getAppoinments();

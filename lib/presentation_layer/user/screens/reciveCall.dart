@@ -251,7 +251,6 @@ class _ReciveCllState extends State<ReciveCll> {
           RawMaterialButton(
             onPressed: () async {
               _engine.leaveChannel();
-              iscalling = false;
 
               Navigator.pop(context);
              // showRating();

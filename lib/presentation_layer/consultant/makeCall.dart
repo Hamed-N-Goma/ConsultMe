@@ -209,9 +209,15 @@ class _MakeCallState extends State<MakeCall> {
           ),
           RawMaterialButton(
             onPressed: ()  {
-              iscalling = false;
-
                  Navigator.pop(context);
+                 if (CALLID != ""){
+                   BlocProvider.of<CallCubit>(context)
+                       .UbdateCallinfo(
+                     widget.channelName,
+                     widget.userId,
+                     CALLID,
+                   );
+                 }
             },
             child: const Icon(
               Icons.call_end,
@@ -255,9 +261,16 @@ class _MakeCallState extends State<MakeCall> {
           RawMaterialButton(
             onPressed: ()  {
               _engine.leaveChannel();
-              iscalling = false;
-
               Navigator.pop(context);
+              if (CALLID != ""){
+                BlocProvider.of<CallCubit>(context)
+                    .UbdateCallinfo(
+                  widget.channelName,
+                  widget.userId,
+                  CALLID,
+                );
+              }
+
               BlocProvider.of<CallCubit>(context).endCall( BlocProvider.of<ConsultantCubit>(context).uId);
             },
             child: const Icon(
@@ -345,7 +358,6 @@ class _MakeCallState extends State<MakeCall> {
 
   @override
   Widget build(BuildContext context) {
-    String? callId;
     return BlocListener<CallCubit,CallState>(
       listener: (context, state) async {
         if (state is UserCancelCall) {
@@ -354,7 +366,7 @@ class _MakeCallState extends State<MakeCall> {
               message: 'المستخدم مشغول حاليا', state: ToastStates.WARNING);
         }
         if (state is MakeCallSucsses) {
-           callId = state.callId;
+           CALLID = state.callId;
         }
 
       },

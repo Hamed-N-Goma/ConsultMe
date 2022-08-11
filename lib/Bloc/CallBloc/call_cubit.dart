@@ -30,6 +30,7 @@ class CallCubit extends Cubit<CallState> {
       required String token,
       required String callType}) async{
     callId = "";
+    CALLID = "";
     CallMessageModel callerModel = CallMessageModel(
       senderId: senderId,
       receiverId: receverId,
@@ -60,7 +61,8 @@ class CallCubit extends Cubit<CallState> {
           .update({'callId': value.id})
           .then((vvv) => {
             callId = value.id,
-      emit(MakeCallSucsses(value.id))
+      emit(MakeCallSucsses(value.id)),
+
     })
   }).catchError((error) {
       emit(ErrorWithMakeingCall(error));
@@ -126,20 +128,67 @@ class CallCubit extends Cubit<CallState> {
         .snapshots()
         .listen((event) {
       call = CallMessageModel.fromJson(event.data()!);
-      print("=================================================================================== call callId==================================================");
+      print(
+          "=================================================================================== call callId==================================================");
       print(call!.callId);
-      print("=================================================================================== call callId==================================================");
-      if(call!.callState == false){
+      print(
+          "=================================================================================== call callId==================================================");
+      if (call!.callState == false) {
         emit(UserCancelCall());
-        print("=================================================================================== call call.callState==================================================");
+        print(
+            "=================================================================================== call call.callState==================================================");
         print(call!.callState);
-        print("=================================================================================== call call.callState==================================================");
-
-      };
+        print(
+            "=================================================================================== call call.callState==================================================");
+      } ;
     });
 
   }
 
+  Future<void> UbdateCallinfo(callerID, receiverID , callId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverID)
+        .collection('callDetails')
+        .doc(callerID)
+        .collection('calls')
+        .doc(callId)
+        .update({'callState': true})
+        .then((value) => {
+      print("=================================================================================== call ubdateCallinfo=================================================="),
+      print(call!.callState),
+      print("=================================================================================== call ubdateCallinfo==================================================")
+
+    });
+  }
+
+  Future<void> lestenCall(callerID, receiverID, callId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverID)
+        .collection('callDetails')
+        .doc(callerID)
+        .collection('calls')
+        .doc(callId)
+        .snapshots()
+        .listen((event) {
+      call = CallMessageModel.fromJson(event.data()!);
+      print(
+          "=================================================================================== call callId==================================================");
+      print(call!.callId);
+      print(
+          "=================================================================================== call callId==================================================");
+       if (call!.callState == true) {
+        emit(ConsultCancelCall());
+        print(
+            "=================================================================================== call call.callState==================================================");
+        print(call!.callState);
+        print(
+            "=================================================================================== call call.callState==================================================");
+      };
+    });
+
+  }
   endCall(consultId) {
     emit(EndCall(consultId));
   }

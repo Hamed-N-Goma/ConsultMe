@@ -39,3 +39,5 @@ class EndCall extends CallState {
 
 }
 class UserCancelCall extends CallState{}
+
+class ConsultCancelCall extends CallState{}

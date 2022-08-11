@@ -4,6 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/components/components.dart';
 import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
@@ -53,13 +54,22 @@ class _CallState extends State<Call> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (BuildContext context) {
 
       return BlocListener<CallCubit, CallState>(
-        listener: (context, state) async {},
-        child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
-          builder: (context, state) {
-            token = widget.RTCtoken;
+        listener: (context, state) async {
+          if (state is ConsultCancelCall) {
+            Navigator.pop(context);
+            showToast(
+                message: 'المستشار لم يعد متوفر', state: ToastStates.WARNING);
+          }
+        },
+        child:  Builder(builder: (BuildContext context) {
+        token = widget.RTCtoken;
+        BlocProvider.of<CallCubit>(context).lestenCall(widget.consultant.uid,  BlocProvider.of<UserLayoutCubit>(
+            context)
+            .userModel
+            ?.uid,
+             widget.callId);
             return Directionality(
               textDirection: TextDirection.rtl,
               child: Scaffold(
@@ -121,7 +131,6 @@ class _CallState extends State<Call> {
                                               widget.callId
                                           );
                                           Navigator.pop(context);
-                                          iscalling = false;
                                           player.stop();
                                           player.dispose();
 
@@ -138,7 +147,6 @@ class _CallState extends State<Call> {
                                       ),
                                       RawMaterialButton(
                                         onPressed: ()  {
-                                          iscalling = false;
                                           player.stop();
                                           player.dispose();
 
@@ -193,7 +201,6 @@ class _CallState extends State<Call> {
           },
         ),
       );
-    });
   }
 
   Future<void> handleCameraAndMic(Permission permission) async {
