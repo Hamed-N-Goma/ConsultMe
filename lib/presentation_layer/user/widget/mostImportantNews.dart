@@ -52,7 +52,8 @@ class MostImportnatNews extends StatelessWidget {
                   )
                 ]),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: height,
@@ -60,6 +61,8 @@ class MostImportnatNews extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(5),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           post.title!,

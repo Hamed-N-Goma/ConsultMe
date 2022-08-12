@@ -61,15 +61,6 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
         ).show(
           context,
         );
-
-        FancySnackbar.showSnackbar(
-          context,
-          snackBarType: FancySnackBarType.waiting,
-          title: "${User.name}",
-          message: "لقد تلقيت طلب إستشارة جديد , تفقد طلباتك .. ",
-          duration: 4,
-          onCloseEvent: () {},
-        );
       }
       else if (event.data['type'] == "message") {
          BlocProvider.of<ConsultantCubit>(context).getUserById(
@@ -77,14 +68,15 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
         User = BlocProvider
             .of<ConsultantCubit>(context)
             .user!;
-        FancySnackbar.showSnackbar(
-          context,
-          snackBarType: FancySnackBarType.waiting,
-          title: "${User.name}",
-          message: "لقد تلقيت رسالة جديدة ",
-          duration: 4,
-          onCloseEvent: () {},
-        );
+
+           AnimatedSnackBar.rectangle(
+             "${User.name}",
+             "لقد تلقيت رسالة جديدة ",
+             type: AnimatedSnackBarType.success,
+             brightness: Brightness.dark,
+           ).show(
+             context,
+           );
       }
     });
 

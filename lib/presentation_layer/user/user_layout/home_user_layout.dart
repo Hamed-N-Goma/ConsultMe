@@ -81,36 +81,25 @@ class _UserLayoutState extends State<UserLayout> {
           context,
         );
 
-        FancySnackbar.showSnackbar(
-          context,
-          snackBarType: FancySnackBarType.success,
-          title: "${consult.name}",
-          message: "لقد تم قبول طلبك , يمكنك بدأ المحادثة .. ",
-          duration: 4,
-          onCloseEvent: () {},
-        );
       }
-      else if(event.data['type'] == "message" ){
-         BlocProvider.of<UserLayoutCubit>(context).getConsultById(event.data['consultId']);
-        consult = BlocProvider.of<UserLayoutCubit>(context).consult!;
+      else if(event.data['type'] == "message" ) {
+        BlocProvider.of<UserLayoutCubit>(context).getConsultById(
+            event.data['consultId']);
+        consult = BlocProvider
+            .of<UserLayoutCubit>(context)
+            .consult!;
 
-        AnimatedSnackBar.rectangle(
-          "${consult.name}",
-          "لقد تلقيت رسالة جديدة ",
-          type: AnimatedSnackBarType.success,
-          brightness: Brightness.dark,
-        ).show(
-          context,
-        );
+        if (_selectedIndex!=2) {
+          AnimatedSnackBar.rectangle(
+            "${consult.name}",
+            "لقد تلقيت رسالة جديدة ",
+            type: AnimatedSnackBarType.success,
+            brightness: Brightness.dark,
+          ).show(
+            context,
+          );
+        }
 
-        FancySnackbar.showSnackbar(
-          context,
-          snackBarType: FancySnackBarType.waiting,
-          title: "${consult.name}",
-          message: "لقد تلقيت رسالة جديدة ",
-          duration: 4,
-          onCloseEvent: () {},
-        );
       }
     });
 
@@ -166,9 +155,9 @@ class _UserLayoutState extends State<UserLayout> {
     },
     child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
       builder: (context, state) {
-        var model = UserLayoutCubit.get(context).userModel;
 
-        return Directionality(
+        var model = UserLayoutCubit.get(context).userModel;
+          return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -222,6 +211,9 @@ class _UserLayoutState extends State<UserLayout> {
                   setState(() {
                     _selectedIndex = index;
                   });
+                  if (_selectedIndex == 2){
+                    UserLayoutCubit.get(context).getAppoinments();
+                  }
                 },
                 items: [
                   FlashyTabBarItem(

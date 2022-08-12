@@ -9,13 +9,13 @@ import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/consultant/makeCall.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 import '../../../shard/style/iconly_broken.dart';
 
 class ConsultChatDetails extends StatelessWidget {
@@ -59,7 +59,7 @@ class ConsultChatDetails extends StatelessWidget {
                 .messageImage;
 
             return Directionality(
-              textDirection: TextDirection.rtl,
+              textDirection: ui.TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
                   backgroundColor: mainColors,
@@ -380,7 +380,7 @@ class ConsultChatDetails extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 8),
                         decoration: BoxDecoration(
-                            color:Colors.blueAccent,
+                            color: mainColors,
                             borderRadius: const BorderRadiusDirectional.only(
                               bottomStart: Radius.circular(5.0),
                               topStart: Radius.circular(20.0),
@@ -389,7 +389,7 @@ class ConsultChatDetails extends StatelessWidget {
 
                             )),
                         child: Text('${message.content}',
-                        )),
+                            style: const TextStyle(color: Colors.white))),
                   ],
                 )
                     : message.messageImage != null
@@ -412,7 +412,7 @@ class ConsultChatDetails extends StatelessWidget {
                     ? Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.blueAccent,
+                        color: mainColors,
                         borderRadius: const BorderRadiusDirectional.only(
                           bottomStart: Radius.circular(5.0),
                           topStart: Radius.circular(20.0),
@@ -420,7 +420,7 @@ class ConsultChatDetails extends StatelessWidget {
                           bottomEnd: Radius.circular(20.0),
                         )),
                     child: Text('${message.content}',
-                    ))
+                        style: const TextStyle(color: Colors.white)))
                     : const SizedBox(
                   height: 0,
                   width: 0,
@@ -428,7 +428,7 @@ class ConsultChatDetails extends StatelessWidget {
               ],
             ),
             Text(
-              '${message.dateTime}',
+              '${DateFormat("yyyy-MM-dd HH:mm:ss").parse(message.dateTime!).toString().substring(0, 16)}',
               style: TextStyle(color: Colors.grey,fontSize: 10),
             ),
           ],
@@ -505,7 +505,7 @@ class ConsultChatDetails extends StatelessWidget {
             ),
 
             Text(
-              '${message.dateTime} ',
+              '${DateFormat("yyyy-MM-dd HH:mm:ss").parse(message.dateTime!).toString().substring(0, 16)}',
               style: TextStyle(color: Colors.grey,fontSize: 10),
             ),
           ],

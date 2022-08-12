@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/CallBloc/call_cubit.dart';
@@ -9,14 +7,11 @@ import 'package:consultme/const.dart';
 import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/consultantmodel.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
-import 'package:consultme/presentation_layer/user/screens/reciveCall.dart';
-import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 import '../../../shard/style/iconly_broken.dart';
 
 class UserChatDetails extends StatefulWidget {
@@ -63,7 +58,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                 .messageImage;
 
             return Directionality(
-              textDirection: TextDirection.rtl,
+              textDirection: ui.TextDirection.rtl,
               child: Scaffold(
                 appBar: AppBar(
                   backgroundColor: mainColors,
@@ -290,8 +285,10 @@ class _UserChatDetailsState extends State<UserChatDetails> {
     return [];
   }
 
+
   Widget buildMessage(MessageModel message, context) =>
       Align(
+
         alignment: AlignmentDirectional.topStart,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +321,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 8),
                         decoration: BoxDecoration(
-                            color: Colors.blueAccent,
+                            color: mainColors,
                             borderRadius: const BorderRadiusDirectional.only(
                               bottomStart: Radius.circular(5.0),
                               topStart: Radius.circular(20.0),
@@ -332,7 +329,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                               bottomEnd: Radius.circular(20.0),
                             )),
                         child: Text('${message.content}',
-                        )),
+                            style: const TextStyle(color: Colors.white))),
                   ],
                 )
                     : message.messageImage != null
@@ -355,7 +352,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                     ? Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.blueAccent,
+                        color: mainColors,
                         borderRadius: const BorderRadiusDirectional.only(
                           bottomStart: Radius.circular(5.0),
                           topStart: Radius.circular(20.0),
@@ -363,7 +360,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                           bottomEnd: Radius.circular(20.0),
                         )),
                     child: Text('${message.content}',
-                    ))
+                        style: const TextStyle(color: Colors.white)))
                     : const SizedBox(
                   height: 0,
                   width: 0,
@@ -371,7 +368,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
               ],
             ),
             Text(
-              '${message.dateTime}',
+              '${DateFormat("yyyy-MM-dd HH:mm:ss").parse(message.dateTime!).toString().substring(0, 16)}',
               style: TextStyle(color: Colors.grey, fontSize: 10),
             ),
           ],
@@ -439,7 +436,8 @@ class _UserChatDetailsState extends State<UserChatDetails> {
                           bottomEnd: Radius.circular(5.0),
                         )),
                     child: Text('${message.content}',
-                        style: const TextStyle(color: Colors.white)))
+                        style: const TextStyle(color: Colors.white))
+                )
                     : const SizedBox(
                   height: 0,
                   width: 0,
@@ -448,7 +446,7 @@ class _UserChatDetailsState extends State<UserChatDetails> {
             ),
 
             Text(
-              '${message.dateTime} ',
+              '${DateFormat("yyyy-MM-dd HH:mm:ss").parse(message.dateTime!).toString().substring(0, 16)}',
               style: TextStyle(color: Colors.grey, fontSize: 10),
             ),
           ],
