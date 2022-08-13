@@ -9,6 +9,7 @@ import 'package:consultme/models/MessageModel.dart';
 import 'package:consultme/models/UserModel.dart';
 import 'package:consultme/presentation_layer/consultant/makeCall.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
+import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -182,9 +183,16 @@ class ConsultChatDetails extends StatelessWidget {
                                       ),
                                       child: TextFormField(
                                         controller: messageController,
-                                        decoration: const InputDecoration(
+                                        decoration: InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'type your message here ...',
+                                          hintStyle: TextStyle(
+                                            color: ThemeCubit
+                                                .get(context)
+                                                .darkTheme
+                                                ? mainTextColor
+                                                : mainColors,
+                                          )
                                         ),
                                       ),
                                     ),

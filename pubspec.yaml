@@ -65,6 +65,14 @@ dependencies:
   fancy_snackbar:
     git:
       url: https://github.com/MR0100/fancy_snackbar.git
+  test: ^1.21.1
+  bloc_test: ^9.0.3
+  equatable: ^2.0.3
+  mockito: ^5.3.0
+  fake_cloud_firestore: ^1.3.0
+  firebase_auth_mocks: ^0.8.5+1
+  google_sign_in_mocks: ^0.2.1
+
 
 
 

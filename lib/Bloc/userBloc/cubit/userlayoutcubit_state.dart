@@ -179,3 +179,12 @@ class GetRatingSucsses extends UserLayoutState {
 
 class GetRatingError extends UserLayoutState {
 }
+
+class deleteMessagesLoadingStates extends UserLayoutState {}
+
+class  deleteMessagesSuccessStates extends UserLayoutState {}
+
+class  deleteMessagesErrorStates extends UserLayoutState {
+  final String error;
+  deleteMessagesErrorStates(this.error);
+}

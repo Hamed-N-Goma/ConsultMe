@@ -155,7 +155,6 @@ class _UserLayoutState extends State<UserLayout> {
     },
     child: BlocBuilder<UserLayoutCubit, UserLayoutState>(
       builder: (context, state) {
-
         var model = UserLayoutCubit.get(context).userModel;
           return Directionality(
           textDirection: TextDirection.rtl,

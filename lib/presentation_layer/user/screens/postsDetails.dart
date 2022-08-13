@@ -40,7 +40,7 @@ class PostsDetails extends StatelessWidget {
           textDirection: ui.TextDirection.rtl,
           child: Scaffold(
             appBar: dashAppBar(
-              title:  '${consultantModel!.department!}',
+              title:  '${consultantModel!.speachalist!}',
               context: context,
             ),
             body: SingleChildScrollView(
@@ -149,10 +149,9 @@ class PostsDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5.0,),
                   Text(
                      date,
-                      style: Theme.of(context).textTheme.bodyText1!,),
+                      style: Theme.of(context).textTheme.bodyText2!,),
                   const SizedBox(height: 5.0,),
                 ],
               ),

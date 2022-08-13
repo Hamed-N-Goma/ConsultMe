@@ -230,3 +230,11 @@ class DeleteStudentError extends ConsultantStates {
   final String error;
   DeleteStudentError(this.error);
 }
+class deleteMessagesLoadingStates extends ConsultantStates {}
+
+class  deleteMessagesSuccessStates extends ConsultantStates {}
+
+class  deleteMessagesErrorStates extends ConsultantStates {
+  final String error;
+  deleteMessagesErrorStates(this.error);
+}

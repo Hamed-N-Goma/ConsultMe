@@ -52,7 +52,6 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
             .of<ConsultantCubit>(context)
             .user!;
 
-
         AnimatedSnackBar.rectangle(
           "${User.name}",
           "لقد تلقيت طلب إستشارة جديد ",
@@ -68,7 +67,6 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
         User = BlocProvider
             .of<ConsultantCubit>(context)
             .user!;
-
            AnimatedSnackBar.rectangle(
              "${User.name}",
              "لقد تلقيت رسالة جديدة ",
@@ -77,6 +75,7 @@ class _ConsultantHomeScreenState extends State<ConsultantHomeScreen> {
            ).show(
              context,
            );
+
       }
     });
 

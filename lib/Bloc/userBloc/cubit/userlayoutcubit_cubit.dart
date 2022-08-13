@@ -589,4 +589,37 @@ class UserLayoutCubit extends Cubit<UserLayoutState> {
         consult = element ;
     });
   }
-}
+
+  void DeleteMessages(ConsultantModel model) {
+    emit(deleteMessagesLoadingStates());
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel?.uid)
+        .collection('chats')
+        .doc(model.uid)
+        .collection('messages')
+        .get().then((value) {
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userModel?.uid)
+            .collection('chats')
+            .doc(model.uid)
+            .collection('messages')
+            .doc(element.id)
+            .delete();
+
+      });
+
+        getMessages(consultId: model.uid!);
+        print("_____________________________________________ del res _____________________________________________________");
+        emit(deleteMessagesSuccessStates());
+        print("_____________________________________________ del res _____________________________________________________");
+        print("_____________________________________________ del res _____________________________________________________");
+
+      });
+    }
+
+
+  }
+

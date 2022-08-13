@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/presentation_layer/consultant/messender_main.dart';
 import 'package:consultme/presentation_layer/consultant/request_appoinment_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
@@ -16,10 +17,13 @@ class ConsultChat extends StatelessWidget {
   ConsultChat({Key? key}) : super(key: key);
   var size, width, height;
 
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ConsultantCubit, ConsultantStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+      },
       builder: (context, state) {
         size = MediaQuery.of(context).size;
         height = size.height;
