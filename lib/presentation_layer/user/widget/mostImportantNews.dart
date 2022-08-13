@@ -91,7 +91,7 @@ class MostImportnatNews extends StatelessWidget {
                   width: width / 2,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(post.image!),
+                      image: NetworkImage(post.postImage!),
                       fit: BoxFit.cover,
                     ),
                     color: ColorManager.myBlue,

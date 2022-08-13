@@ -44,7 +44,7 @@ class AdminHomeScreen extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar:
-            dashAppBar(title: 'الإدارة ', context: context, pop: false),
+            dashAppBar(title: 'المسؤول ', context: context, pop: false),
             body: RefreshIndicator(
               onRefresh: () async {
                 return cubit.getUserInSecurity();
