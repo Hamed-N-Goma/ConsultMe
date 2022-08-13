@@ -145,6 +145,7 @@ class SignUpScreen extends StatelessWidget {
                                   controller: passwordController,
                                   keyboardType: TextInputType.visiblePassword,
                                   style: Theme.of(context).textTheme.bodyText1,
+                                  obscureText: cubit.isPassword,
                                   validator: passwordValidator,
                                   decoration: InputDecoration(
 

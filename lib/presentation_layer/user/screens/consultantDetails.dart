@@ -127,27 +127,6 @@ class consultantDetails extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                'رقم الهاتف : ',
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
-                              const SizedBox(
-                                width: 50,
-                              ),
-                              Text(
-                                consultant.phone!,
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            children: [
-                              Text(
                                 'سنوات الخبرة : ',
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
