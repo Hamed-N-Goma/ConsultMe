@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:consultme/Bloc/userBloc/cubit/userlayoutcubit_cubit.dart';
+import 'package:consultme/moduls/forget_password_screen.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:consultme/shard/style/theme/cubit/cubit.dart';
 import 'package:consultme/shard/utils/validators.dart';
@@ -141,8 +142,6 @@ class EditProfile extends StatelessWidget {
               height: 30,
             ),
 
-
-
             defaultButton(
               function: () {
                 UserLayoutCubit.get(context).upDateUser(
@@ -152,13 +151,23 @@ class EditProfile extends StatelessWidget {
                 );
               },
               text: 'تعديل ',
-              fontSize: 18,
+              fontSize: 15,
               height: 50.0,
               btnColor: mainColors,
               width: double.infinity,
             ),
             SizedBox(
-              height: 20,
+              height: 10,
+            ),
+            defaultButton(
+              function: () {
+                navigateAndFinish(context, ForgetScreen());
+              },
+              text: 'إعادة تعيين كلمة المرور ',
+              fontSize: 15,
+              height: 50.0,
+              btnColor: highlightColor,
+              width: double.infinity,
             ),
           ],
         ),

@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_cubit.dart';
 import 'package:consultme/Bloc/consultantBloc/cubit/consultant_states.dart';
+import 'package:consultme/const.dart';
 import 'package:consultme/main.dart';
+import 'package:consultme/moduls/forget_password_screen.dart';
 import 'package:consultme/presentation_layer/presentation_layer_manager/color_manager/color_manager.dart';
 import 'package:consultme/shard/style/iconly_broken.dart';
 import 'package:flutter/material.dart';
@@ -213,24 +215,34 @@ class EditProfileScreen extends StatelessWidget {
               ],
             ),
 
-          defaultButton(
-            function: () {
-              ConsultantCubit.get(context).upDateConsultant(
-                  name: nameController.text,
-                  phone: phoneController.text,
-                  email: emailController.text,
-                  depatment : depatmentController.text,
-                  bio : bioController.text);
-            },
-            text: 'تعديل ',
-            fontSize: 18,
-            height: 60.0,
-            btnColor: mainColors,
-            width: double.infinity,
-          ),
+           defaultButton(
+              function: () {
+                ConsultantCubit.get(context).upDateConsultant(
+                    name: nameController.text,
+                    phone: phoneController.text,
+                    email: emailController.text,
+                    depatment : depatmentController.text,
+                    bio : bioController.text);
+              },
+              text: 'تعديل ',
+              fontSize: 15,
+              height: 50.0,
+              btnColor: mainColors,
+              width: double.infinity,
+            ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
+          defaultButton(
+              function: () {
+                navigateAndFinish(context, ForgetScreen());
+              },
+              text: 'إعادة تعيين كلمة المرور ',
+              fontSize: 15,
+              height: 50.0,
+              btnColor: highlightColor,
+              width: double.infinity,
+            ),
         ],
       ),
     );

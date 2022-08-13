@@ -204,68 +204,86 @@ class SignUpScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox(
-                                        width: 10.0,
-                                        height: 10.0,
-                                        child: Radio(
-                                          value: true,
-                                          groupValue: cubit.isConsultant,
-                                          activeColor:
-                                              ThemeCubit.get(context).darkTheme
-                                                  ? mainTextColor
-                                                  : mainColors,
-                                          focusColor:
-                                              ThemeCubit.get(context).darkTheme
-                                                  ? mainTextColor
-                                                  : mainColors,
-                                          onChanged: (value) {
-                                            cubit.changeIsReason(true);
-                                          },
+                                      InkWell(
+                                        onTap:(){
+                                          cubit.changeIsReason(true);
+                                        },
+                                        child: SizedBox(
+                                          width: 10.0,
+                                          height: 10.0,
+                                          child: Radio(
+                                            value: true,
+                                            splashRadius: 100,
+                                            groupValue: cubit.isConsultant,
+                                            activeColor:
+                                                ThemeCubit.get(context).darkTheme
+                                                    ? mainTextColor
+                                                    : mainColors,
+                                            focusColor:
+                                                ThemeCubit.get(context).darkTheme
+                                                    ? mainTextColor
+                                                    : mainColors,
+                                            onChanged: (value) {
+                                              cubit.changeIsReason(true);
+                                            },
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(
                                         width: 8.0,
                                       ),
-                                      Text(
-                                        ' مستخدم',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                     InkWell(
+                                       onTap:(){
+                                        cubit.changeIsReason(true);
+                                       },
+                                         child: Text(
+                                          ' مستخدم',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 30.0,
                                       ),
                                       SizedBox(
-                                        width: 10.0,
-                                        height: 10.0,
-                                        child: Radio(
-                                          value: false,
-                                          groupValue: cubit.isConsultant,
-                                          activeColor:
-                                              ThemeCubit.get(context).darkTheme
-                                                  ? mainTextColor
-                                                  : mainColors,
-                                          focusColor:
-                                              ThemeCubit.get(context).darkTheme
-                                                  ? mainTextColor
-                                                  : mainColors,
-                                          hoverColor:
-                                              ThemeCubit.get(context).darkTheme
-                                                  ? mainTextColor
-                                                  : mainColors,
-                                          onChanged: (value) {
-                                            cubit.changeIsReason(false);
-                                          },
+                                          width: 10.0,
+                                          height: 10.0,
+                                          child: Radio(
+                                            value: false,
+                                            groupValue: cubit.isConsultant,
+                                            splashRadius: 100,
+                                            activeColor:
+                                                ThemeCubit.get(context).darkTheme
+                                                    ? mainTextColor
+                                                    : mainColors,
+                                            focusColor:
+                                                ThemeCubit.get(context).darkTheme
+                                                    ? mainTextColor
+                                                    : mainColors,
+                                            hoverColor:
+                                                ThemeCubit.get(context).darkTheme
+                                                    ? mainTextColor
+                                                    : mainColors,
+                                            onChanged: (value) {
+                                              cubit.changeIsReason(false);
+                                            },
+                                          ),
                                         ),
-                                      ),
+
                                       const SizedBox(
                                         width: 8.0,
                                       ),
-                                      Text(
-                                        'خبير',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                      InkWell(
+                                        onTap:(){
+                                          cubit.changeIsReason(false);
+                                        },
+                                        child: Text(
+                                          'خبير',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
                                       ),
                                     ],
                                   ),
