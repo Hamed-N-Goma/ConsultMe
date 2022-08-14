@@ -30,6 +30,10 @@ class ForgetScreen extends StatelessWidget {
           if (state is sendEmailSecces){
             showToast(message: 'لقد تم إرسال رسالة , تحقق من البريد الخاص بك',
                 state: ToastStates.SUCCESS);
+            LoginCubit.get(context).buttonController.stop();
+          }
+          else if (state is sendEmailError){
+            LoginCubit.get(context).buttonController.stop();
           }
         },
         builder: (BuildContext context, Object? state) {
@@ -101,12 +105,11 @@ class ForgetScreen extends StatelessWidget {
                                   borderRadius: 5.0,
                                   onPressed:(){
                                     if (fromKey.currentState!.validate()) {
-
                                       LoginCubit.get(context).
                                     sendPasswordResetEmail(emailController.text.toString());
                                     }
                                    else {
-                                       cubit.buttonController.stop();
+                                      cubit.buttonController.stop();
                                       }
                                   },
                                   child: const Text(

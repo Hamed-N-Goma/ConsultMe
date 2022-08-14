@@ -20,7 +20,7 @@ class acceptScreen extends StatelessWidget {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: Scaffold(
-              appBar: dashAppBar(title: 'إدارة الخبراء', context: context),
+              appBar: dashAppBar(title: 'إدارة المستشارين', context: context),
               body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(

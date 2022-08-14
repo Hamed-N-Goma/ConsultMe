@@ -30,7 +30,7 @@ class PostsDetails extends StatelessWidget {
     return BlocConsumer<UserLayoutCubit, UserLayoutState>(
       listener: (context,state){},
       builder: (BuildContext context, Object? state) {
-        UserLayoutCubit.get(context).getTokenById(model.uid!);
+        UserLayoutCubit.get(context).getConsultById(model.uid!);
         consultantModel = UserLayoutCubit.get(context).consult;
         DateTime tempDate =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(model.dateTime!);
